@@ -1,13 +1,13 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 public class Event {
     Simulation sim = null;
     String name = "";
 
-    private List<Process> listeners = new ArrayList<>();
+    private Queue<Process> listeners = new ArrayDeque<>();
 
     public Event(Simulation sim) {
         this.sim = sim;
@@ -25,6 +25,8 @@ public class Event {
         // exec handlers
         for (Process p: listeners)
             p.start();
+
+        listeners.clear();
     }
 
     public void fire() {
@@ -38,6 +40,10 @@ public class Event {
 
     public void removeListener(Process process) {
         listeners.remove(process);
+    }
+
+    public void removeAllListeners() {
+        listeners.clear();
     }
 
     public String getName() {

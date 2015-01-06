@@ -44,19 +44,17 @@ public class TrafficModel {
                 Process man = new IdentifiedProcess(manId++) {
                     @Override
                     public void start() {
-                        if (!direction) {
-                            System.out.println("Man " + Integer.toString(getId()) + " is waiting");
+                        sim.waitEvent(peopleEvent, this::cross);
+                    }
 
-                            sim.waitEvent(peopleEvent, this);
-                        } else {
-                            System.out.println("Man " + Integer.toString(getId()) + " is crossing");
-                        }
+                    public void cross() {
+                        System.out.println("Man " + Integer.toString(getId()) + " is crossing");
                     }
                 };
 
                 sim.addProcess(man);
 
-                // generate new man each 100 seconds
+                // generate new man each 60 seconds
                 sim.delay(60, this);
             }
         };
@@ -70,13 +68,11 @@ public class TrafficModel {
                 Process car = new IdentifiedProcess(carId++) {
                     @Override
                     public void start() {
-                        if (direction) {
-                            System.out.println("Car " + Integer.toString(getId()) + " is waiting");
+                        sim.waitEvent(carsEvent, this::cross);
+                    }
 
-                            sim.waitEvent(carsEvent, this);
-                        } else {
-                            System.out.println("Car " + Integer.toString(getId()) + " is crossing");
-                        }
+                    public void cross() {
+                        System.out.println("Car " + Integer.toString(getId()) + " is crossing");
                     }
                 };
 

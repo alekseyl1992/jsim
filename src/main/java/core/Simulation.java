@@ -35,10 +35,10 @@ public class Simulation {
 
         // main simulation loop
         while (!firedEvents.isEmpty() || !delayedEvents.isEmpty()) {
-            for (Event e: firedEvents)
+            while (!firedEvents.isEmpty()) {
+                Event e = firedEvents.poll();
                 e.execute();
-
-            firedEvents.clear();
+            }
 
             // no events to execute, it's time to advance time
             if (delayedEvents.isEmpty())
