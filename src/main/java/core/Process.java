@@ -4,3 +4,4 @@ package core;
 public interface Process {
     public void start();
 }
+

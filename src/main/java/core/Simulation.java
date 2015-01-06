@@ -1,28 +1,91 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 
 public class Simulation {
     private int time = 0;
-    private Random random;
-    private List<Process> processes = new ArrayList<>();
+    private int endTime = Integer.MAX_VALUE;
 
-    public Simulation() {
-        random = new Random();
+    public enum State {
+        ACTIVE, STOPPED
     }
 
-    public Simulation(long seed) {
-        random = new Random(seed);
+    private State state;
+
+    private List<Process> processes = new ArrayList<>();
+
+    private Queue<TimeEvent> delayedEvents
+            = new PriorityQueue<>((a, b) -> Integer.compare(a.getTime(), b.getTime()));
+
+    private Queue<Event> firedEvents = new LinkedList<>();
+
+    public Simulation(int endTime) {
+        this.endTime = endTime;
     }
 
     public void start() {
+        this.state = State.ACTIVE;
+
+        // run processes, created before simulation began
         for (Process p: processes)
             p.start();
+
+        processes.clear();
+
+        // main simulation loop
+        while (!firedEvents.isEmpty() || !delayedEvents.isEmpty()) {
+            for (Event e: firedEvents)
+                e.execute();
+
+            firedEvents.clear();
+
+            // no events to execute, it's time to advance time
+            if (delayedEvents.isEmpty())
+                return;
+
+            TimeEvent firstEvent = delayedEvents.poll();
+            this.time = firstEvent.getTime();
+
+            if (this.time > endTime)
+                return;
+
+            // and fire all the events with time == this.time
+            firstEvent.fire();
+
+            for (TimeEvent e = delayedEvents.peek();
+                 e != null && e.getTime() == this.time;
+                 e = delayedEvents.peek()) {
+                delayedEvents.remove();
+                e.fire();
+            }
+        }
     }
 
     public void addProcess(Process process) {
-        processes.add(process);
+        if (state == State.ACTIVE)
+            process.start();
+        else
+            processes.add(process);
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void delay(int timeout, Process process) {
+        delayedEvents.add(new TimeEvent(this, this.time + timeout, process));
+    }
+
+    public void waitEvent(Event e, Process process) {
+        e.addListener(process);
+    }
+
+    public void fireEvent(Event e) {
+        firedEvents.add(e);
     }
 }
