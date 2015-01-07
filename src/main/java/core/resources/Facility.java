@@ -1,13 +1,14 @@
 package core.resources;
 
 import core.Event;
+import core.Process;
 import core.Simulation;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class Facility {
-    private Queue<Event> queue = new ArrayDeque<>();
+    private Queue<Request> queue = new ArrayDeque<>();
 
     private Simulation sim;
     private int channels = 1;
@@ -19,19 +20,43 @@ public class Facility {
         this.freeChannels = channels;
     }
 
-    public void use(int useTime) {
-        use(1, useTime);
+    public void use(Process source, int duration) {
+        use(source, 1, duration);
     }
 
-    public Event use(int channels, int useTime) {
-        if (freeChannels >= channels) {
-            // handle (wait and fire)
+    public Event use(Process source, int channels, int duration) {
+        Event handledEvent = new Event(sim);
+        handledEvent.addHandler(this::handleQueue);
 
-        } else {
-            // enqueue
+        Request r = new Request(source, handledEvent, channels, duration);
+
+        if (!handleRequest(r))
+            queue.add(r);
+
+        return handledEvent;
+    }
+
+    private void handleQueue(Event e) {
+        if (queue.isEmpty())
+            return;
+
+        while (handleRequest(queue.peek()))
+            queue.remove();
+    }
+
+    private boolean handleRequest(Request r) {
+        if (freeChannels >= r.getChannels()) {
+            // handle (wait and fire)
+            freeChannels -= r.getChannels();
+            sim.delay(r.getDuration(), (Event e) -> {
+                freeChannels += r.getChannels();
+                r.getHandledEvent().fire();
+            });
+
+            return true;
         }
 
-        return new Event(this.sim);
+        return false;
     }
 
     public int getChannels() {

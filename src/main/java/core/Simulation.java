@@ -71,6 +71,9 @@ public class Simulation {
     }
 
     public void fireEvent(Event e) {
+        if (e.getScheduledTime() == Event.NOT_SCHEDULED)
+            e.setScheduledTime(this.simTime);
+
         eventQueue.add(e);
     }
 }

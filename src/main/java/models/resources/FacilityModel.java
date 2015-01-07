@@ -6,28 +6,34 @@ import core.Simulation;
 import core.resources.Facility;
 
 public class FacilityModel {
-    public static void main(String[] args) {
-        Simulation sim = new Simulation();
+    public static int clientId = 0;
 
-        Facility f = new Facility(sim, 4);
+    public static void main(String[] args) {
+        Simulation sim = new Simulation(100);
+
+        Facility f = new Facility(sim, 1);
 
         Process client = new Process() {
             @Override
             public void start(Event e) {
-                int nextClientTime = 10;
-                sim.delay(nextClientTime, this::use);
-            }
+                int duration = 4;
 
-            public void use(Event e) {
-                int useTime = 2;
-
-                f.use(1, useTime)
+                f.use(this, 1, duration)
                         .addHandler((Event event) ->
-                                System.out.println(String.format("Waited %d seconds", sim.getSimTime() - event.getTimeCreated())));
+                                System.out.println(String.format(
+                                        "Client %d waited %d seconds",
+                                        clientId++,
+                                        sim.getSimTime() - event.getTimeCreated())));
+
+                int nextClientTime = 1;
+                sim.delay(nextClientTime, this);
             }
         };
         sim.addProcess(client);
 
         sim.start();
+
+        System.out.println();
+        System.out.println("Total clients created: " + clientId);
     }
 }

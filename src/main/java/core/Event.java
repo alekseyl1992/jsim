@@ -7,18 +7,20 @@ public class Event {
     private Simulation sim = null;
     private String name = "";
 
+    public static final int NOT_SCHEDULED = -1;
+
     private int timeCreated = 0;
     private int timeScheduled = 0;
 
     private Queue<Process> handlers = new ArrayDeque<>();
+    private int time;
 
     public Event(Simulation sim) {
-        this.sim = sim;
-        this.timeCreated = sim.getSimTime();
+        this(sim, "", NOT_SCHEDULED);
     }
 
     public Event(Simulation sim, String name) {
-        this(sim, name, 0);
+        this(sim, name, NOT_SCHEDULED);
     }
 
     public Event(Simulation sim, int time) {
@@ -70,5 +72,9 @@ public class Event {
 
     public int getScheduledTime() {
         return timeScheduled;
+    }
+
+    public void setScheduledTime(int timeScheduled) {
+        this.timeScheduled = timeScheduled;
     }
 }
