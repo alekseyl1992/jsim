@@ -79,7 +79,7 @@ public class TrafficModel {
                 sim.addProcess(car);
 
                 // generate new car each 20 seconds
-                sim.delay(2, this);
+                sim.delay(20, this);
             }
         };
         sim.addProcess(carsGenerator);

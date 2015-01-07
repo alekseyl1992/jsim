@@ -4,7 +4,7 @@ package core;
 import java.util.*;
 
 public class Simulation {
-    private int time = 0;
+    private int simTime = 0;
     private int endTime = Integer.MAX_VALUE;
 
     public enum State {
@@ -15,16 +15,21 @@ public class Simulation {
 
     private List<Process> processes = new ArrayList<>();
 
-    private Queue<TimeEvent> delayedEvents
+    private Queue<Event> eventQueue
             = new PriorityQueue<>((a, b) -> Integer.compare(a.getTime(), b.getTime()));
 
-    private Queue<Event> firedEvents = new LinkedList<>();
+    public Simulation() {
+
+    }
 
     public Simulation(int endTime) {
         this.endTime = endTime;
     }
 
     public void start() {
+        if (this.state == State.ACTIVE)
+            throw new SimulationError("Unable to start one simulation multiple times");
+
         this.state = State.ACTIVE;
 
         // run processes, created before simulation began
@@ -34,31 +39,14 @@ public class Simulation {
         processes.clear();
 
         // main simulation loop
-        while (!firedEvents.isEmpty() || !delayedEvents.isEmpty()) {
-            while (!firedEvents.isEmpty()) {
-                Event e = firedEvents.poll();
-                e.execute();
-            }
+        while (!eventQueue.isEmpty()) {
+            Event e = eventQueue.poll();
 
-            // no events to execute, it's time to advance time
-            if (delayedEvents.isEmpty())
-                return;
+            if (e.getTime() >= this.endTime)
+                return;  // out of simulation time
 
-            TimeEvent firstEvent = delayedEvents.poll();
-            this.time = firstEvent.getTime();
-
-            if (this.time > endTime)
-                return;
-
-            // and fire all the events with time == this.time
-            firstEvent.fire();
-
-            for (TimeEvent e = delayedEvents.peek();
-                 e != null && e.getTime() == this.time;
-                 e = delayedEvents.peek()) {
-                delayedEvents.remove();
-                e.fire();
-            }
+            this.simTime = e.getTime();
+            e.execute();
         }
     }
 
@@ -69,8 +57,8 @@ public class Simulation {
             processes.add(process);
     }
 
-    public int getTime() {
-        return time;
+    public int getSimTime() {
+        return simTime;
     }
 
     public State getState() {
@@ -78,7 +66,10 @@ public class Simulation {
     }
 
     public void delay(int timeout, Process process) {
-        delayedEvents.add(new TimeEvent(this, this.time + timeout, process));
+        Event e = new Event(this, this.simTime + timeout);
+        e.addListener(process);
+
+        eventQueue.add(e);
     }
 
     public void waitEvent(Event e, Process process) {
@@ -86,6 +77,6 @@ public class Simulation {
     }
 
     public void fireEvent(Event e) {
-        firedEvents.add(e);
+        eventQueue.add(e);
     }
 }
