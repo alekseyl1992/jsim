@@ -30,7 +30,7 @@ public class Facility {
 
         Request r = new Request(source, handledEvent, channels, duration);
 
-        if (!handleRequest(r))
+        if (!queue.isEmpty() || !handleRequest(r))
             queue.add(r);
 
         return handledEvent;

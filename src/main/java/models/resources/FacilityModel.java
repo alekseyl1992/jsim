@@ -19,13 +19,17 @@ public class FacilityModel {
                 int duration = 4;
 
                 f.use(this, 1, duration)
-                        .addHandler((Event event) ->
-                                System.out.println(String.format(
-                                        "Client %d waited %d seconds",
-                                        clientId++,
-                                        sim.getSimTime() - event.getTimeCreated())));
+                        .addHandler((Event event) -> {
+                            int cid = (int) event.getData();
+
+                            System.out.println(String.format(
+                                    "Client %d waited %d seconds",
+                                    cid,
+                                    sim.getSimTime() - event.getTimeCreated()));
+                        }).setData(clientId);
 
                 int nextClientTime = 1;
+                clientId++;
                 sim.delay(nextClientTime, this);
             }
         };
