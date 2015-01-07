@@ -20,7 +20,7 @@ public class TrafficModel {
         // create direction process
         Process directionProcess = new Process() {
             @Override
-            public void start() {
+            public void start(Event startEvent) {
                 direction = !direction;
 
                 if (direction) {
@@ -40,14 +40,14 @@ public class TrafficModel {
         // people generator
         Process peopleGenerator = new Process() {
             @Override
-            public void start() {
+            public void start(Event startEvent) {
                 Process man = new IdentifiedProcess(manId++) {
                     @Override
-                    public void start() {
+                    public void start(Event e) {
                         sim.waitEvent(peopleEvent, this::cross);
                     }
 
-                    public void cross() {
+                    public void cross(Event e) {
                         System.out.println("Man " + Integer.toString(getId()) + " is crossing");
                     }
                 };
@@ -64,14 +64,14 @@ public class TrafficModel {
         // cars generator
         Process carsGenerator = new Process() {
             @Override
-            public void start() {
+            public void start(Event startEvent) {
                 Process car = new IdentifiedProcess(carId++) {
                     @Override
-                    public void start() {
+                    public void start(Event startEvent) {
                         sim.waitEvent(carsEvent, this::cross);
                     }
 
-                    public void cross() {
+                    public void cross(Event crossEvent) {
                         System.out.println("Car " + Integer.toString(getId()) + " is crossing");
                     }
                 };

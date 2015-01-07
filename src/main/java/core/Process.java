@@ -2,6 +2,6 @@ package core;
 
 @FunctionalInterface
 public interface Process {
-    public void start();
+    public void start(Event startEvent);
 }
 

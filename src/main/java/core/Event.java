@@ -7,28 +7,29 @@ public class Event {
     private Simulation sim = null;
     private String name = "";
 
-    private int time = 0;
+    private int timeCreated = 0;
+    private int timeScheduled = 0;
 
-    private Queue<Process> listeners = new ArrayDeque<>();
+    private Queue<Process> handlers = new ArrayDeque<>();
 
     public Event(Simulation sim) {
         this.sim = sim;
+        this.timeCreated = sim.getSimTime();
     }
 
     public Event(Simulation sim, String name) {
-        this.sim = sim;
-        this.name = name;
+        this(sim, name, 0);
     }
 
     public Event(Simulation sim, int time) {
-        this.sim = sim;
-        this.time = time;
+        this(sim, "", time);
     }
 
     public Event(Simulation sim, String name, int time) {
         this.sim = sim;
         this.name = name;
-        this.time = time;
+        this.timeCreated = sim.getSimTime();
+        this.timeScheduled = time;
     }
 
     /**
@@ -36,10 +37,10 @@ public class Event {
      */
     void execute() {
         // exec handlers
-        for (Process p: listeners)
-            p.start();
+        for (Process h: handlers)
+            h.start(this);
 
-        listeners.clear();
+        handlers.clear();
     }
 
     public void fire() {
@@ -47,23 +48,27 @@ public class Event {
         sim.fireEvent(this);
     }
 
-    public void addListener(Process process) {
-        listeners.add(process);
+    public void addHandler(Process handler) {
+        handlers.add(handler);
     }
 
-    public void removeListener(Process process) {
-        listeners.remove(process);
+    public void removeHandler(Process handler) {
+        handlers.remove(handler);
     }
 
-    public void removeAllListeners() {
-        listeners.clear();
+    public void removeAllHandlers() {
+        handlers.clear();
     }
 
     public String getName() {
         return name;
     }
 
-    public int getTime() {
-        return time;
+    public int getTimeCreated() {
+        return timeCreated;
+    }
+
+    public int getScheduledTime() {
+        return timeScheduled;
     }
 }

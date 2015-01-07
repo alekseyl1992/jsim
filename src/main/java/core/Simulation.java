@@ -13,17 +13,17 @@ public class Simulation {
 
     private State state;
 
-    private List<Process> processes = new ArrayList<>();
-
     private Queue<Event> eventQueue
-            = new PriorityQueue<>((a, b) -> Integer.compare(a.getTime(), b.getTime()));
+            = new PriorityQueue<>((a, b) -> Integer.compare(a.getScheduledTime(), b.getScheduledTime()));
 
     public Simulation() {
-
+        this(Integer.MAX_VALUE);
     }
 
     public Simulation(int endTime) {
         this.endTime = endTime;
+
+        eventQueue.add(new Event(this, "Start event", 0));
     }
 
     public void start() {
@@ -32,29 +32,23 @@ public class Simulation {
 
         this.state = State.ACTIVE;
 
-        // run processes, created before simulation began
-        for (Process p: processes)
-            p.start();
-
-        processes.clear();
-
         // main simulation loop
         while (!eventQueue.isEmpty()) {
             Event e = eventQueue.poll();
 
-            if (e.getTime() >= this.endTime)
+            if (e.getScheduledTime() >= this.endTime)
                 return;  // out of simulation time
 
-            this.simTime = e.getTime();
+            this.simTime = e.getScheduledTime();
             e.execute();
         }
     }
 
     public void addProcess(Process process) {
         if (state == State.ACTIVE)
-            process.start();
+            process.start(null);
         else
-            processes.add(process);
+            eventQueue.peek().addHandler(process);
     }
 
     public int getSimTime() {
@@ -67,13 +61,13 @@ public class Simulation {
 
     public void delay(int timeout, Process process) {
         Event e = new Event(this, this.simTime + timeout);
-        e.addListener(process);
+        e.addHandler(process);
 
         eventQueue.add(e);
     }
 
     public void waitEvent(Event e, Process process) {
-        e.addListener(process);
+        e.addHandler(process);
     }
 
     public void fireEvent(Event e) {
