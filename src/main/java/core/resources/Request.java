@@ -3,12 +3,18 @@ package core.resources;
 import core.Event;
 import core.Process;
 
-public class Request {
+class Request {
     private Process source;
     private Event handledEvent;
 
     private int channels;
     private int duration;
+
+    public static final int NOT_SPECIFIED_DURATION = -1;
+
+    public Request(Process source, Event handledEvent, int channels) {
+        this(source, handledEvent, channels, NOT_SPECIFIED_DURATION);
+    }
 
     public Request(Process source, Event handledEvent, int channels, int duration) {
         this.source = source;
