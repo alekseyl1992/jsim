@@ -18,7 +18,7 @@ public class FacilityModel {
             public void start(Event e) {
                 int duration = 4;
 
-                f.use(this, 1, duration)
+                f.use(1, duration)
                         .addHandler((Event event) -> {
                             int cid = (int) event.getData();
 

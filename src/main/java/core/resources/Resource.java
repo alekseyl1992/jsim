@@ -1,7 +1,6 @@
 package core.resources;
 
 import core.Event;
-import core.Process;
 import core.Simulation;
 
 import java.util.ArrayDeque;
@@ -20,15 +19,17 @@ public class Resource {
         this.freeChannels = channels;
     }
 
-    public void use(Process source, int duration) {
-        use(source, 1, duration);
+    public void use(int duration) {
+        use(1, duration);
     }
 
-    public Event use(Process source, int channels, int duration) {
+    //TODO: release?..
+
+    public Event use(int channels, int duration) {
         Event handledEvent = new Event(sim);
         handledEvent.addHandler(this::handleQueue);
 
-        Request r = new Request(source, handledEvent, channels, duration);
+        Request r = new Request(handledEvent, channels, duration);
 
         if (!queue.isEmpty() || !handleRequest(r))
             queue.add(r);

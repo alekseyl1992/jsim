@@ -6,31 +6,27 @@ import core.Simulation;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class Container {
+public class Storage<T> {
     private Simulation sim;
 
     private int capacity;
-    private int size;
 
-    private Queue<Request> putQueue = new ArrayDeque<>();
-    private Queue<Request> getQueue = new ArrayDeque<>();
+    private Queue<T> storageQueue = new ArrayDeque<>();
 
-    public Container(Simulation sim, int capacity) {
-        this(sim, capacity, 0);
-    }
+    private Queue<StorageRequest<T>> putQueue = new ArrayDeque<>();
+    private Queue<StorageRequest<T>> getQueue = new ArrayDeque<>();
 
-    public Container(Simulation sim, int capacity, int initialSize) {
+    public Storage(Simulation sim, int capacity) {
         this.sim = sim;
 
         this.capacity = capacity;
-        this.size = initialSize;
     }
 
-    public Event get(int count) {
+    public Event get() {
         Event handledEvent = new Event(sim);
         handledEvent.addHandler(this::handlePutQueue);
 
-        Request r = new Request(handledEvent, count);
+        StorageRequest<T> r = new StorageRequest<>(null, handledEvent);
 
         if (!getQueue.isEmpty() || !handleGetRequest(r))
             getQueue.add(r);
@@ -38,11 +34,11 @@ public class Container {
         return handledEvent;
     }
 
-    public Event put(int count) {
+    public Event put(T data) {
         Event handledEvent = new Event(sim);
         handledEvent.addHandler(this::handleGetQueue);
 
-        Request r = new Request(handledEvent, count);
+        StorageRequest<T> r = new StorageRequest<T>(data, handledEvent);
 
         if (!putQueue.isEmpty() || !handlePutRequest(r))
             putQueue.add(r);
@@ -50,12 +46,12 @@ public class Container {
         return handledEvent;
     }
 
-    private boolean handlePutRequest(Request r) {
+    private boolean handlePutRequest(StorageRequest<T> r) {
         if (r == null)
             return false;
 
-        if (r.getChannels() <= capacity - size) {
-            size += r.getChannels();
+        if (storageQueue.size() < capacity) {
+            storageQueue.add(r.getData());
             r.getHandledEvent().fire();
 
             return true;
@@ -69,13 +65,15 @@ public class Container {
             putQueue.remove();
     }
 
-    private boolean handleGetRequest(Request r) {
+    private boolean handleGetRequest(StorageRequest<T> r) {
         if (r == null)
             return false;
 
-        if (r.getChannels() <= size) {
-            size -= r.getChannels();
-            r.getHandledEvent().fire();
+        if (!storageQueue.isEmpty()) {
+            T data = storageQueue.poll();
+            Event e = r.getHandledEvent();
+            e.setData(data);
+            e.fire();
 
             return true;
         } else {
