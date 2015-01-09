@@ -7,14 +7,14 @@ import core.Simulation;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class Facility {
+public class Resource {
     private Queue<Request> queue = new ArrayDeque<>();
 
     private Simulation sim;
     private int channels = 1;
     private int freeChannels = 1;
 
-    public Facility(Simulation sim, int channels) {
+    public Resource(Simulation sim, int channels) {
         this.sim = sim;
         this.channels = channels;
         this.freeChannels = channels;
@@ -37,14 +37,14 @@ public class Facility {
     }
 
     private void handleQueue(Event e) {
-        if (queue.isEmpty())
-            return;
-
         while (handleRequest(queue.peek()))
             queue.remove();
     }
 
     private boolean handleRequest(Request r) {
+        if (r == null)
+            return false;
+
         if (freeChannels >= r.getChannels()) {
             // handle (wait and fire)
             freeChannels -= r.getChannels();

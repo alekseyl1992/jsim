@@ -3,7 +3,7 @@ package models.resources;
 import core.Event;
 import core.Process;
 import core.Simulation;
-import core.resources.Facility;
+import core.resources.Resource;
 
 public class FacilityModel {
     public static int clientId = 0;
@@ -11,7 +11,7 @@ public class FacilityModel {
     public static void main(String[] args) {
         Simulation sim = new Simulation(100);
 
-        Facility f = new Facility(sim, 1);
+        Resource f = new Resource(sim, 1);
 
         Process client = new Process() {
             @Override
