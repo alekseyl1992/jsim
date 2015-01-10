@@ -1,4 +1,9 @@
 package queueing;
 
-public class Queue {
+import core.Simulation;
+
+public class Queue extends QObject {
+    public Queue(Simulation sim) {
+        super(sim);
+    }
 }
