@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Simulation {
     private int simTime = 0;
-    private int endTime = Integer.MAX_VALUE;
+    private int duration = Integer.MAX_VALUE;
 
     public enum State {
         ACTIVE, STOPPED
@@ -17,13 +17,11 @@ public class Simulation {
             = new PriorityQueue<>((a, b) -> Integer.compare(a.getScheduledTime(), b.getScheduledTime()));
 
     public Simulation() {
-        this(Integer.MAX_VALUE);
+        eventQueue.add(new Event(this, "Start event", 0));
     }
 
-    public Simulation(int endTime) {
-        this.endTime = endTime;
-
-        eventQueue.add(new Event(this, "Start event", 0));
+    public void start(int duration) {
+        this.duration = duration;
     }
 
     public void start() {
@@ -36,7 +34,7 @@ public class Simulation {
         while (!eventQueue.isEmpty()) {
             Event e = eventQueue.poll();
 
-            if (e.getScheduledTime() >= this.endTime)
+            if (e.getScheduledTime() >= this.duration)
                 return;  // out of simulation time
 
             this.simTime = e.getScheduledTime();

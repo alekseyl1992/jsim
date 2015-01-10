@@ -7,7 +7,7 @@ import core.resources.Container;
 
 public class BufferModel {
     public static void main(String[] args) {
-        Simulation sim = new Simulation(200);
+        Simulation sim = new Simulation();
 
         Container container = new Container(sim, 10, 10);
 
@@ -36,7 +36,7 @@ public class BufferModel {
         sim.addProcess(producer);
         sim.addProcess(consumer);
 
-        sim.start();
+        sim.start(200);
     }
 
     public static void log(String s) {

@@ -12,7 +12,7 @@ public class TrafficModel {
     private static int carId = 0;
 
     public static void main(String[] args) {
-        Simulation sim = new Simulation(1000);
+        Simulation sim = new Simulation();
 
         Event peopleEvent = new Event(sim, "People can cross");
         Event carsEvent = new Event(sim, "Cars can cross");
@@ -85,6 +85,6 @@ public class TrafficModel {
         sim.addProcess(carsGenerator);
 
         // start simulation
-        sim.start();
+        sim.start(1000);
     }
 }

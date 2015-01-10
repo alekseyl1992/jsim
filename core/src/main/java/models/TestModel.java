@@ -6,7 +6,7 @@ import core.Simulation;
 
 public class TestModel {
     public static void main(String[] args) {
-        Simulation sim = new Simulation(1000);
+        Simulation sim = new Simulation();
 
         Process p = new Process() {
             @Override
@@ -18,6 +18,6 @@ public class TestModel {
 
         sim.addProcess(p);
 
-        sim.start();
+        sim.start(1000);
     }
 }

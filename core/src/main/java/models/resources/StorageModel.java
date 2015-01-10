@@ -8,7 +8,7 @@ import core.resources.Storage;
 public class StorageModel {
 
     public static void main(String[] args) {
-        Simulation sim = new Simulation(200);
+        Simulation sim = new Simulation();
 
         Storage<Point> storage = new Storage<>(sim, 10);
 
@@ -44,7 +44,7 @@ public class StorageModel {
         sim.addProcess(producer);
         sim.addProcess(consumer);
 
-        sim.start();
+        sim.start(200);
     }
 
     public static void log(String s) {

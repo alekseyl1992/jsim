@@ -9,7 +9,7 @@ public class FacilityModel {
     public static int clientId = 0;
 
     public static void main(String[] args) {
-        Simulation sim = new Simulation(100);
+        Simulation sim = new Simulation();
 
         Resource f = new Resource(sim, 1);
 
@@ -35,7 +35,7 @@ public class FacilityModel {
         };
         sim.addProcess(client);
 
-        sim.start();
+        sim.start(100);
 
         System.out.println();
         System.out.println("Total clients created: " + clientId);
