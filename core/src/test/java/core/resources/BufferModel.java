@@ -1,9 +1,8 @@
-package models.resources;
+package core.resources;
 
 import core.Event;
 import core.Process;
 import core.Simulation;
-import core.resources.Container;
 
 public class BufferModel {
     public static void main(String[] args) {

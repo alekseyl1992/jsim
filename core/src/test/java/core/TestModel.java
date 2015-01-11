@@ -1,8 +1,4 @@
-package models;
-
-import core.Event;
-import core.Process;
-import core.Simulation;
+package core;
 
 public class TestModel {
     public static void main(String[] args) {

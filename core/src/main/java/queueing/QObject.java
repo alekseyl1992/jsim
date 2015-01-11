@@ -2,22 +2,43 @@ package queueing;
 
 import core.Simulation;
 
-public class QObject {
+public abstract class QObject {
+    private Simulation sim;
+
     private String id;
 
-    public QObject(Simulation sim) {
+    private QObject to, toA, toB;
 
+    public QObject(Simulation sim) {
+        this.sim = sim;
     }
 
     public void connectTo(QObject obj) {
-
+        to = obj;
     }
 
-    public void connectTo(QObject first, QObject second, double firstProbability) {
-
+    public void connectTo(QObject first, QObject second) {
+        toA = first;
+        toB = second;
     }
 
     public String getId() {
         return id;
+    }
+
+    public QObject getTo() {
+        return to;
+    }
+
+    public QObject getToA() {
+        return toA;
+    }
+
+    public QObject getToB() {
+        return toB;
+    }
+
+    public void use() {
+        throw new QueueingError("Cannot use " + this.getClass().getName());
     }
 }

@@ -1,9 +1,4 @@
-package models;
-
-import core.Event;
-import core.IdentifiedProcess;
-import core.Process;
-import core.Simulation;
+package core;
 
 public class TrafficModel {
     private static boolean direction = false;

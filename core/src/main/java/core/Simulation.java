@@ -22,6 +22,7 @@ public class Simulation {
 
     public void start(int duration) {
         this.duration = duration;
+        start();
     }
 
     public void start() {

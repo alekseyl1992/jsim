@@ -19,8 +19,8 @@ public class Resource {
         this.freeChannels = channels;
     }
 
-    public void use(int duration) {
-        use(1, duration);
+    public Event use(int duration) {
+        return use(1, duration);
     }
 
     //TODO: release?..
