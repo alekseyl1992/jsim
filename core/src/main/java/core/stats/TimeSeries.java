@@ -21,4 +21,8 @@ public class TimeSeries extends DataSeries {
         lastValue = value;
         lastRecordTime = time;
     }
+
+    public void finish() {
+        record(-1);
+    }
 }

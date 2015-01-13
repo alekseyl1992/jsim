@@ -8,6 +8,8 @@ public class Population {
 
     private Simulation sim;
 
+    private int population = 0;
+
     public Population(Simulation sim) {
         this.sim = sim;
 
@@ -15,12 +17,17 @@ public class Population {
         durationSeries = new DataSeries();
     }
 
-    public void enter() {
+    public int enter() {
+        ++population;
+        sizesSeries.record(population);
 
+        return sim.getSimTime();
     }
 
-    public void leave() {
-
+    public void leave(int timeEntered) {
+        --population;
+        sizesSeries.record(population);
+        durationSeries.record(sim.getSimTime() - timeEntered);
     }
 
     public TimeSeries getSizesSeries() {
@@ -29,5 +36,9 @@ public class Population {
 
     public DataSeries getDurationSeries() {
         return durationSeries;
+    }
+
+    public void finish() {
+        sizesSeries.finish();
     }
 }
