@@ -1,29 +1,13 @@
 package parsing.enums;
 
-public enum QObjectFields {
-    TYPE("type"),
-    NAME("name"),
-    ID("id"),
-    X("x"),
-    Y("y"),
-    SPEC("spec"),
-    TO("to"),
-    TO_A("toA"),
-    TO_B("toB"),
-    P_A("pA");
-
-    private String name;
-
-    private QObjectFields(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
+public class QObjectFields {
+    public static final String TYPE = "type";
+    public static final String NAME = "name";
+    public static final String ID = "id";
+    public static final String X = "x";
+    public static final String Y = "y";
+    public static final String SPEC = "spec";
+    public static final String TO = "to";
+    public static final String TO_A = "toA";
+    public static final String TO_B = "toB";
 }

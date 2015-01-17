@@ -9,9 +9,9 @@ public class ModelFactory {
     public Model createModel(JSONObject json) throws ModelParsingError {
         Model model = new Model();
 
-        QObjectFactory qObjectFactory = new QObjectFactory(model.getSim());
+        QObjectFactory qObjectFactory = new QObjectFactory(model);
 
-        JSONArray jsonObjects = json.getJSONArray(ModelFields.OBJECTS.toString());
+        JSONArray jsonObjects = json.getJSONArray(ModelFields.OBJECTS);
 
         // first pass to create
         for (int i = 0; i < jsonObjects.length(); ++i) {
@@ -23,19 +23,17 @@ public class ModelFactory {
         for (int i = 0; i < jsonObjects.length(); ++i) {
             JSONObject jsonObject = jsonObjects.getJSONObject(i);
 
-            String idFrom = jsonObject.getString(QObjectFields.ID.toString());
+            String idFrom = jsonObject.getString(QObjectFields.ID);
 
-            if (jsonObject.has(QObjectFields.TO.toString())) {
-                String idTo = jsonObject.getString(QObjectFields.TO.toString());
+            if (jsonObject.has(QObjectFields.TO)) {
+                String idTo = jsonObject.getString(QObjectFields.TO);
                 model.connect(idFrom, idTo);
-            } else if (jsonObject.has(QObjectFields.TO_A.toString())
-                    && jsonObject.has(QObjectFields.TO_B.toString())) {
-                String idToA = jsonObject.getString(QObjectFields.TO_A.toString());
-                String idToB = jsonObject.getString(QObjectFields.TO_B.toString());
+            } else if (jsonObject.has(QObjectFields.TO_A)
+                    && jsonObject.has(QObjectFields.TO_B)) {
+                String idToA = jsonObject.getString(QObjectFields.TO_A);
+                String idToB = jsonObject.getString(QObjectFields.TO_B);
 
-                double pA = jsonObject.getDouble(QObjectFields.P_A.toString());
-
-                model.connect(idFrom, idToA, idToB, pA);
+                model.connect(idFrom, idToA, idToB);
             }
         }
 

@@ -8,12 +8,11 @@ public class Splitter extends QObject {
     private double pA;
     private Random random;
 
-    public Splitter(Simulation sim, double pA) {
+    public Splitter(Simulation sim, double pA, Random random) {
         super(sim);
         this.pA = pA;
 
-        //TODO: localize Random creation
-        this.random = new Random(1234);
+        this.random = random;
     }
 
     @Override
