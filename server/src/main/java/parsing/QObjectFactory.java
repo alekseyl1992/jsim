@@ -54,7 +54,7 @@ public class QObjectFactory {
         int channels = spec.getInt(SpecFields.CHANNELS);
         double mu = spec.getDouble(SpecFields.MU);
 
-        QObject queue = new Queue(model.getSim(), sizeLimit, channels, mu);
+        QObject queue = new Queue(model.getSim(), sizeLimit, channels, mu, model.getRandom());
 
         return queue;
     }

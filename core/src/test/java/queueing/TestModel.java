@@ -12,7 +12,7 @@ public class TestModel {
         Random random = new MersenneTwisterRNG();
 
         QObject source = new Source(sim, 1, random);
-        QObject queue = new Queue(sim, -1, 1, 1);
+        QObject queue = new Queue(sim, -1, 1, 1, random);
         QObject splitter = new Splitter(sim, 0.5, random);
         QObject sink = new Sink(sim);
 
