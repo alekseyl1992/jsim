@@ -1,4 +1,4 @@
-package parsing.enums;
+package parsing.formats.model;
 
 public class ModelFields {
     public static final String OBJECTS = "objects";

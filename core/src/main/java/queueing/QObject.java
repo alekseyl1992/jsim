@@ -8,6 +8,7 @@ public abstract class QObject {
     private String id;
 
     private QObject to, toA, toB;
+    private int useCount;
 
     public QObject(Simulation sim) {
         this.sim = sim;
@@ -39,6 +40,10 @@ public abstract class QObject {
     }
 
     public void use() {
-        throw new QueueingError("Cannot use " + this.getClass().getName());
+        ++useCount;
+    }
+
+    public int getUseCount() {
+        return useCount;
     }
 }

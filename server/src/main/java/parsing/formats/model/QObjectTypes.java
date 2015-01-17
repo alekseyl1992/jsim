@@ -1,6 +1,6 @@
-package parsing.enums;
+package parsing.formats.model;
 
-public class Type {
+public class QObjectTypes {
     public static final String SOURCE = "source";
     public static final String QUEUE = "queue";
     public static final String SPLITTER = "splitter";

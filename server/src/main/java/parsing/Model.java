@@ -1,8 +1,11 @@
 package parsing;
 
 import core.Simulation;
+import org.json.JSONObject;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import parsing.formats.stats.StatsFields;
 import queueing.QObject;
+import queueing.Queue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,8 +46,27 @@ public class Model {
         from.connectTo(toA, toB);
     }
 
-    public void startSimulation(int duration) {
+    public JSONObject startSimulation(int duration) {
         sim.start(duration);
+
+        // format statistics
+        JSONObject stats = new JSONObject();
+
+        for (QObject qObject: objects.values()) {
+            JSONObject objStats = new JSONObject();
+            objStats.put(StatsFields.USE_COUNT, qObject.getUseCount());
+
+            if (qObject instanceof Queue) {
+                Queue queue = (Queue) qObject;
+
+                objStats.put(StatsFields.AVG_QUEUE_SIZE, queue.getStats().getSizesSeries().getAverage());
+                objStats.put(StatsFields.AVG_WAIT_TIME, queue.getStats().getDurationSeries().getAverage());
+            }
+
+            stats.put(qObject.getId(), objStats);
+        }
+
+        return stats;
     }
 
     public Simulation getSim() {

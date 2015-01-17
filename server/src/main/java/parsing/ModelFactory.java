@@ -2,8 +2,8 @@ package parsing;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import parsing.enums.ModelFields;
-import parsing.enums.QObjectFields;
+import parsing.formats.model.ModelFields;
+import parsing.formats.model.QObjectFields;
 
 public class ModelFactory {
     public Model createModel(JSONObject json) throws ModelParsingError {

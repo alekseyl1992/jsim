@@ -17,6 +17,8 @@ public class Splitter extends QObject {
 
     @Override
     public void use() {
+        super.use();
+
         if (random.nextDouble() < pA)
             getToA().use();
         else

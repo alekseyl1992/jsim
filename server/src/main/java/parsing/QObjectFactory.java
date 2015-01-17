@@ -2,9 +2,9 @@ package parsing;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import parsing.enums.QObjectFields;
-import parsing.enums.SpecFields;
-import parsing.enums.Type;
+import parsing.formats.model.QObjectFields;
+import parsing.formats.model.SpecFields;
+import parsing.formats.model.QObjectTypes;
 import queueing.*;
 
 public class QObjectFactory {
@@ -21,13 +21,13 @@ public class QObjectFactory {
             String type = json.getString("type");
 
             switch (type) {
-                case Type.SOURCE:
+                case QObjectTypes.SOURCE:
                     return createSource(json);
-                case Type.QUEUE:
+                case QObjectTypes.QUEUE:
                     return createQueue(json);
-                case Type.SPLITTER:
+                case QObjectTypes.SPLITTER:
                     return createSplitter(json);
-                case Type.SINK:
+                case QObjectTypes.SINK:
                     return createSink(json);
                 default:
                     throw new ModelParsingError("Unsupported type: " + type);

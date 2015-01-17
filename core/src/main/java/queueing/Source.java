@@ -18,7 +18,8 @@ public class Source extends QObject {
         Process process = new Process() {
             @Override
             public void start(Event startEvent) {
-                //TODO: add some randomness
+                use(); // for statistics
+
                 int duration = gen.nextValue();
 
                 getTo().use();

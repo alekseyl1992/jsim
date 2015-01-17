@@ -9,6 +9,7 @@ public class Sink extends QObject {
 
     @Override
     public void use() {
+        super.use();
         System.out.println("Something reached sink");
     }
 }

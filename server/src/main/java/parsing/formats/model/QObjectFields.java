@@ -1,4 +1,4 @@
-package parsing.enums;
+package parsing.formats.model;
 
 public class QObjectFields {
     public static final String TYPE = "type";
