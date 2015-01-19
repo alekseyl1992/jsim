@@ -4,7 +4,7 @@ import core.Event;
 import core.Process;
 import core.Simulation;
 
-public class BufferModel {
+public class ContainerModel {
     public static void main(String[] args) {
         Simulation sim = new Simulation();
 

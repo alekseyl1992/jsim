@@ -4,7 +4,7 @@ import core.Event;
 import core.Process;
 import core.Simulation;
 
-public class FacilityModel {
+public class ResourceModel {
     public static int clientId = 0;
 
     public static void main(String[] args) {
