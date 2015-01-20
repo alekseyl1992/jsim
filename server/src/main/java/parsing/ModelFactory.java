@@ -14,7 +14,7 @@ import java.io.InputStream;
 // and toA/toB not being part of spec, to not being part of "super" object
 public class ModelFactory {
     public Model createModel(JSONObject json) throws ModelParsingError {
-        Model model = new Model();
+        Model model = new Model(json.getInt(ModelFields.DURATION));
 
         QObjectFactory qObjectFactory = new QObjectFactory(model);
 
@@ -58,7 +58,7 @@ public class ModelFactory {
         ModelFactory factory = new ModelFactory();
         try {
             Model model = factory.createModel(json);
-            JSONObject stats = model.startSimulation(1000);
+            JSONObject stats = model.startSimulation();
 
             System.out.println(stats);
         } catch (ModelParsingError modelParsingError) {

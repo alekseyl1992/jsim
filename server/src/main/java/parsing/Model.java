@@ -14,17 +14,20 @@ import java.util.Random;
 public class Model {
     private Simulation sim;
     private Random random;
+    private int duration;
 
     private Map<String, QObject> objects = new HashMap<>();
 
-    public Model() {
+    public Model(int duration) {
         sim = new Simulation();
         random = new MersenneTwisterRNG();
+        this.duration = duration;
     }
 
-    public Model(byte[] seed) {
+    public Model(byte[] seed, int duration) {
         sim = new Simulation();
         random = new MersenneTwisterRNG(seed);
+        this.duration = duration;
     }
 
     public void addQObject(QObject qObject) {
@@ -46,7 +49,7 @@ public class Model {
         from.connectTo(toA, toB);
     }
 
-    public JSONObject startSimulation(int duration) {
+    public JSONObject startSimulation() {
         sim.start(duration);
 
         // format statistics
