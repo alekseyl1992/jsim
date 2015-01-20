@@ -33,8 +33,9 @@ public class DataSeries {
         sumOfWeights += weight;
 
         double oldAverage = average;
-        //TODO: division by zero may occur
-        average += weight / sumOfWeights * (value - oldAverage);
+
+        if (sumOfWeights != 0)
+            average += (weight / sumOfWeights) * (value - oldAverage);
 
         q += weight * (value - average) * (value - oldAverage);
     }
