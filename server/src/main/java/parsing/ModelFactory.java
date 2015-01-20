@@ -1,10 +1,17 @@
 package parsing;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import parsing.formats.model.ModelFields;
 import parsing.formats.model.QObjectFields;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+
+//TODO: think about id type (currently it is String)
+// and toA/toB not being part of spec, to not being part of "super" object
 public class ModelFactory {
     public Model createModel(JSONObject json) throws ModelParsingError {
         Model model = new Model();
@@ -40,15 +47,20 @@ public class ModelFactory {
         return model;
     }
 
-    public static void main(String[] args) {
-        //TODO: open js_model_test.json
+    public static void main(String[] args) throws IOException {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("js_model_test.json");
 
-        JSONObject json = new JSONObject("");
+        String str = IOUtils.toString(is, "UTF-8");
+        JSONObject json = new JSONObject(str);
 
 
         ModelFactory factory = new ModelFactory();
         try {
-            factory.createModel(json);
+            Model model = factory.createModel(json);
+            JSONObject stats = model.startSimulation(1000);
+
+            System.out.println(stats);
         } catch (ModelParsingError modelParsingError) {
             modelParsingError.printStackTrace();
         }

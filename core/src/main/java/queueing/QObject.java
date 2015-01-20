@@ -23,6 +23,11 @@ public abstract class QObject {
         toB = second;
     }
 
+    public QObject setId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public String getId() {
         return id;
     }

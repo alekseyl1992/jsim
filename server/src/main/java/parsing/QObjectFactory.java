@@ -18,17 +18,18 @@ public class QObjectFactory {
             throws ModelParsingError {
 
         try {
-            String type = json.getString("type");
+            String type = json.getString(QObjectFields.TYPE);
+            String id = json.getString(QObjectFields.ID);
 
             switch (type) {
                 case QObjectTypes.SOURCE:
-                    return createSource(json);
+                    return createSource(json).setId(id);
                 case QObjectTypes.QUEUE:
-                    return createQueue(json);
+                    return createQueue(json).setId(id);
                 case QObjectTypes.SPLITTER:
-                    return createSplitter(json);
+                    return createSplitter(json).setId(id);
                 case QObjectTypes.SINK:
-                    return createSink(json);
+                    return createSink(json).setId(id);
                 default:
                     throw new ModelParsingError("Unsupported type: " + type);
             }

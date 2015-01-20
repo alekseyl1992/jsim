@@ -59,6 +59,7 @@ public class Model {
             if (qObject instanceof Queue) {
                 Queue queue = (Queue) qObject;
 
+                //TODO: add deviations and usage percentage
                 objStats.put(StatsFields.AVG_QUEUE_SIZE, queue.getStats().getSizesSeries().getAverage());
                 objStats.put(StatsFields.AVG_WAIT_TIME, queue.getStats().getDurationSeries().getAverage());
             }
