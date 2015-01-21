@@ -1,4 +1,4 @@
-package parsing.formats.model;
+package modelling.parsing.formats.model;
 
 public class QObjectTypes {
     public static final String SOURCE = "source";

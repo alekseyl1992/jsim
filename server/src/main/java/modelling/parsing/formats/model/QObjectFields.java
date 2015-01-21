@@ -1,4 +1,4 @@
-package parsing.formats.model;
+package modelling.parsing.formats.model;
 
 public class QObjectFields {
     public static final String TYPE = "type";

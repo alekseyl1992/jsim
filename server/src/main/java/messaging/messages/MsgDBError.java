@@ -1,5 +1,5 @@
 package messaging.messages;
-import frontend.IFrontendServlet;
+import messaging.services.IFrontendService;
 import messaging.Address;
 
 public class MsgDBError extends MsgToFS {
@@ -10,7 +10,7 @@ public class MsgDBError extends MsgToFS {
 		this.sessionId = sessionId;
 	}
 
-	void exec(IFrontendServlet frontend) {
+	void exec(IFrontendService frontend) {
 		frontend.setError(sessionId);
 	}
 }

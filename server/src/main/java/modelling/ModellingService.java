@@ -1,4 +1,4 @@
-package server;
+package modelling;
 
 import database.DBException;
 import database.DatabaseService;
@@ -9,6 +9,7 @@ import messaging.Address;
 import messaging.MessageSystem;
 import messaging.Sleeper;
 import messaging.Subscriber;
+import messaging.services.IModellingService;
 
 public class ModellingService implements IModellingService, Subscriber, Runnable {
     private DatabaseService databaseService;

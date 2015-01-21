@@ -1,8 +1,12 @@
 package server;
 
+import accounting.AccountService;
 import database.DatabaseService;
 import frontend.FrontendServlet;
 import messaging.MessageSystem;
+import messaging.services.IAccountService;
+import messaging.services.IModellingService;
+import modelling.ModellingService;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.server.Handler;
@@ -20,12 +24,14 @@ public class JSimServer {
     public JSimServer(int port, DatabaseService db) throws Exception {
         MessageSystem ms = new MessageSystem();
         IAccountService accountService = new AccountService(ms, db);
+        IModellingService modelingService = new ModellingService(ms, db);
         FrontendServlet frontendServlet = new FrontendServlet(ms);
 
         ResourceSystem rs = ResourceSystem.getInstance();
 
         new Thread(frontendServlet).start();
         new Thread(accountService).start();
+        new Thread(modelingService).start();
 
         server = new Server(port);
 
@@ -36,7 +42,7 @@ public class JSimServer {
         rewriteHandler.setOriginalPathAttribute("requestedPath");
         RedirectRegexRule rule = new RedirectRegexRule();
         rule.setRegex("/");
-        rule.setReplacement("/index");
+        rule.setReplacement(frontendServlet.getIndexLocation());
         rule.setHandling(true);
 
         rewriteHandler.addRule(rule);

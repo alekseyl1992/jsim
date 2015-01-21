@@ -2,8 +2,8 @@ package messaging.messages;
 
 import messaging.Address;
 import messaging.Subscriber;
-import server.AccountService;
-import server.IAccountService;
+import accounting.AccountService;
+import messaging.services.IAccountService;
 
 public abstract class MsgToAS extends Msg {
 

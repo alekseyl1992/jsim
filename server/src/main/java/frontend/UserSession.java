@@ -1,4 +1,4 @@
-package server;
+package frontend;
 
 import messaging.Address;
 import messaging.AddressService;

@@ -5,7 +5,7 @@ import messaging.MessageSystem;
 import messaging.Sleeper;
 import messaging.messages.MsgLoginUser;
 import messaging.messages.MsgRegisterUser;
-import server.UserSession;
+import messaging.services.IFrontendService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +22,7 @@ import java.util.function.BiConsumer;
 
 import static utils.LambdaUtils.wrapToRTE;
 
-public class FrontendServlet extends HttpServlet implements IFrontendServlet {
+public class FrontendServlet extends HttpServlet implements IFrontendService {
     private DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
     private MessageSystem ms;
     private Address address;
@@ -83,6 +83,11 @@ public class FrontendServlet extends HttpServlet implements IFrontendServlet {
             return;
         }
         userSession.setError(true);
+    }
+
+    @Override
+    public String getIndexLocation() {
+        return Locations.INDEX;
     }
 
     public void doGet(HttpServletRequest request,

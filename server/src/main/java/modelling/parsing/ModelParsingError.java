@@ -1,4 +1,4 @@
-package parsing;
+package modelling.parsing;
 
 public class ModelParsingError extends Throwable {
     public ModelParsingError(String message, Throwable reason) {

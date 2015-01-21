@@ -1,9 +1,9 @@
-package parsing;
+package modelling.parsing;
 
 import core.Simulation;
 import org.json.JSONObject;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import parsing.formats.stats.StatsFields;
+import modelling.parsing.formats.stats.StatsFields;
 import queueing.QObject;
 import queueing.Queue;
 

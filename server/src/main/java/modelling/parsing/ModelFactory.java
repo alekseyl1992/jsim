@@ -1,10 +1,10 @@
-package parsing;
+package modelling.parsing;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import parsing.formats.model.ModelFields;
-import parsing.formats.model.QObjectFields;
+import modelling.parsing.formats.model.ModelFields;
+import modelling.parsing.formats.model.QObjectFields;
 
 import java.io.IOException;
 import java.io.InputStream;

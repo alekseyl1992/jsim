@@ -1,4 +1,4 @@
-package parsing.formats.model;
+package modelling.parsing.formats.model;
 
 public class ModelFields {
     public static final String OBJECTS = "objects";

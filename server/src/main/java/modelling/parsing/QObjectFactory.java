@@ -1,10 +1,10 @@
-package parsing;
+package modelling.parsing;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import parsing.formats.model.QObjectFields;
-import parsing.formats.model.SpecFields;
-import parsing.formats.model.QObjectTypes;
+import modelling.parsing.formats.model.QObjectFields;
+import modelling.parsing.formats.model.SpecFields;
+import modelling.parsing.formats.model.QObjectTypes;
 import queueing.*;
 
 public class QObjectFactory {

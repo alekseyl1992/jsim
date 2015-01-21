@@ -1,5 +1,5 @@
 package messaging.messages;
-import frontend.IFrontendServlet;
+import messaging.services.IFrontendService;
 import messaging.Address;
 
 public class MsgUpdateUserId extends MsgToFS {
@@ -12,7 +12,7 @@ public class MsgUpdateUserId extends MsgToFS {
 		this.id = id;
 	}
 
-	public void exec(IFrontendServlet frontend) {
+	public void exec(IFrontendService frontend) {
 		frontend.setId(sessionId, id);
 	}
 }

@@ -1,4 +1,4 @@
-package server;
+package messaging.services;
 
 import database.DBException;
 import database.datasets.UserDataSet;

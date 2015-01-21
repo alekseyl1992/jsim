@@ -1,4 +1,4 @@
-package server;
+package database;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;

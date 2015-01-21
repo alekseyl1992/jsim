@@ -1,4 +1,4 @@
-package parsing.formats.model;
+package modelling.parsing.formats.model;
 
 // why not enum?
 // because it requires tu call toString() each time explicitly

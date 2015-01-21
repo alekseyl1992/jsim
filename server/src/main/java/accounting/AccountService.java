@@ -1,4 +1,4 @@
-package server;
+package accounting;
 
 import database.ConstraintException;
 import database.DBException;
@@ -9,6 +9,7 @@ import messaging.Address;
 import messaging.MessageSystem;
 import messaging.Sleeper;
 import messaging.Subscriber;
+import messaging.services.IAccountService;
 
 public class AccountService implements IAccountService, Subscriber, Runnable {
     private DatabaseService databaseService;

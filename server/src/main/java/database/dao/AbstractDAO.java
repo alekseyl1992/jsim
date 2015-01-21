@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.TransactionException;
 import org.hibernate.exception.ConstraintViolationException;
-import server.AutoSession;
+import database.AutoSession;
 
 import java.io.Serializable;
 

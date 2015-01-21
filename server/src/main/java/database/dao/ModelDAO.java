@@ -6,7 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import server.AutoSession;
+import database.AutoSession;
 
 public class ModelDAO extends AbstractDAO {
     public ModelDAO(SessionFactory sessionFactory) {
