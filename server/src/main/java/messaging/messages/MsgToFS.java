@@ -1,5 +1,5 @@
 package messaging.messages;
-import frontend.FrontendServlet;
+import frontend.IFrontendServlet;
 import messaging.Address;
 import messaging.Subscriber;
 
@@ -10,10 +10,10 @@ public abstract class MsgToFS extends Msg {
 	}
 
 	public void exec(Subscriber subscriber) {
-		if(subscriber instanceof FrontendServlet){
-			exec((FrontendServlet)subscriber);
+		if(subscriber instanceof IFrontendServlet){
+			exec((IFrontendServlet)subscriber);
 		}
 	}
 	
-	abstract void exec(FrontendServlet frontend);
+	abstract void exec(IFrontendServlet frontend);
 }

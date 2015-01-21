@@ -14,7 +14,7 @@ public class ModelDataSet implements Serializable {
     private long id;
 
     @Column(name = "author_id")
-    private String authorId;
+    private long authorId;
 
     @Column(name="name")
     private String name;
@@ -26,7 +26,7 @@ public class ModelDataSet implements Serializable {
 
     }
 
-    public ModelDataSet(String authorId, String name, String data) {
+    public ModelDataSet(long authorId, String name, String data) {
         this.id = Util.UNSPECIFIED_ID;
         this.authorId = authorId;
         this.name = name;
@@ -41,11 +41,11 @@ public class ModelDataSet implements Serializable {
         this.id = id;
     }
 
-    public String getAuthorId() {
+    public long getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(String authorId) {
+    public void setAuthorId(long authorId) {
         this.authorId = authorId;
     }
 

@@ -8,7 +8,7 @@ public class Main {
         ResourceSystem rs = ResourceSystem.getInstance();
         String port = rs.getConfig("server").get("port");
 
-        GameServer server = new GameServer(Integer.parseInt(port),
+        JSimServer server = new JSimServer(Integer.parseInt(port),
                 new DatabaseService(rs.getConfig("mysql")));
 
         server.start();

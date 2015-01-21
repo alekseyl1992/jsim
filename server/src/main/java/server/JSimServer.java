@@ -13,11 +13,11 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import resourcing.ResourceSystem;
 
-public class GameServer {
+public class JSimServer {
     Server server;
     boolean running = false;
 
-    public GameServer(int port, DatabaseService db) throws Exception {
+    public JSimServer(int port, DatabaseService db) throws Exception {
         MessageSystem ms = new MessageSystem();
         IAccountService accountService = new AccountService(ms, db);
         FrontendServlet frontendServlet = new FrontendServlet(ms);

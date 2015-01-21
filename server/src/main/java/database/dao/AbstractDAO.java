@@ -1,5 +1,6 @@
 package database.dao;
 
+import database.ConstraintException;
 import database.DBException;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -17,14 +18,13 @@ public abstract class AbstractDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public boolean save(Serializable dataSet) throws DBException {
+    public void save(Serializable dataSet) throws DBException {
         Transaction trx = null;
 
         try (AutoSession session = new AutoSession(sessionFactory.openSession())) {
             trx = session.beginTransaction();
             session.save(dataSet);
             trx.commit();
-            return true;
         }
         catch (ConstraintViolationException e) {
             try {
@@ -33,7 +33,7 @@ public abstract class AbstractDAO {
             }
             catch (TransactionException ignore) {}
 
-            return false;
+            throw new ConstraintException(e);
         }
         catch (HibernateException e) {
             try {

@@ -3,7 +3,6 @@ package frontend;
 import messaging.Address;
 import messaging.MessageSystem;
 import messaging.Sleeper;
-import messaging.Subscriber;
 import messaging.messages.MsgLoginUser;
 import messaging.messages.MsgRegisterUser;
 import server.UserSession;
@@ -23,7 +22,7 @@ import java.util.function.BiConsumer;
 
 import static utils.LambdaUtils.wrapToRTE;
 
-public class FrontendServlet extends HttpServlet implements Subscriber, Runnable {
+public class FrontendServlet extends HttpServlet implements IFrontendServlet {
     private DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
     private MessageSystem ms;
     private Address address;
@@ -66,6 +65,7 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         return ms;
     }
 
+    @Override
     public void setId(String sessionId, Long userId) {
         UserSession userSession = sessionIdToUserSession.get(sessionId);
         if (userSession == null) {
@@ -75,6 +75,7 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         userSession.setUserId(userId);
     }
 
+    @Override
     public void setError(String sessionId) {
         UserSession userSession = sessionIdToUserSession.get(sessionId);
         if (userSession == null) {

@@ -2,7 +2,7 @@ package messaging.messages;
 
 import database.DBException;
 import messaging.Address;
-import server.AccountService;
+import server.IAccountService;
 
 public class MsgRegisterUser extends MsgToAS {
 	private String login;
@@ -18,7 +18,7 @@ public class MsgRegisterUser extends MsgToAS {
         this.sessionId = sessionId;
 	}
 
-	public void exec(AccountService accountService) {
+	public void exec(IAccountService accountService) {
         try {
             Long id = accountService.tryRegister(login, password, email);
             accountService.getMessageSystem()

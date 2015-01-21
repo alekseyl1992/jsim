@@ -1,5 +1,6 @@
 package server;
 
+import database.ConstraintException;
 import database.DBException;
 import database.DatabaseService;
 import database.dao.UserDAO;
@@ -54,10 +55,14 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
         UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = new UserDataSet(login, password, email);
 
-        if (dao.save(user))
-            return user.getId();
-        else
+        try {
+            dao.save(user);
+        } catch (ConstraintException e) {
+            // user already exists
             return null;
+        }
+
+        return user.getId();
     }
 
     public UserDataSet getUser(Long userId) throws DBException {

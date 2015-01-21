@@ -1,7 +1,9 @@
 package messaging.messages;
+
 import messaging.Address;
 import messaging.Subscriber;
 import server.AccountService;
+import server.IAccountService;
 
 public abstract class MsgToAS extends Msg {
 
@@ -15,5 +17,5 @@ public abstract class MsgToAS extends Msg {
 		}
 	}
 
-	public abstract void exec(AccountService accountService);
+	public abstract void exec(IAccountService accountService);
 }
