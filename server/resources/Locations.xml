@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<class name="frontend.Locations">
+    <INDEX>/index</INDEX>
+    <LOGIN>/login</LOGIN>
+    <REGISTER>/register</REGISTER>
+    <POLL>/poll</POLL>
+    <TIMER>/timer</TIMER>
+    <REGISTRATION>/registration</REGISTRATION>
+</class>
