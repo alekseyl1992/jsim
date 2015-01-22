@@ -2,6 +2,10 @@ package frontend;
 
 import messaging.Address;
 import messaging.AddressService;
+import modelling.parsing.Model;
+import org.json.JSONObject;
+
+import java.util.concurrent.Future;
 
 public class UserSession {
     private Address accountService;
@@ -11,6 +15,9 @@ public class UserSession {
     private Long userId;
     private boolean isWrong = false;
     private boolean isError = false;
+
+    private Future<JSONObject> currentModelStats;
+    private Model currentModel;
 
     public UserSession(String sessionId, String name, AddressService addressService) {
         this.sessionId = sessionId;
@@ -55,5 +62,21 @@ public class UserSession {
 
     public boolean isAuthorized() {
         return !isWrong() && !isError() && getUserId() != null;
+    }
+
+    public Future<JSONObject> getCurrentModelStats() {
+        return currentModelStats;
+    }
+
+    public void setCurrentModelStats(Future<JSONObject> currentModelStats) {
+        this.currentModelStats = currentModelStats;
+    }
+
+    public Model getCurrentModel() {
+        return currentModel;
+    }
+
+    public void setCurrentModel(Model currentModel) {
+        this.currentModel = currentModel;
     }
 }

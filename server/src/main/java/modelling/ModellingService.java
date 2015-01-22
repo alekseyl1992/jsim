@@ -10,19 +10,31 @@ import messaging.MessageSystem;
 import messaging.Sleeper;
 import messaging.Subscriber;
 import messaging.services.IModellingService;
+import modelling.parsing.Model;
+import modelling.parsing.ModelFactory;
+import modelling.parsing.ModelParsingError;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ModellingService implements IModellingService, Subscriber, Runnable {
     private DatabaseService databaseService;
     private MessageSystem ms;
     private Address address;
 
+    private ExecutorService executorService;
+
     public ModellingService(MessageSystem ms, DatabaseService databaseService) {
         this.ms = ms;
         this.databaseService = databaseService;
-
         this.address = new Address();
+
         ms.addService(this);
         ms.getAddressService().setModellingService(address);
+
+        executorService = Executors.newWorkStealingPool();
     }
 
     @Override
@@ -44,9 +56,11 @@ public class ModellingService implements IModellingService, Subscriber, Runnable
     }
 
     @Override
-    public ModelDataSet getModel(long authorId, String name) throws DBException {
+    public Model getModel(long authorId, String name) throws DBException, ModelParsingError {
         ModelDAO dao = new ModelDAO(databaseService.getSessionFactory());
-        ModelDataSet model = dao.get(authorId, name);
+        ModelDataSet modelDataSet = dao.get(authorId, name);
+
+        Model model = ModelFactory.createModel(modelDataSet.getData());
 
         return model;
     }
@@ -57,5 +71,12 @@ public class ModellingService implements IModellingService, Subscriber, Runnable
         ModelDataSet model = new ModelDataSet(authorId, name, data);
 
         dao.save(model);
+    }
+
+    @Override
+    public Future<JSONObject> startModel(Model model) {
+        Future<JSONObject> result = executorService.submit(model::startSimulation);
+
+        return result;
     }
 }

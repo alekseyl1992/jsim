@@ -49,7 +49,7 @@ public class FrontendServlet extends HttpServlet implements IFrontendService {
 
     @Override
     public void run() {
-        while(!Thread.currentThread().isInterrupted()){
+        while(!Thread.currentThread().isInterrupted()) {
             ms.execForSubscriber(this);
             Sleeper.sleep(Sleeper.TICK);
         }

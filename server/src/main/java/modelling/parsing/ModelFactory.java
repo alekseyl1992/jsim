@@ -2,6 +2,7 @@ package modelling.parsing;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import modelling.parsing.formats.model.ModelFields;
 import modelling.parsing.formats.model.QObjectFields;
@@ -13,7 +14,15 @@ import java.io.InputStream;
 //TODO: think about id type (currently it is String)
 // and toA/toB not being part of spec, to not being part of "super" object
 public class ModelFactory {
-    public Model createModel(JSONObject json) throws ModelParsingError {
+    public static Model createModel(String json) throws ModelParsingError {
+        try {
+            return createModel(new JSONObject(json));
+        } catch (JSONException e) {
+            throw new ModelParsingError("Unable to parse JSON", e);
+        }
+    }
+
+    public static Model createModel(JSONObject json) throws ModelParsingError {
         Model model = new Model(json.getInt(ModelFields.DURATION));
 
         QObjectFactory qObjectFactory = new QObjectFactory(model);
