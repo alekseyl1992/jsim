@@ -51,7 +51,7 @@ public class JSimServer {
         context.addServlet(new ServletHolder(frontendServlet), "/*");
 
         ResourceHandler resourceHandler = new ResourceHandler();
-        resourceHandler.setResourceBase("static");
+        resourceHandler.setResourceBase("server/static"); //TODO
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{rewriteHandler, resourceHandler, context});

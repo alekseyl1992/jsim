@@ -1,6 +1,7 @@
 package messaging.messages;
 
 import messaging.Address;
+import messaging.MessagingException;
 import messaging.Subscriber;
 
 public abstract class Msg {
@@ -20,5 +21,5 @@ public abstract class Msg {
 		return to;
 	}
 	
-	public abstract void exec(Subscriber subscriber);
+	public abstract void exec(Subscriber subscriber) throws MessagingException;
 }

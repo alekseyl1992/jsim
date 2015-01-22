@@ -22,7 +22,7 @@ public class ModellingService implements IModellingService, Subscriber, Runnable
 
         this.address = new Address();
         ms.addService(this);
-        ms.getAddressService().setAccountService(address);
+        ms.getAddressService().setModellingService(address);
     }
 
     @Override

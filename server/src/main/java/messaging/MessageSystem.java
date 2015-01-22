@@ -17,7 +17,8 @@ public class MessageSystem {
 	
 	public void sendMessage(Msg message) {
 		Queue<Msg> messageQueue = queues.get(message.getTo());
-		messageQueue.add(message);		
+		messageQueue.add(message);
+		System.out.println("Message added: " + message.toString());
 	}
 		
 	public void execForSubscriber(Subscriber subscriber) {
@@ -28,6 +29,7 @@ public class MessageSystem {
 		while(!messageQueue.isEmpty()) {
 			Msg message = messageQueue.poll();
 			message.exec(subscriber);
+			System.out.println("Message executed: " + message.toString());
 		}
 	}
 	

@@ -18,8 +18,10 @@ public class MsgRegisterUser extends MsgToAS {
         this.sessionId = sessionId;
 	}
 
+    @Override
 	public void exec(IAccountService accountService) {
         try {
+            System.out.println("Executing: " + this.toString());
             Long id = accountService.tryRegister(login, password, email);
             accountService.getMessageSystem()
                     .sendMessage(new MsgUpdateUserId(getTo(), getFrom(), sessionId, id));
