@@ -19,10 +19,10 @@ public class TrafficModel {
                 direction = !direction;
 
                 if (direction) {
-                    System.out.println("Direction changed: people");
+                    //System.out.println("Direction changed: people");
                     peopleEvent.fire();
                 } else {
-                    System.out.println("Direction changed: cars");
+                    //System.out.println("Direction changed: cars");
                     carsEvent.fire();
                 }
 
@@ -39,11 +39,14 @@ public class TrafficModel {
                 Process man = new IdentifiedProcess(manId++) {
                     @Override
                     public void start(Event e) {
-                        sim.waitEvent(peopleEvent, this::cross);
+                        if (direction)
+                            sim.delay(0, this::cross);
+                        else
+                            sim.waitEvent(peopleEvent, this::cross);
                     }
 
                     public void cross(Event e) {
-                        System.out.println("Man " + Integer.toString(getId()) + " is crossing");
+                        //System.out.println("Man " + Integer.toString(getId()) + " is crossing");
                     }
                 };
 
@@ -63,11 +66,14 @@ public class TrafficModel {
                 Process car = new IdentifiedProcess(carId++) {
                     @Override
                     public void start(Event startEvent) {
-                        sim.waitEvent(carsEvent, this::cross);
+                        if (!direction)
+                            sim.delay(0, this::cross);
+                        else
+                            sim.waitEvent(carsEvent, this::cross);
                     }
 
                     public void cross(Event crossEvent) {
-                        System.out.println("Car " + Integer.toString(getId()) + " is crossing");
+                        //System.out.println("Car " + Integer.toString(getId()) + " is crossing");
                     }
                 };
 
@@ -79,7 +85,9 @@ public class TrafficModel {
         };
         sim.addProcess(carsGenerator);
 
+        long startTime = System.currentTimeMillis();
         // start simulation
-        sim.start(1000);
+        sim.start(100000);
+        System.out.println(System.currentTimeMillis() - startTime);
     }
 }
