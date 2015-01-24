@@ -1,11 +1,15 @@
 package core;
 
 
-import java.util.*;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.function.Consumer;
 
 public class Simulation {
     private int simTime = 0;
     private int duration = Integer.MAX_VALUE;
+
+    private Consumer<Integer> timeChangedCallback;
 
     public enum State {
         ACTIVE, STOPPED
@@ -38,7 +42,12 @@ public class Simulation {
             if (e.getScheduledTime() >= this.duration)
                 return;  // out of simulation time
 
+            int oldTime = this.simTime;
             this.simTime = e.getScheduledTime();
+            
+            if (timeChangedCallback != null && oldTime != simTime)
+                timeChangedCallback.accept(this.simTime);
+            
             e.execute();
         }
     }
@@ -74,5 +83,13 @@ public class Simulation {
             e.setScheduledTime(this.simTime);
 
         eventQueue.add(e);
+    }
+
+    public Consumer<Integer> getTimeChangedCallback() {
+        return timeChangedCallback;
+    }
+
+    public void setTimeChangedCallback(Consumer<Integer> timeChangedCallback) {
+        this.timeChangedCallback = timeChangedCallback;
     }
 }

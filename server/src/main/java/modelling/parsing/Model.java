@@ -1,23 +1,28 @@
 package modelling.parsing;
 
 import core.Simulation;
+import modelling.parsing.formats.stats.StatsFields;
 import org.json.JSONObject;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import modelling.parsing.formats.stats.StatsFields;
 import queueing.QObject;
 import queueing.Queue;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class Model {
     private Simulation sim;
     private Random random;
     private int duration;
+    
+    private double progress = 0;
 
     private Map<String, QObject> objects = new HashMap<>();
 
+    private Consumer<Double> progressCallback;
+    
     public Model(int duration) {
         sim = new Simulation();
         random = new MersenneTwisterRNG();
@@ -79,5 +84,30 @@ public class Model {
 
     public Random getRandom() {
         return random;
+    }
+
+    public Consumer<Double> getProgressCallback() {
+        return progressCallback;
+    }
+
+    public void setProgressCallback(Consumer<Double> progressCallback) {
+        this.progressCallback = progressCallback;
+        sim.setTimeChangedCallback(this::onTimeChanged);
+    }
+    
+    private void onTimeChanged(Integer time) {
+        Double newProgress = ((double) time) / duration;
+
+        // notify each 10%
+        if (newProgress - progress > 0.1) {
+            progress = newProgress;
+            
+            if (progressCallback != null)
+                progressCallback.accept(newProgress);
+        }            
+    }
+
+    public double getProgress() {
+        return progress;
     }
 }
