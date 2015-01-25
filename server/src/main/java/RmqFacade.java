@@ -22,7 +22,7 @@ public class RmqFacade {
             channel = connection.createChannel();
             channel.basicQos(1);
 
-            System.out.println("RMQ client started successfully");
+            System.out.println("[RMQ] RMQ client started successfully");
         } catch (IOException e) {
             restart();
         }
@@ -33,13 +33,13 @@ public class RmqFacade {
             channel.close();
             channel.getConnection().close();
         } catch (IOException e) {
-            System.err.println("Error while stopping RMQ client");
+            System.err.println("[RMQ] Error while stopping RMQ client");
             e.printStackTrace();
         }
     }
     
     public void restart() {
-        System.err.println("Restarting RMQ client...");
+        System.err.println("[RMQ] Restarting RMQ client...");
         stop();
         start();
         
@@ -47,17 +47,17 @@ public class RmqFacade {
         for (String queue: declaredQueues)
             declareQueue(queue);
         
-        System.err.println("RMQ client restarted successfully");
+        System.err.println("[RMQ] RMQ client restarted successfully");
     }
     
     public void declareQueue(String queue) {
         try {
             channel.queueDeclare(queue, true, false, false, null);
-            System.out.println("Queue declared: " + queue);
+            System.out.println("[RMQ] Queue declared: " + queue);
             
             declaredQueues.add(queue);
         } catch (IOException e) {
-            System.err.println("Unable to declare queue: " + queue);
+            System.err.println("[RMQ] Unable to declare queue: " + queue);
             restart();
         }
     }
@@ -67,15 +67,14 @@ public class RmqFacade {
             QueueingConsumer consumer = new QueueingConsumer(channel);
             channel.basicConsume(queue, false, consumer);
 
-            System.out.println("Consumer started successfully on: " + queue);
+            System.out.println("[RMQ] Consumer started successfully on: " + queue);
 
             while (!Thread.interrupted()) {
                 QueueingConsumer.Delivery delivery = consumer.nextDelivery();
                 String message = new String(delivery.getBody());
 
-                System.out.println(" [x] Received '" + message + "'");
+                System.out.println("[RMQ] Received '" + message + "'");
                 callback.accept(message);
-                System.out.println(" [x] Done");
 
                 channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             }
@@ -85,7 +84,7 @@ public class RmqFacade {
             //restart consumer
             startConsumer(queue, callback);
         } catch (InterruptedException e) {
-            System.err.println("Consumer thread was interrupted, stopping...");
+            System.err.println("[RMQ] Consumer thread was interrupted, stopping...");
             stop();
         }
     }

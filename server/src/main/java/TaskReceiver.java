@@ -12,10 +12,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TaskReceiver implements Runnable {
-    private static final String TASK_QUEUE_NAME = "task_queue";
-    private static final String PROGRESS_QUEUE_NAME = "progress_queue";
-    private static final String STATS_QUEUE_NAME = "stats_queue";
-    private static final String ERROR_QUEUE_NAME = "error_queue";
+    private static final String TASK_QUEUE_NAME = "jsim.tasks";
+    private static final String PROGRESS_QUEUE_NAME = "jsim.progress";
+    private static final String STATS_QUEUE_NAME = "jsim.stats";
+    private static final String ERROR_QUEUE_NAME = "jsim.error";
     
     private RmqFacade rmq;
     private ExecutorService executorService;
@@ -54,7 +54,10 @@ public class TaskReceiver implements Runnable {
             model.setProgressCallback((Double progress) -> sendProgress(taskId, progress));
 
             executorService.submit(() -> {
+                System.out.println("[TR] Simulation started for taskId: " + taskId);
                 JSONObject stats = model.startSimulation();
+                System.out.println("[TR] Simulation finished for taskId: " + taskId);
+
                 sendStats(taskId, stats);
             });
         } catch (ModelParsingError e) {
