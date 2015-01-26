@@ -1,6 +1,9 @@
 # idea
 .idea/workspace.xml
 
+# node
+frontend/node_modules/
+
 *.class
 
 # Mobile Tools for Java (J2ME)
