@@ -4,42 +4,40 @@
     <meta charset="UTF-8">
     <title>jsim</title>
 
+    <link type="text/css" rel="stylesheet" href="/css/lib/bootstrap.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
     <link type="text/css" rel="stylesheet" href="/css/lib/layout-default.css" />
+    <link type="text/css" rel="stylesheet" href="/css/style.css" />
 
-    <script type="text/javascript" src="/js/lib/dev/jquery.js"></script>
-    <script type="text/javascript" src="/js/lib/dev/jquery-ui.js"></script>
-    <script type="text/javascript" src="/js/lib/dev/jquery.layout.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('body').layout({
-                minSize: 100,
-                east__size: 200,
-                stateManagement__enabled: true,
-
-                east__childOptions:	{
-                    minSize: 50,
-                    south__size: 100
-                }
-            });
-        });
-
-    </script>
+    <script data-main="/js/index" src="/js/lib/dev/require.js"></script>
 </head>
 <body>
 
-<div class="ui-layout-north">
-    jsim (Save/Load buttons on the right)
+<div id="toolbar-wrapper" class="ui-layout-north">
+    <div id="toolbar" class="ui-widget-header">
+        <div class="btn-group">
+            <button id="save" class="ui-button" title="Save"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
+            <button id="open" class="ui-button" title="Open"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>
+            <button id="new" class="ui-button" title="New"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></button>
+        </div>
+
+        <div id="app-title">
+            <span class="app-name">jsim: </span>
+            <span class="model-name">Model 1</span>
+        </div>
+        <div id="login-group">Alekseyl (logout)</div>
+    </div>
 </div>
 
 <div class="ui-layout-center">
     Model and palette here
 </div>
 
-<div class="ui-layout-east">
-    <div class="ui-layout-center">
+<div id="properties-wrapper" class="ui-layout-east">
+    <div class="ui-layout-north">
         Model props
     </div>
-    <div class="ui-layout-south">
+    <div class="ui-layout-center">
         Selected object props
     </div>
 </div>
