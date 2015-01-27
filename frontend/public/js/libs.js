@@ -1,7 +1,7 @@
 requirejs.config({
     baseUrl: '/js/lib/dev',
     paths: {
-        app: '/js'
+        app: '/js/editor'
     },
     shim: {
         'jquery.layout': {

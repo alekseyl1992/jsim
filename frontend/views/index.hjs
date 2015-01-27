@@ -30,14 +30,16 @@
 </div>
 
 <div class="ui-layout-center">
-    Model and palette here
+    <canvas id="editor-field" tabindex="1">
+        You have a very old browser, dude.
+    </canvas>
 </div>
 
 <div id="properties-wrapper" class="ui-layout-east">
-    <div class="ui-layout-north">
+    <div id="model-props" class="ui-layout-north">
         Model props
     </div>
-    <div class="ui-layout-center">
+    <div id="object-props" class="ui-layout-center">
         Selected object props
     </div>
 </div>
