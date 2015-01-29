@@ -43,3 +43,8 @@ body {
 #properties-wrapper {
   padding: 0;
 }
+
+#canvas-wrapper {
+    padding: 0;
+    overflow: hidden;
+}

@@ -1,18 +1,17 @@
 requirejs.config({
     baseUrl: '/js/lib/dev',
     paths: {
-        app: '/js/editor'
+        editor: '/js/editor'
     },
     shim: {
         'jquery.layout': {
             deps: [
                 'jquery', 'jquery-ui'
             ]
-        }
-        //backbone: {
-        //    deps: ['jquery', 'underscore'],
-        //    exports: 'Backbone'
-        //},
+        },
+        easeljs: {
+            exports: 'createjs'
+        },
         //underscore: {
         //    exports: '_'
         //}

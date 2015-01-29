@@ -2,13 +2,27 @@
 //app entry point
 //load libs first to set baseUrl
 require(['libs'], function() {
-    require(['jquery', 'jquery-ui', 'jquery.layout', 'app/Editor'],
+    require(['jquery', 'jquery-ui', 'jquery.layout', 'editor/Editor'],
         function(_1, _2, _3, Editor) {
             $(function() {
                 initLayout();
 
+                //add canvas resize handler
+
+
+                var $window = $(window);
+                var $canvas = $('#editor-field');
+                var $canvasWrapper = $('#canvas-wrapper');
+
+                var ctx = $canvas[0].getContext("2d");
+                $window.resize(function() {
+                    ctx.canvas.width = $canvasWrapper.width();
+                    ctx.canvas.height = $canvasWrapper.height();
+                });
+                $window.resize();
+
                 var editor = new Editor({
-                    $canvas: $('#editor-field'),
+                    $canvas: $canvas,
                     $modelProps: $('#model-props'),
                     $objectProps: $('#object-props')
             });

@@ -1,4 +1,4 @@
-require(['lodash', 'createjs'],
+define(['lodash', 'createjs'],
     function(_, createjs) {
         function ResourceManager(onProgress, onComplete) {
             var self = this;
