@@ -11,6 +11,8 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
                 .beginLinearGradientFill(c.gradient,
                 [0, 1], 0, 0, 0, s.h)
                 .drawRect(0, 0, s.w, s.h);
+
+            this.drawConnectionPoints();
         }
 
         return Queue;

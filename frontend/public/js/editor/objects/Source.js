@@ -2,6 +2,7 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
         function Source(stage, style, params) {
             _.extend(this, new QObject(stage, style, params));
+            this.input = null;
 
             var gfx = this.shape.graphics;
             var s = style.sizes;
@@ -16,6 +17,8 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
                 .lineTo(s.bw, s.h)
                 .lineTo(0, s.h)
                 .closePath();
+
+            this.drawConnectionPoints();
         }
 
         return Source;

@@ -33,16 +33,19 @@ define([
                 var style = {
                     colors: {
                         contour: "black",
-                        gradient: ["#AFA", "#6A6"]
+                        gradient: ["#AFA", "#6A6"],
+                        connectionPointFill: "white"
                     },
                     sizes: {
-                        w: 200,
-                        h: 100,
-                        bw: 160,
+                        w: 160,
+                        h: 80,
+                        bw: 140,
                         contourBold: 4,
-                        textOffset: 10
+                        textOffset: 10,
+                        connectionPointRadius: 3,
+                        outputsDelta: 32
                     },
-                    labelFont: "bold 24px Arial"
+                    labelFont: "bold 18px Arial"
                 };
 
                 var source = new Source(this.stage, style, {x: 10, y: 10, text: "Source 1"});

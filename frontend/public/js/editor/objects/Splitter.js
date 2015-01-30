@@ -1,14 +1,28 @@
 define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
         function Splitter(stage, style, params) {
+            var s = style.sizes;
+            var c = style.colors;
+
             var _style = _.cloneDeep(style);  // style should stay read only
-            _style.sizes.textOffset += style.sizes.w - style.sizes.bw;
+            _style.sizes.textOffset += s.w - s.bw;
 
             _.extend(this, new QObject(stage, _style, params));
 
+            this.output = [
+                {
+                    x: s.w,
+                    y: s.h / 2 - s.outputsDelta / 2
+                },
+                {
+                    x: s.w,
+                    y: s.h / 2 + s.outputsDelta / 2
+                }
+            ];
+
+
             var gfx = this.shape.graphics;
-            var s = style.sizes;
-            var c = style.colors;
+
 
             gfx.beginStroke(c.contour)
                 .beginLinearGradientFill(c.gradient,
@@ -19,6 +33,8 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
                 .lineTo(s.w - s.bw, s.h)
                 .lineTo(0, s.h / 2)
                 .closePath();
+
+            this.drawConnectionPoints();
         }
 
         return Splitter;

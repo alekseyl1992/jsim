@@ -2,6 +2,7 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
         function Sink(stage, style, params) {
             _.extend(this, new QObject(stage, style, params));
+            this.output = null;
 
             var gfx = this.shape.graphics;
             var s = style.sizes;
@@ -40,6 +41,8 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
 
             drawCrossedCircle(c.contour, s.contourBold);
             drawCrossedCircle(c.gradient[0], s.contourBold / 2);
+
+            this.drawConnectionPoints();
         }
 
         return Sink;

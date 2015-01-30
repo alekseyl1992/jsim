@@ -19,9 +19,15 @@ define(['easeljs'], function(easeljs) {
         };
 
         this.container = new easeljs.Container();
+        var clickDelta = {x: 0, y: 0};
+        this.container.on("mousedown", function(evt) {
+            clickDelta.x = self.container.x - evt.stageX;
+            clickDelta.y = self.container.y - evt.stageY;
+        });
+
         this.container.on("pressmove", function(evt) {
-            evt.target.x = evt.stageX;
-            evt.target.y = evt.stageY;
+            self.container.x = evt.stageX + clickDelta.x;
+            self.container.y = evt.stageY + clickDelta.y;
             self.stage.update();
         });
 
@@ -54,6 +60,20 @@ define(['easeljs'], function(easeljs) {
             self.container.x = x;
             self.container.y = y;
         }
+
+        this.drawConnectionPoints = function() {
+            var gfx = this.shape.graphics;
+            var s = style.sizes;
+            var c = style.colors;
+
+            var points = _.compact(_.flatten([this.input, this.output]));
+
+            _.each(points, function(point) {
+                gfx.beginStroke(c.contour)
+                    .beginFill(c.connectionPointFill)
+                    .drawCircle(point.x, point.y, s.connectionPointRadius);
+            });
+        };
 
         this.setText = setText;
         this.setPos = setPos;
