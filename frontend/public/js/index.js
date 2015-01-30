@@ -14,20 +14,22 @@ require(['libs'], function() {
                 var $canvas = $('#editor-field');
                 var $canvasWrapper = $('#canvas-wrapper');
 
-                var ctx = $canvas[0].getContext("2d");
-                $window.resize(function() {
-                    ctx.canvas.width = $canvasWrapper.width();
-                    ctx.canvas.height = $canvasWrapper.height();
-                });
-                $window.resize();
-
                 var editor = new Editor({
                     $canvas: $canvas,
                     $modelProps: $('#model-props'),
                     $objectProps: $('#object-props')
+                });
+
+                var ctx = $canvas[0].getContext("2d");
+                $window.resize(function() {
+                    ctx.canvas.width = $canvasWrapper.width();
+                    ctx.canvas.height = $canvasWrapper.height();
+                    editor.resize(ctx.canvas.width, ctx.canvas.height);
+                });
+                $window.resize();
             });
-        });
-    });
+        }
+    );
 });
 
 function initLayout() {

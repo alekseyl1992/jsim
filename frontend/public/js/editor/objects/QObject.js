@@ -23,6 +23,10 @@ define(['easeljs'], function(easeljs) {
         this.container.on("mousedown", function(evt) {
             clickDelta.x = self.container.x - evt.stageX;
             clickDelta.y = self.container.y - evt.stageY;
+
+            // bring to front
+            var childrenCount = self.stage.getNumChildren();
+            self.stage.setChildIndex(self.container, childrenCount - 1);
         });
 
         this.container.on("pressmove", function(evt) {

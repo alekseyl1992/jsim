@@ -5,9 +5,10 @@ define([
         'editor/objects/Source',
         'editor/objects/Queue',
         'editor/objects/Splitter',
-        'editor/objects/Sink'
+        'editor/objects/Sink',
+        'editor/Palette'
     ],
-    function(_, easeljs, KeyCoder, Source, Queue, Splitter, Sink) {
+    function(_, easeljs, KeyCoder, Source, Queue, Splitter, Sink, Palette) {
         function Editor(windows) {
             var self = this;
 
@@ -48,11 +49,31 @@ define([
                     labelFont: "bold 18px Arial"
                 };
 
-                var source = new Source(this.stage, style, {x: 10, y: 10, text: "Source 1"});
-                var queue = new Queue(this.stage, style, {x: 220, y: 10, text: "Queue 1"});
-                var splitter = new Splitter(this.stage, style, {x: 430, y: 10, text: "Splitter 1"});
-                var sink = new Sink(this.stage, style, {x: 640, y: 10, text: "Sink 1"});
+                var palette = new Palette(this.stage, style, {
+                    colors: {
+                        contour: "black",
+                        gradient: ["#EEE", "#BBB"]
+                    },
+                    sizes: {
+                        x: 10,
+                        y: 10,
+                        objectOffset: 10,
+                        paletteOffset: 10
+                    },
+                    labelFont: "bold 18px Arial"
+                });
 
+                var dx = 200;
+
+                var source = new Source(this.stage, style, {x: 10 + dx, y: 10, text: "Source 1"});
+                var queue = new Queue(this.stage, style, {x: 220 + dx, y: 10, text: "Queue 1"});
+                var splitter = new Splitter(this.stage, style, {x: 430 + dx, y: 10, text: "Splitter 1"});
+                var sink = new Sink(this.stage, style, {x: 640 + dx, y: 10, text: "Sink 1"});
+
+                this.stage.update();
+            };
+
+            this.resize = function(w, h) {
                 this.stage.update();
             };
 

@@ -8,35 +8,39 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
             var s = style.sizes;
             var c = style.colors;
 
+            var r = s.h / 2;
+            var delta = r * Math.sqrt(2) / 2;
+            var rectW = s.w - r;
+
             // rect
             gfx.beginStroke(c.contour)
                 .beginLinearGradientFill(c.gradient,
                 [0, 1], 0, 0, 0, s.h)
-                .drawRect(0, 0, s.bw, s.h)
+                .drawRect(0, 0, rectW, s.h)
                 .endStroke();
 
             var drawCrossedCircle = function(color, lineWidth) {
+                var r = s.h / 2;
+                var delta = r * Math.sqrt(2) / 2;
+
                 // circle
                 gfx.beginStroke(color)
                     .setStrokeStyle(lineWidth)
-                    .drawCircle(s.bw, s.h / 2, s.h / 2)
+                    .drawCircle(rectW, r, r)
                     .endStroke()
                     .endFill();
-
-                var r = s.h / 2;
-                var delta = r * Math.sqrt(2) / 2;
 
                 // line \
                 gfx.beginStroke(color)
                     .setStrokeStyle(lineWidth)
-                    .moveTo(s.bw - delta, r - delta)
-                    .lineTo(s.bw + delta, r + delta);
+                    .moveTo(rectW - delta, r - delta)
+                    .lineTo(rectW + delta, r + delta);
 
                 // line /
                 gfx.beginStroke(color)
                     .setStrokeStyle(lineWidth)
-                    .moveTo(s.bw - delta, r + delta)
-                    .lineTo(s.bw + delta, r - delta);
+                    .moveTo(rectW - delta, r + delta)
+                    .lineTo(rectW + delta, r - delta);
             };
 
             drawCrossedCircle(c.contour, s.contourBold);
