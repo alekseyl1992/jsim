@@ -1,7 +1,7 @@
 define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
-        function Sink(stage, style, params) {
-            _.extend(this, new QObject(stage, style, params));
+        function Sink(stage, style, data) {
+            _.extend(this, new QObject(stage, style, data));
             this.output = null;
 
             var gfx = this.shape.graphics;

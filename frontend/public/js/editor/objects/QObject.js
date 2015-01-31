@@ -1,21 +1,24 @@
 
 define(['easeljs'], function(easeljs) {
-    function QObject(stage, style, params) {
+    function QObject(stage, style, data) {
         var self = this;
 
         this.stage = stage;
+        this.data = data;
 
         var s = style.sizes;
         var c = style.colors;
 
         this.input = {
             x: 0,
-            y: s.h / 2
+            y: s.h / 2,
+            connections: []
         };
 
         this.output = {
             x: s.w,
-            y: s.h / 2
+            y: s.h / 2,
+            connection: null
         };
 
         this.container = new easeljs.Container();
@@ -46,12 +49,12 @@ define(['easeljs'], function(easeljs) {
 
         this.container.addChild(this.text);
 
-        if (params) {
-            if (params.x && params.y)
-                setPos(params.x, params.y);
+        if (data) {
+            if (data.x && data.y)
+                setPos(data.x, data.y);
 
-            if (params.text)
-                setText(params.text);
+            if (data.name)
+                setText(data.name);
         }
 
         this.stage.addChild(this.container);
@@ -77,6 +80,10 @@ define(['easeljs'], function(easeljs) {
                     .beginFill(c.connectionPointFill)
                     .drawCircle(point.x, point.y, s.connectionPointRadius);
             });
+        };
+
+        this.getData = function() {
+            return data;
         };
 
         this.setText = setText;

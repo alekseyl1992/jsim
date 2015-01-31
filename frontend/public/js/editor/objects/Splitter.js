@@ -1,22 +1,24 @@
 define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
-        function Splitter(stage, style, params) {
+        function Splitter(stage, style, data) {
             var s = style.sizes;
             var c = style.colors;
 
             var _style = _.cloneDeep(style);  // style should stay read only
             _style.sizes.textOffset += s.w - s.bw;
 
-            _.extend(this, new QObject(stage, _style, params));
+            _.extend(this, new QObject(stage, _style, data));
 
             this.output = [
                 {
                     x: s.w,
-                    y: s.h / 2 - s.outputsDelta / 2
+                    y: s.h / 2 - s.outputsDelta / 2,
+                    connection: null
                 },
                 {
                     x: s.w,
-                    y: s.h / 2 + s.outputsDelta / 2
+                    y: s.h / 2 + s.outputsDelta / 2,
+                    connection: null
                 }
             ];
 

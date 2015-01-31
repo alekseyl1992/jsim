@@ -1,7 +1,7 @@
 define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
-        function Source(stage, style, params) {
-            _.extend(this, new QObject(stage, style, params));
+        function Source(stage, style, data) {
+            _.extend(this, new QObject(stage, style, data));
             this.input = null;
 
             var gfx = this.shape.graphics;
