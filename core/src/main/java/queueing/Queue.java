@@ -18,7 +18,7 @@ public class Queue extends QObject {
     public Queue(Simulation sim, int sizeLimit, int channels, double mu, Random random) {
         super(sim);
 
-        gen = new PoissonGenerator(mu, random);
+        gen = new PoissonGenerator(1.0d / mu, random);
         res = new Resource(sim, channels);
         stats = new Population(sim);
     }

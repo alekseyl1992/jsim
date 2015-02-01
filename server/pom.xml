@@ -26,9 +26,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.uncommons.maths</groupId>
+            <groupId>io.gatling.uncommons.maths</groupId>
             <artifactId>uncommons-maths</artifactId>
-            <version>1.2.2</version>
+            <version>1.2.3</version>
         </dependency>
 
         <dependency>

@@ -13,7 +13,7 @@ public class Source extends QObject {
     public Source(Simulation sim, double lambda, Random random) {
         super(sim);
 
-        gen = new PoissonGenerator(lambda, random);
+        gen = new PoissonGenerator(1.0d / lambda, random);
 
         Process process = new Process() {
             @Override
