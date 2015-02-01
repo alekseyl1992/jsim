@@ -35,38 +35,48 @@ define([
             }
         };
 
-        if (data) {
-            this.data = data;
+        if (data)
+            load(data);
+        else
+            create();
+
+
+        function load(data) {
+            self.data = data;
             // create object according to specified data
-            _.each(this.data.objects, function(objectData) {
-                self.addObject(objectData, true);
+            _.each(self.data.objects, function(objectData) {
+                addObject(objectData, true);
             });
-        } else {
+        }
+        this.load = load;
+
+        function create() {
             this.data = {
                 name: "Model",
                 duration: 1000,
                 objects: []
             };
         }
+        this.create = create;
 
-
-        this.addObject = function(data, justAddToStage) {
+        function addObject(data, justAddToStage) {
             var _data = _.cloneDeep(data);  // ensure RO
-            var typeEntry = this.typesMap[_data.type];
+            var typeEntry = self.typesMap[_data.type];
 
             if (!justAddToStage) {
                 // generate name and id
                 _data.name = typeEntry.name + " " + typeEntry.id++;
-                _data.id = this.currentUID++;
+                _data.id = self.currentUID++;
 
                 this.data.objects.push(_data);
             }
 
             // add to stage
-            var object = new typeEntry.ctor(this.stage, Styles.object, _data);
+            var object = new typeEntry.ctor(self.stage, Styles.object, _data);
 
             return object;
-        };
+        }
+        this.addObject = addObject;
 
         //TODO
         this.removeObject = function(object) {
