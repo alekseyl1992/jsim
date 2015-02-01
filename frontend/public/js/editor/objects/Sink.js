@@ -1,7 +1,11 @@
 define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
-        function Sink(stage, style, data) {
-            _.extend(this, new QObject(stage, style, data));
+        function Sink(stage, container, style, data) {
+            var _data = _.assign(_.cloneDeep(data), {
+                type: "sink",
+                spec: {}
+            });
+            _.extend(this, new QObject(stage, container, style, _data));
             this.output = null;
 
             var gfx = this.shape.graphics;

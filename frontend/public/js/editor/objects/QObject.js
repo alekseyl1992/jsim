@@ -1,9 +1,11 @@
 
 define(['easeljs'], function(easeljs) {
-    function QObject(stage, style, data) {
+    function QObject(stage, parentContainer, style, data) {
         var self = this;
 
         this.stage = stage;
+        this.parentContainer = parentContainer;
+
         this.data = data;
 
         var s = style.sizes;
@@ -28,8 +30,8 @@ define(['easeljs'], function(easeljs) {
             clickDelta.y = self.container.y - evt.stageY;
 
             // bring to front
-            var childrenCount = self.stage.getNumChildren();
-            self.stage.setChildIndex(self.container, childrenCount - 1);
+            var childrenCount = self.parentContainer.getNumChildren();
+            self.parentContainer.setChildIndex(self.container, childrenCount - 1);
         });
 
         this.container.on("pressmove", function(evt) {
@@ -57,7 +59,7 @@ define(['easeljs'], function(easeljs) {
                 setText(data.name);
         }
 
-        this.stage.addChild(this.container);
+        this.parentContainer.addChild(this.container);
 
         function setText(text) {
             self.text.text = text;
@@ -84,6 +86,10 @@ define(['easeljs'], function(easeljs) {
 
         this.getData = function() {
             return data;
+        };
+
+        this.getContainer = function() {
+            return self.container;
         };
 
         this.setText = setText;

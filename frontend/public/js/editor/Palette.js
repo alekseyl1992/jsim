@@ -8,7 +8,7 @@ define([
         'editor/objects/Sink'
     ],
     function(_, easeljs, KeyCoder, Source, Queue, Splitter, Sink) {
-        function Palette(stage, objectStyle, paletteStyle) {
+        function Palette(stage, model, objectStyle, paletteStyle) {
             var self = this;
             this.stage = stage;
 
@@ -55,25 +55,64 @@ define([
 
 
             // add objects to palette
-            var source = new Source(this.container, _objectStyle, {
+            var source = new Source(this.stage, this.container, _objectStyle, {
                 x: s.objectOffset,
                 y: s.objectOffset + labelHeight,
-                text: "Source"});
+                name: "Source"});
 
-            var queue = new Queue(this.container, _objectStyle, {
+            var queue = new Queue(this.stage, this.container, _objectStyle, {
                 x: s.objectOffset,
                 y: s.objectOffset * 2 + _os.h + labelHeight,
-                text: "Queue"});
+                name: "Queue"});
 
-            var splitter = new Splitter(this.container, _objectStyle, {
+            var splitter = new Splitter(this.stage, this.container, _objectStyle, {
                 x: s.objectOffset,
                 y: s.objectOffset * 3 + _os.h * 2 + labelHeight,
-                text: "Splitter"});
+                name: "Splitter"});
 
-            var sink = new Sink(this.container, _objectStyle, {
+            var sink = new Sink(this.stage, this.container, _objectStyle, {
                 x: s.objectOffset,
                 y: s.objectOffset * 4 + _os.h * 3 + labelHeight,
-                text: "Sink"});
+                name: "Sink"});
+
+            var objects = [source, queue, splitter, sink];
+
+            // override event listeners
+            _.each(objects, function(object) {
+                var container = object.getContainer();
+                //container.removeAllEventListeners();
+
+                var savedPos = {
+                    x: 0,
+                    y: 0
+                };
+
+                container.on("mousedown", function(evt) {
+                    savedPos = {
+                        x: container.x,
+                        y: container.y
+                    };
+                });
+
+                //container.on("pressmove", function(evt) {
+                //    console.log("pressmove");
+                //});
+
+                container.on("click", function(evt) {
+                    // duplicate object
+                    var newObject = model.addObject({
+                        type: object.getData().type,
+                        x: evt.stageX - objectStyle.sizes.w / 2,
+                        y: evt.stageY - objectStyle.sizes.h / 2
+                    });
+
+                    container.x = savedPos.x;
+                    container.y = savedPos.y;
+
+                    self.stage.update();
+                });
+            });
+
 
             this.stage.addChild(this.container);
         }

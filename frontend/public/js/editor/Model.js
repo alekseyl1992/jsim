@@ -1,37 +1,41 @@
 define([
     'lodash',
+    'easeljs',
     'editor/Styles',
     'editor/objects/Source',
     'editor/objects/Queue',
     'editor/objects/Splitter',
     'editor/objects/Sink'
-], function(_, Styles, Source, Queue, Splitter, Sink) {
+], function(_, easeljs, Styles, Source, Queue, Splitter, Sink) {
     function Model(stage, data) {
         var self = this;
 
         this.stage = stage;
+
+        this.modelContainer = new easeljs.Container();
+        this.stage.addChild(this.modelContainer);
 
         this.currentUID = 0;  //model-wide unique id
         this.typesMap = {
             "source": {
                 ctor: Source,
                 name: "Source",
-                id: 0  // type-wide unique id
+                id: 1  // type-wide unique id
             },
             "queue": {
                 ctor: Queue,
                 name: "Queue",
-                id: 0
+                id: 1
             },
             "splitter": {
                 ctor: Splitter,
                 name: "Splitter",
-                id: 0
+                id: 1
             },
             "sink": {
                 ctor: Sink,
                 name: "Sink",
-                id: 0
+                id: 1
             }
         };
 
@@ -72,7 +76,7 @@ define([
             }
 
             // add to stage
-            var object = new typeEntry.ctor(self.stage, Styles.object, _data);
+            var object = new typeEntry.ctor(self.stage, self.modelContainer, Styles.object, _data);
 
             return object;
         }

@@ -75,7 +75,7 @@ define([
             var connector = new Connector(this.stage);
 
             var objectStyle = Styles.object;
-            var palette = new Palette(this.stage, objectStyle, Styles.palette);
+            var palette = new Palette(this.stage, model, objectStyle, Styles.palette);
 
 
             this.stage.update();
