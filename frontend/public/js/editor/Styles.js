@@ -4,7 +4,8 @@ define([], function() {
         colors: {
             contour: "black",
             gradient: ["#AFA", "#6A6"],
-            connectionPointFill: "white"
+            connectionPointFill: "white",
+            connection: "black"
         },
         sizes: {
             w: 160,
@@ -13,7 +14,8 @@ define([], function() {
             contourBold: 4,
             textOffset: 10,
             connectionPointRadius: 3,
-            outputsDelta: 32
+            outputsDelta: 32,
+            connection: 3
         },
         labelFont: "bold 18px Arial"
     };

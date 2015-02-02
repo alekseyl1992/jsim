@@ -80,7 +80,6 @@ define([
             // override event listeners
             _.each(objects, function(object) {
                 var container = object.getContainer();
-                //container.removeAllEventListeners();
 
                 var savedPos = {
                     x: 0,
@@ -93,10 +92,6 @@ define([
                         y: container.y
                     };
                 });
-
-                //container.on("pressmove", function(evt) {
-                //    console.log("pressmove");
-                //});
 
                 container.on("click", function(evt) {
                     // duplicate object

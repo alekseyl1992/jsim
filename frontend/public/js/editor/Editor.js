@@ -8,10 +8,9 @@ define([
         'editor/objects/Sink',
         'editor/Palette',
         'editor/Styles',
-        'editor/Model',
-        'editor/Connector'
+        'editor/Model'
     ],
-    function(_, easeljs, KeyCoder, Source, Queue, Splitter, Sink, Palette, Styles, Model, Connector) {
+    function(_, easeljs, KeyCoder, Source, Queue, Splitter, Sink, Palette, Styles, Model) {
         function Editor(windows) {
             var self = this;
 
@@ -19,6 +18,7 @@ define([
 
             this.windows = windows;
             this.stage = new easeljs.Stage(windows.$canvas[0]);
+            this.stage.enableMouseOver(30);
 
             var testModelData = {
                 "duration": 1000,
@@ -72,7 +72,6 @@ define([
             };
 
             var model = new Model(this.stage, testModelData);
-            var connector = new Connector(this.stage);
 
             var objectStyle = Styles.object;
             var palette = new Palette(this.stage, model, objectStyle, Styles.palette);

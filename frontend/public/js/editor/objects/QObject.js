@@ -1,5 +1,5 @@
 
-define(['easeljs'], function(easeljs) {
+define(['easeljs', 'editor/Connector'], function(easeljs, Connector) {
     function QObject(stage, parentContainer, style, data) {
         var self = this;
 
@@ -23,8 +23,11 @@ define(['easeljs'], function(easeljs) {
             connection: null
         };
 
+        this.connector = new Connector(this.stage, this.parentContainer, style);
+
         this.container = new easeljs.Container();
         var clickDelta = {x: 0, y: 0};
+
         this.container.on("mousedown", function(evt) {
             clickDelta.x = self.container.x - evt.stageX;
             clickDelta.y = self.container.y - evt.stageY;
@@ -32,11 +35,14 @@ define(['easeljs'], function(easeljs) {
             // bring to front
             var childrenCount = self.parentContainer.getNumChildren();
             self.parentContainer.setChildIndex(self.container, childrenCount - 1);
+
+            self.stage.update();
         });
 
         this.container.on("pressmove", function(evt) {
             self.container.x = evt.stageX + clickDelta.x;
             self.container.y = evt.stageY + clickDelta.y;
+
             self.stage.update();
         });
 
@@ -71,16 +77,58 @@ define(['easeljs'], function(easeljs) {
         }
 
         this.drawConnectionPoints = function() {
-            var gfx = this.shape.graphics;
-            var s = style.sizes;
-            var c = style.colors;
-
-            var points = _.compact(_.flatten([this.input, this.output]));
+            // ensure array
+            var points = _.compact(_.flatten([this.output]));
 
             _.each(points, function(point) {
+                var pointObject = new easeljs.Shape();
+                pointObject.x = point.x;
+                pointObject.y = point.y;
+
+                var gfx = pointObject.graphics;
                 gfx.beginStroke(c.contour)
                     .beginFill(c.connectionPointFill)
-                    .drawCircle(point.x, point.y, s.connectionPointRadius);
+                    .drawCircle(0, 0, s.connectionPointRadius);
+
+                pointObject.on("mouseover", function(evt) {
+                    var scaleFactor = 2;
+                    evt.target.scaleX = scaleFactor;
+                    evt.target.scaleY = scaleFactor;
+                    stage.update();
+                });
+
+                pointObject.on("mouseout", function(evt) {
+                    evt.target.scaleX = 1;
+                    evt.target.scaleY = 1;
+                    stage.update();
+                });
+
+                // connections stuff
+                pointObject.on("mousedown", function(evt) {
+                    console.log("Connecting");
+                    evt.stopPropagation();
+
+                    self.connector.setFrom(self, point);
+                });
+
+                pointObject.on("pressmove", function(evt) {
+                    console.log("Connecting...");
+                    evt.stopPropagation();
+
+                    self.connector.move(evt.stageX, evt.stageY);
+                });
+
+                pointObject.on("pressup", function(evt) {
+                    console.log("Connected");
+                    evt.stopPropagation();
+
+                    var targetObject = self.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
+
+                    self.connector.setTo(targetObject);
+                    self.connector.createConnection();
+                });
+
+                self.container.addChild(pointObject);
             });
         };
 

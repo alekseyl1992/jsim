@@ -69,11 +69,14 @@ define([
 
             if (!justAddToStage) {
                 // generate name and id
-                _data.name = typeEntry.name + " " + typeEntry.id++;
-                _data.id = self.currentUID++;
+                _data.name = typeEntry.name + " " + typeEntry.id;
+                _data.id = self.currentUID;
 
                 this.data.objects.push(_data);
             }
+
+            typeEntry.id++;
+            self.currentUID++;
 
             // add to stage
             var object = new typeEntry.ctor(self.stage, self.modelContainer, Styles.object, _data);
