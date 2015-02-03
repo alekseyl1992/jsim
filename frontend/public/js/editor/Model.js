@@ -15,6 +15,8 @@ define([
         this.modelContainer = new easeljs.Container();
         this.stage.addChild(this.modelContainer);
 
+        this.selectedObject = null;
+
         this.currentUID = 0;  //model-wide unique id
         this.typesMap = {
             "source": {
@@ -38,6 +40,10 @@ define([
                 id: 1
             }
         };
+
+        this.stage.on("stagemousedown", function() {
+            self.selectObject(null);
+        });
 
         if (data)
             load(data);
@@ -80,6 +86,11 @@ define([
 
             // add to stage
             var object = new typeEntry.ctor(self.stage, self.modelContainer, Styles.object, _data);
+            var container = object.getContainer();
+
+            container.on("mousedown", function(evt) {
+                self.selectObject(object);
+            });
 
             return object;
         }
@@ -92,6 +103,16 @@ define([
 
         this.updateObject = function(object, field, value) {
 
+        };
+
+        this.selectObject = function(object) {
+            if (this.selectedObject)
+                this.selectedObject.unselect();
+
+            if (object) {
+                this.selectedObject = object;
+                object.select();
+            }
         };
 
         this.getData = function() {

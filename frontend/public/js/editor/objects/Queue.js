@@ -12,15 +12,20 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
             _.extend(this, new QObject(stage, container, style, _data));
             this.setSelf(this);
 
-            var gfx = this.shape.graphics;
-            var s = style.sizes;
-            var c = style.colors;
+            this.render = function(selected) {
+                var gfx = this.shape.graphics;
+                var s = style.sizes;
+                var c = style.colors;
 
-            gfx.beginStroke(c.contour)
-                .beginLinearGradientFill(c.gradient,
-                [0, 1], 0, 0, 0, s.h)
-                .drawRect(0, 0, s.w, s.h);
+                var gradient = selected ? c.selectedGradient : c.gradient;
 
+                gfx.beginStroke(c.contour)
+                    .beginLinearGradientFill(gradient,
+                    [0, 1], 0, 0, 0, s.h)
+                    .drawRect(0, 0, s.w, s.h);
+            };
+
+            this.render();
             this.drawConnectionPoints();
         }
 

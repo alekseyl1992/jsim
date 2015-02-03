@@ -30,19 +30,22 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
             ];
 
 
-            var gfx = this.shape.graphics;
+            this.render = function(selected) {
+                var gfx = this.shape.graphics;
+                var gradient = selected ? c.selectedGradient : c.gradient;
 
+                gfx.beginStroke(c.contour)
+                    .beginLinearGradientFill(gradient,
+                    [0, 1], 0, 0, 0, s.h)
+                    .moveTo(s.w - s.bw, 0)
+                    .lineTo(s.w, 0)
+                    .lineTo(s.w, s.h)
+                    .lineTo(s.w - s.bw, s.h)
+                    .lineTo(0, s.h / 2)
+                    .closePath();
+            };
 
-            gfx.beginStroke(c.contour)
-                .beginLinearGradientFill(c.gradient,
-                [0, 1], 0, 0, 0, s.h)
-                .moveTo(s.w - s.bw, 0)
-                .lineTo(s.w, 0)
-                .lineTo(s.w, s.h)
-                .lineTo(s.w - s.bw, s.h)
-                .lineTo(0, s.h / 2)
-                .closePath();
-
+            this.render();
             this.drawConnectionPoints();
         }
 

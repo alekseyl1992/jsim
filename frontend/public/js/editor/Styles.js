@@ -1,11 +1,13 @@
 
-define([], function() {
+define(['easeljs'], function(easeljs) {
     var object = {
         colors: {
             contour: "black",
             gradient: ["#AFA", "#6A6"],
+            selectedGradient: ["#8A8", "#282"],
             connectionPointFill: "white",
-            connection: "black"
+            connection: "black",
+            selectionFilter: new easeljs.ColorFilter(1, 1, 1, 1, 10, 60, 10, 100)
         },
         sizes: {
             w: 160,

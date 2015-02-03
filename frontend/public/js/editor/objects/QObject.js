@@ -191,6 +191,16 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
 
         this.setText = setText;
         this.setPos = setPos;
+
+        this.select = function() {
+            this.render(true);
+            this.stage.update();
+        };
+
+        this.unselect = function() {
+            this.render();
+            this.stage.update();
+        };
     }
 
     return QObject;
