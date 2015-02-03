@@ -8,6 +8,8 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
                 }
             });
             _.extend(this, new QObject(stage, container, style, _data));
+            this.setSelf(this);
+
             this.input = null;
 
             var gfx = this.shape.graphics;

@@ -45,6 +45,27 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
             self.container.x = evt.stageX + clickDelta.x;
             self.container.y = evt.stageY + clickDelta.y;
 
+            // update connections
+            var connections = [];
+
+            if (self.input)
+                connections = connections.concat(self.input.connections);
+
+            if (self.output) {
+                if (self.output.connection) {
+                    connections.push(self.output.connection);
+                } else if (_.isArray(self.output)) {
+                    _.each(self.output, function (output) {
+                        if (output.connection)
+                            connections.push(output.connection);
+                    });
+                }
+            }
+
+            _.each(connections, function(connection) {
+                connection.render();
+            });
+
             self.stage.update();
         });
 
@@ -157,6 +178,15 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
 
         this.getContainer = function() {
             return self.container;
+        };
+
+        /**
+         * Should be called after _.extend(),
+         * so self will point on extended object, not to the source one
+         * @param newSelf - Object derived from QObject
+         */
+        this.setSelf = function(newSelf) {
+            self = newSelf;
         };
 
         this.setText = setText;

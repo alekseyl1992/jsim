@@ -29,12 +29,11 @@ define(['easeljs'], function(easeljs) {
             var startPoint = this.from.object.getContainer()
                 .localToLocal(this.from.output.x, this.from.output.y, parentContainer);
 
-            endPoint = endPoint || {x: this.to.input.x, y: this.to.input.y};
-            endPoint.x -= this.shape.x;
-            endPoint.y -= this.shape.y;
-
             this.shape.x = startPoint.x;
             this.shape.y = startPoint.y;
+
+            endPoint = endPoint || this.to.object.getContainer()
+                    .localToLocal(this.to.input.x, this.to.input.y, parentContainer);
 
             var gfx = this.shape.graphics;
             var s = style.sizes;
@@ -45,7 +44,7 @@ define(['easeljs'], function(easeljs) {
             gfx.beginStroke(c.connection)
                 .setStrokeStyle(s.connection)
                 .moveTo(0, 0)
-                .lineTo(endPoint.x, endPoint.y);
+                .lineTo(endPoint.x - this.shape.x, endPoint.y - this.shape.y);
 
             stage.update();
         };
