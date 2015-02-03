@@ -13,7 +13,7 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
                     pA: 0.5
                 }
             });
-            _.extend(this, new QObject(stage, container, _style, _data))
+            _.extend(this, new QObject(stage, container, _style, _data));
             this.setSelf(this);
 
             this.output = [

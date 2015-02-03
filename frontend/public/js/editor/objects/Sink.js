@@ -5,7 +5,7 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
                 type: "sink",
                 spec: {}
             });
-            _.extend(this, new QObject(stage, container, style, _data))
+            _.extend(this, new QObject(stage, container, style, _data));
             this.setSelf(this);
 
             this.output = null;

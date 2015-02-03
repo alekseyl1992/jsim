@@ -96,11 +96,16 @@ define([
         }
         this.addObject = addObject;
 
-        //TODO
         this.removeObject = function(object) {
+            object = object || this.selectedObject;
 
+            if (object) {
+                _.pullAt(this.data.objects, _.indexOf(this.data.objects, object.getData()));
+                object.remove();
+            }
         };
 
+        //TODO
         this.updateObject = function(object, field, value) {
 
         };

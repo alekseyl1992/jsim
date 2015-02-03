@@ -201,6 +201,11 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
             this.render();
             this.stage.update();
         };
+
+        this.remove = function() {
+            this.parentContainer.removeChild(this.container);
+            this.stage.update();
+        };
     }
 
     return QObject;

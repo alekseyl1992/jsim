@@ -20,6 +20,12 @@ define([
             this.stage = new easeljs.Stage(windows.$canvas[0]);
             this.stage.enableMouseOver(30);
 
+            var keyCoder = new KeyCoder(windows.$canvas);
+
+            windows.$canvas.click(function() {
+                windows.$canvas.focus();
+            });
+
             var testModelData = {
                 "duration": 1000,
                 "name": "Model 1",
@@ -72,6 +78,9 @@ define([
             };
 
             var model = new Model(this.stage, testModelData);
+            keyCoder.addEventListener("keyup", KeyCoder.KEY.DEL, function() {
+                model.removeObject();
+            });
 
             var objectStyle = Styles.object;
             var palette = new Palette(this.stage, model, objectStyle, Styles.palette);
