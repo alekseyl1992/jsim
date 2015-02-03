@@ -1,5 +1,5 @@
 
-define(['easeljs', 'editor/Connector'], function(easeljs, Connector) {
+define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
     function QObject(stage, parentContainer, style, data) {
         var self = this;
 
@@ -23,9 +23,11 @@ define(['easeljs', 'editor/Connector'], function(easeljs, Connector) {
             connection: null
         };
 
-        this.connector = new Connector(this.stage, this.parentContainer, style);
+        this.newConnection = new Connection(this.stage, this.parentContainer, style);
 
         this.container = new easeljs.Container();
+        this.container.jsimObject = this;
+
         var clickDelta = {x: 0, y: 0};
 
         this.container.on("mousedown", function(evt) {
@@ -108,14 +110,20 @@ define(['easeljs', 'editor/Connector'], function(easeljs, Connector) {
                     console.log("Connecting");
                     evt.stopPropagation();
 
-                    self.connector.setFrom(self, point);
+                    self.newConnection.setFrom({
+                        object: self,
+                        output: point
+                    });
                 });
 
                 pointObject.on("pressmove", function(evt) {
                     console.log("Connecting...");
                     evt.stopPropagation();
 
-                    self.connector.move(evt.stageX, evt.stageY);
+                    self.newConnection.render({
+                        x: evt.stageX,
+                        y: evt.stageY
+                    });
                 });
 
                 pointObject.on("pressup", function(evt) {
@@ -124,8 +132,19 @@ define(['easeljs', 'editor/Connector'], function(easeljs, Connector) {
 
                     var targetObject = self.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
 
-                    self.connector.setTo(targetObject);
-                    self.connector.createConnection();
+                    if (targetObject && targetObject.parent && targetObject.parent.jsimObject) {
+                        var target = targetObject.parent.jsimObject;
+
+                        self.newConnection.setTo({
+                            object: target,
+                            input: target.input
+                        });
+                        self.newConnection.fix();
+                    } else {
+                        self.newConnection.remove();
+                    }
+
+                    self.newConnection = new Connection(stage, parentContainer, style);
                 });
 
                 self.container.addChild(pointObject);

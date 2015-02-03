@@ -60,7 +60,7 @@ define(['lodash', 'createjs'],
                 }
 
                 return spriteSheet;
-            }
+            };
         }
 
         return ResourceManager;

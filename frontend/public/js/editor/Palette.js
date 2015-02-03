@@ -40,9 +40,9 @@ define([
             var objectsCount = 4;
             var width = _os.w + s.objectOffset * 2;
             var height =
-                objectsCount * _os.h
-                + (objectsCount + 1) * s.objectOffset
-                + labelHeight;
+                objectsCount * _os.h +
+                (objectsCount + 1) * s.objectOffset +
+                labelHeight;
 
             var background = new easeljs.Shape();
             var gfx = background.graphics;

@@ -26,7 +26,7 @@ define([
                 "objects": [
                     {
                         "type": "source",
-                        "name": "Generator 1",
+                        "name": "Source 1",
                         "x": 210,
                         "y": 20,
                         "id": 0,
