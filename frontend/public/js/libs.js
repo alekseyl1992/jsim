@@ -17,3 +17,10 @@ requirejs.config({
         //}
     }
 });
+
+Array.prototype.remove = function (item) {
+    var i;
+    while((i = this.indexOf(item)) !== -1) {
+        this.splice(i, 1);
+    }
+};

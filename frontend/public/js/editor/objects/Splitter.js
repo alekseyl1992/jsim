@@ -18,11 +18,13 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
 
             this.output = [
                 {
+                    name: "toA",
                     x: s.w,
                     y: s.h / 2 - s.outputsDelta / 2,
                     connection: null
                 },
                 {
+                    name: "toB",
                     x: s.w,
                     y: s.h / 2 + s.outputsDelta / 2,
                     connection: null

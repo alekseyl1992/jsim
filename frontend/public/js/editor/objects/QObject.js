@@ -206,6 +206,67 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
             this.parentContainer.removeChild(this.container);
             this.stage.update();
         };
+
+        this.addConnection = function(connection) {
+            var from = connection.getFrom();
+            var to = connection.getTo();
+
+            if (from.object == this) {
+                if (_.isArray(this.output)) {
+                    console.assert(from.output.name, "output is array, but no has no 'name'");
+                    this.data[from.output.name] = to.object.data.id;
+                } else {
+                    this.data.to = connection;
+                }
+
+                from.output.connection = connection;
+            } else if (to.object == this) {
+                to.input.connections.push(connection);
+            } else {
+                console.error("addConnection called on not matching object");
+                console.error("connection: ", connection);
+                console.error("object: ", this);
+            }
+        };
+
+        this.removeConnection = function(connection) {
+            var from = connection.getFrom();
+            var to = connection.getTo();
+
+            if (from.object == this) {
+                if (_.isArray(this.output)) {
+                    console.assert(from.output.name, "output is array, but no has no 'name'");
+                    this.data[from.output.name] = null;
+                } else {
+                    this.data.to = null;
+                }
+
+                from.output.connection = null;
+            } else if (to.object == this) {
+                to.input.connections.remove(connection);
+            } else {
+                console.error("removeConnection called on not matching object");
+                console.error("connection: ", connection);
+                console.error("object: ", this);
+            }
+        };
+
+        this.getOutputByName = function(name) {
+            if (name == "to")
+                return this.output;
+
+            return _.find(this.output, function(output) {
+                return output.name == name;
+            });
+        };
+
+        this.getInput = function() {
+            return this.input;
+        };
+
+        this.getOutput = function() {
+            return this.output;
+        };
     }
 
     return QObject;

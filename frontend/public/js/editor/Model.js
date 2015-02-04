@@ -5,8 +5,9 @@ define([
     'editor/objects/Source',
     'editor/objects/Queue',
     'editor/objects/Splitter',
-    'editor/objects/Sink'
-], function(_, easeljs, Styles, Source, Queue, Splitter, Sink) {
+    'editor/objects/Sink',
+    'editor/Connection'
+], function(_, easeljs, Styles, Source, Queue, Splitter, Sink, Connection) {
     function Model(stage, data) {
         var self = this;
 
@@ -17,7 +18,9 @@ define([
 
         this.selectedObject = null;
 
-        this.currentUID = 0;  //model-wide unique id
+        this.objects = [];  // QObject derivatives
+
+        this.currentUID = 1;  //model-wide unique id, should be non-zero for if (id) syntax
         this.typesMap = {
             "source": {
                 ctor: Source,
@@ -53,12 +56,49 @@ define([
 
         function load(data) {
             self.data = data;
-            // create object according to specified data
+            // create objects according to specified data
             _.each(self.data.objects, function(objectData) {
                 addObject(objectData, true);
             });
+
+            // create connections for new objects
+            _.each(self.objects, function(fromObject) {
+                var fromObjectData = fromObject.getData();
+
+                var toObject = null;  // because of lack of 'let' and block-scoped vars
+                if (fromObjectData.to) {
+                    toObject = getObjectById(fromObjectData.to);
+                    connectByOutputName(fromObject, toObject, "to");
+                } else {
+                    if (fromObjectData.toA) {
+                        toObject = getObjectById(fromObjectData.toA);
+                        connectByOutputName(fromObject, toObject, "toA");
+                    }
+                    if (fromObjectData.toB) {
+                        toObject = getObjectById(fromObjectData.toB);
+                        connectByOutputName(fromObject, toObject, "toB");
+                    }
+                }
+            });
+
         }
         this.load = load;
+
+        function connectByOutputName(fromObject, toObject, outputName) {
+            var input = toObject.getInput();
+            var output = fromObject.getOutputByName(outputName);
+
+            var connection = new Connection(self.stage, self.modelContainer, Styles.object);
+            connection.setFrom({
+                object: fromObject,
+                output: output
+            });
+            connection.setTo({
+                object: toObject,
+                input: input
+            });
+            connection.fix();
+        }
 
         function create() {
             this.data = {
@@ -68,6 +108,13 @@ define([
             };
         }
         this.create = create;
+
+        function getObjectById(id) {
+            return _.find(self.objects, function(object) {
+                return object.getData().id == id;
+            });
+        }
+        this.getObjectById = getObjectById;
 
         function addObject(data, justAddToStage) {
             var _data = _.cloneDeep(data);  // ensure RO
@@ -92,6 +139,8 @@ define([
                 self.selectObject(object);
             });
 
+            self.objects.push(object);
+
             return object;
         }
         this.addObject = addObject;
@@ -100,7 +149,8 @@ define([
             object = object || this.selectedObject;
 
             if (object) {
-                _.pullAt(this.data.objects, _.indexOf(this.data.objects, object.getData()));
+                this.data.objects.remove(object.getData());
+                this.objects.remove(object);
                 object.remove();
             }
         };

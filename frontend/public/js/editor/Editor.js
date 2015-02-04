@@ -35,8 +35,8 @@ define([
                         "name": "Source 1",
                         "x": 210,
                         "y": 20,
-                        "id": 0,
-                        "to": "1",
+                        "id": 1,
+                        "to": 2,
                         "spec": {
                             "lambda": 1
                         }
@@ -46,8 +46,8 @@ define([
                         "name": "Queue 1",
                         "x": 420,
                         "y": 20,
-                        "id": 1,
-                        "to": "2",
+                        "id": 2,
+                        "to": 3,
                         "spec": {
                             "mu": 1,
                             "channels": 10,
@@ -59,9 +59,9 @@ define([
                         "name": "Splitter 1",
                         "x": 630,
                         "y": 20,
-                        "id": 2,
-                        "toA": "1",
-                        "toB": "3",
+                        "id": 3,
+                        "toA": 2,
+                        "toB": 4,
                         "spec": {
                             "pA": 0.5
                         }
@@ -71,7 +71,7 @@ define([
                         "name": "Sink 1",
                         "x": 840,
                         "y": 20,
-                        "id": 3,
+                        "id": 4,
                         "spec": {}
                     }
                 ]
@@ -80,6 +80,10 @@ define([
             var model = new Model(this.stage, testModelData);
             keyCoder.addEventListener("keyup", KeyCoder.KEY.DEL, function() {
                 model.removeObject();
+            });
+
+            keyCoder.addEventListener("keyup", KeyCoder.KEY.Q, function() {
+                console.log("Model data: ", model.getData());
             });
 
             var objectStyle = Styles.object;

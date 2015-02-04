@@ -17,9 +17,17 @@ define(['easeljs'], function(easeljs) {
             this.parentContainer.addChildAt(this.shape, 0);
         };
 
+        this.getFrom = function() {
+            return this.from;
+        };
+
         this.setTo = function(to) {
             this.to = to;
             this.render();
+        };
+
+        this.getTo = function() {
+            return this.to;
         };
 
         /**
@@ -54,8 +62,8 @@ define(['easeljs'], function(easeljs) {
          * and input/output objects
          */
         this.fix = function() {
-            this.from.output.connection = this;
-            this.to.input.connections.push(this);
+            this.from.object.addConnection(this);
+            this.to.object.addConnection(this);
         };
 
         this.remove = function() {
