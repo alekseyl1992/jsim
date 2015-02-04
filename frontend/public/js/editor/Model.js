@@ -8,7 +8,7 @@ define([
     'editor/objects/Sink',
     'editor/Connection'
 ], function(_, easeljs, Styles, Source, Queue, Splitter, Sink, Connection) {
-    function Model(stage, data) {
+    function Model(stage, editor, data) {
         var self = this;
 
         this.stage = stage;
@@ -167,6 +167,10 @@ define([
             if (object) {
                 this.selectedObject = object;
                 object.select();
+
+                editor.showObjectProps(object);
+            } else {
+                editor.hideObjectProps();
             }
         };
 

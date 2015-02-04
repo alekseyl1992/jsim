@@ -1,6 +1,8 @@
 define([
+        'jquery',
         'lodash',
         'easeljs',
+        'mustache',
         'editor/KeyCoder',
         'editor/objects/Source',
         'editor/objects/Queue',
@@ -10,7 +12,7 @@ define([
         'editor/Styles',
         'editor/Model'
     ],
-    function(_, easeljs, KeyCoder, Source, Queue, Splitter, Sink, Palette, Styles, Model) {
+    function($, _, easeljs, mustache, KeyCoder, Source, Queue, Splitter, Sink, Palette, Styles, Model) {
         function Editor(windows) {
             var self = this;
 
@@ -21,6 +23,20 @@ define([
             this.stage.enableMouseOver(30);
 
             var keyCoder = new KeyCoder(windows.$canvas);
+
+            // load templates as strings
+            function makeTemplate(str) {
+                return str.replace(/{/g, "{{").replace(/}/g, "}}");
+            }
+
+            this.template = {
+                modelProps: makeTemplate($('#model-props-template').html()),
+                objectProps: makeTemplate($('#object-props-template').html())
+            };
+
+            // cache jQ elements
+            this.$objectPropsTable = $('#object-props-table');
+            this.$modelPropsTable = $('#model-props-table');
 
             windows.$canvas.click(function() {
                 windows.$canvas.focus();
@@ -77,17 +93,17 @@ define([
                 ]
             };
 
-            var model = new Model(this.stage, testModelData);
+            this.model = new Model(this.stage, this, testModelData);
             keyCoder.addEventListener("keyup", KeyCoder.KEY.DEL, function() {
-                model.removeObject();
+                self.model.removeObject();
             });
 
             keyCoder.addEventListener("keyup", KeyCoder.KEY.Q, function() {
-                console.log("Model data: ", model.getData());
+                console.log("Model data: ", self.model.getData());
             });
 
             var objectStyle = Styles.object;
-            var palette = new Palette(this.stage, model, objectStyle, Styles.palette);
+            var palette = new Palette(this.stage, self.model, objectStyle, Styles.palette);
 
 
             this.stage.update();
@@ -96,6 +112,46 @@ define([
             this.resize = function(w, h) {
                 this.stage.update();
             };
+
+            function renderProps(props, template, $target) {
+                var propsArray = _.map(props, function(value, key) {
+                    return {key: key, value: value};
+                });
+
+                var view = {
+                    props: propsArray
+                };
+
+                var html = mustache.render(template, view);
+                $target.html(html);
+            }
+
+            this.showObjectProps = function(object) {
+                var objectData = object.getData();
+
+                var props = {
+                    type: objectData.type,
+                    name: objectData.name
+                };
+                props = _.assign(props, objectData.spec);
+
+                renderProps(props, this.template.objectProps, this.$objectPropsTable);
+
+                // disallow user to modify type
+                $('#object-prop_type').prop('disabled', true);
+            };
+
+            this.hideObjectProps = function() {
+                this.$objectPropsTable.html("");
+            };
+
+            this.showModelProps = function(model) {
+                var modelData = _.omit(model.getData(), "objects");
+
+                renderProps(modelData, this.template.modelProps, this.$modelPropsTable);
+            };
+
+            this.showModelProps(this.model);
         }
 
         return Editor;

@@ -55,9 +55,9 @@ function initLayout() {
         east: {
             size: 200,
             childOptions: {
-                minSize: 50,
+                minSize: 110,
                 north: {
-                    size: 100
+                    size: 110
                 }
             }
         },

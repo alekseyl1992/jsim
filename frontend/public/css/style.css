@@ -48,3 +48,17 @@ body {
     padding: 0;
     overflow: hidden;
 }
+
+.props-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.props-table th, td {
+    overflow: hidden;
+    width: 50%;
+}
+
+.props-table input {
+    width: 100%;
+}
