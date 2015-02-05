@@ -17,7 +17,10 @@ define(['easeljs'], function(easeljs) {
             textOffset: 10,
             connectionPointRadius: 3,
             outputsDelta: 32,
-            connection: 3
+            connection: 3,
+            connectionProbeStep: 18,
+            connectionArrowLen: 14,
+            connectionArrowAngle: Math.PI / 10
         },
         labelFont: "bold 18px Arial"
     };

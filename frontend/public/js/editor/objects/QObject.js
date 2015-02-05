@@ -267,6 +267,13 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
         this.getOutput = function() {
             return this.output;
         };
+
+        this.getPos = function() {
+            return {
+                x: this.container.x,
+                y: this.container.y
+            };
+        };
     }
 
     return QObject;
