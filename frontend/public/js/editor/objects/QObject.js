@@ -214,9 +214,9 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
             if (from.object == this) {
                 if (_.isArray(this.output)) {
                     console.assert(from.output.name, "output is array, but no has no 'name'");
-                    this.data[from.output.name] = to.object.data.id;
+                    this.data[from.output.name].to = to.object.data.id;
                 } else {
-                    this.data.to = connection;
+                    this.data.to = to.object.data.id;
                 }
 
                 from.output.connection = connection;

@@ -13,8 +13,8 @@
 </head>
 <body>
 
-<div id="toolbar-wrapper" class="ui-layout-north">
-    <div id="toolbar" class="ui-widget-header">
+<div class="ui-layout-north toolbar-wrapper">
+    <div class="ui-widget-header toolbar">
         <div class="btn-group">
             <button id="save" class="ui-button" title="Save"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
             <button id="open" class="ui-button" title="Open"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>
@@ -72,8 +72,27 @@
     </div>
 </div>
 
-<div class="ui-layout-south">
-    Stats here
+<div id="stats-wrapper" class="ui-layout-south toolbar-wrapper">
+    <div class="ui-widget-header toolbar">
+        <button id="simulation-start" class="ui-button" title="Start">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </button>
+        <progress id="simulation-progress" min="0" max="100" value="0"></progress>
+        <label for="simulation-progress" id="simulation-progress-label">
+            0%
+        </label>
+        <span id="simulation-state-wrapper">
+            <span>
+                State:
+            </span>
+            <span id="simulation-state">
+                designing
+            </span>
+            <button id="simulation-show-stats-toggle" class="ui-button" title="Start">
+                <span class="glyphicon glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+            </button>
+        </span>
+    </div>
 </div>
 
 </body>

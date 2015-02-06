@@ -1,47 +1,56 @@
 body {
-  font-size: 18px;
-  visibility: hidden;
+    font-size: 18px;
+    visibility: hidden;
 }
 
-#toolbar-wrapper {
-  overflow-y: hidden;
-  border: 0;
-  margin: 0;
-  padding: 0;
+.toolbar-wrapper {
+    overflow-y: hidden;
+    border: 0;
+    margin: 0;
+    padding: 0;
 }
 
-#toolbar {
-  overflow-y: hidden;
-  border: 0;
-  margin: 0;
-  padding: 6px;
+.toolbar {
+    overflow-y: hidden;
+    border: 0;
+    margin: 0;
+    padding: 6px;
+    vertical-align: middle;
 }
 
 .ui-button {
-  width: 40px;
-  height: 40px;
+    width: 40px;
+    height: 40px;
 }
 
 #app-title {
-  position: absolute;
-  left: 50%;
-  top: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
 
-  transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
-#login-group {
-  position: absolute;
-  right: 10px;
-  top: 50%;
+#login-group, #simulation-state-wrapper {
+    position: absolute;
+    right: 10px;
+    top: 50%;
 
-  transform: translateY(-50%);
+    transform: translateY(-50%);
 
-  font-weight: bold;
+    font-weight: bold;
+}
+
+#simulation-progress-label {
+}
+
+progress {
+    height: 36px;
+    vertical-align: middle;
 }
 
 #properties-wrapper {
-  padding: 0;
+    padding: 0;
 }
 
 #canvas-wrapper {
@@ -61,4 +70,8 @@ body {
 
 .props-table input {
     width: 100%;
+}
+
+#simulation-show-stats-toggle {
+    padding-top: 8px;
 }

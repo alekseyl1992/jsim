@@ -1,7 +1,8 @@
 requirejs.config({
     baseUrl: '/js/lib/dev',
     paths: {
-        editor: '/js/editor'
+        editor: '/js/editor',
+        api: '/js/api/'
     },
     shim: {
         'jquery.layout': {
@@ -11,13 +12,17 @@ requirejs.config({
         },
         easeljs: {
             exports: 'createjs'
-        },
-        //underscore: {
-        //    exports: '_'
-        //}
+        }
     }
 });
 
+
+// default types extensions
+
+/**
+ * Removes item from array
+ * @param item - value to remove
+ */
 Array.prototype.remove = function (item) {
     var i;
     while((i = this.indexOf(item)) !== -1) {

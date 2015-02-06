@@ -10,12 +10,22 @@ define([
         'editor/Exceptions'
     ],
     function($, _, easeljs, mustache, KeyCoder, Palette, Styles, Model, Exceptions) {
-        function Editor(windows) {
+        /**
+         * Main Editor class
+         * @param windows {{$canvas: jQuery}}
+         * @param client {Client}
+         * @param statsManager {StatsManager}
+         * @constructor
+         */
+        function Editor(windows, client, statsManager) {
             var self = this;
 
             this.FPS = 30;
 
             this.windows = windows;
+            this.client = client;
+            this.statsManager = statsManager;
+
             this.stage = new easeljs.Stage(windows.$canvas[0]);
             this.stage.enableMouseOver(30);
 
@@ -35,9 +45,6 @@ define([
             this.$objectPropsTable = $('#object-props-table');
             this.$modelPropsTable = $('#model-props-table');
 
-            windows.$canvas.click(function() {
-                windows.$canvas.focus();
-            });
 
             var testModelData = {
                 "duration": 1000,
@@ -101,6 +108,16 @@ define([
 
             var objectStyle = Styles.object;
             var palette = new Palette(this.stage, self.model, objectStyle, Styles.palette);
+
+            // subscribe to UI events
+            $('#simulation-start').click(function() {
+                alert("Simulation start pressed");
+                client.sendModel(self.model.getData(), {
+                    onError: statsManager.onError.bind(statsManager),
+                    onComplete: statsManager.onComplete.bind(statsManager),
+                    onProgress: statsManager.onProgress.bind(statsManager),
+                });
+            });
 
 
             this.stage.update();
