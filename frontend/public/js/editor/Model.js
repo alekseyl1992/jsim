@@ -124,7 +124,7 @@ define([
             if (!justAddToStage) {
                 // generate name and id
                 _data.name = typeEntry.name + " " + typeEntry.id;
-                _data.id = self.currentUID;
+                _data.id = self.currentUID.toString();
 
                 this.data.objects.push(_data);
             }

@@ -45,6 +45,7 @@ public class TaskReceiver implements Runnable {
             taskId = task.getString(TaskFields.ID);
             modelJson = task.getJSONObject(TaskFields.MODEL);
         } catch (JSONException e) {
+            System.err.println("[TR] Error parsing task: " + taskStr);
             e.printStackTrace();
             return;
         }
@@ -76,6 +77,8 @@ public class TaskReceiver implements Runnable {
     }
 
     private void sendError(String taskId, Throwable error) {
+        System.out.println("[TR] Model error: " + error.getMessage());
+
         String jsonStr = Error.toJsonString(taskId, error);
         rmq.send(ERROR_QUEUE_NAME, jsonStr);
     }

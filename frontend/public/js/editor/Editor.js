@@ -47,16 +47,16 @@ define([
 
 
             var testModelData = {
-                "duration": 1000,
                 "name": "Model 1",
+                "duration": 1000,
                 "objects": [
                     {
                         "type": "source",
                         "name": "Source 1",
                         "x": 210,
                         "y": 80,
-                        "id": 1,
-                        "to": 2,
+                        "id": "1",
+                        "to": "2",
                         "spec": {
                             "lambda": 1
                         }
@@ -66,8 +66,8 @@ define([
                         "name": "Queue 1",
                         "x": 420,
                         "y": 80,
-                        "id": 2,
-                        "to": 3,
+                        "id": "2",
+                        "to": "3",
                         "spec": {
                             "mu": 1,
                             "channels": 10,
@@ -79,9 +79,9 @@ define([
                         "name": "Splitter 1",
                         "x": 630,
                         "y": 80,
-                        "id": 3,
-                        "toA": 2,
-                        "toB": 4,
+                        "id": "3",
+                        "toA": "2",
+                        "toB": "4",
                         "spec": {
                             "pA": 0.5
                         }
@@ -91,7 +91,7 @@ define([
                         "name": "Sink 1",
                         "x": 840,
                         "y": 80,
-                        "id": 4,
+                        "id": "4",
                         "spec": {}
                     }
                 ]

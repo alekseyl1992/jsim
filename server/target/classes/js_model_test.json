@@ -1,49 +1,50 @@
 {
-    "duration": 1000,
-    "objects": [
-        {
-            "type": "source",
-            "name": "Generator 1",
-            "x": 10,
-            "y": 20,
-            "id": "0",
-            "to": "1",
-            "spec": {
-                "lambda": 1
-            }
-        },
-        {
-            "type": "queue",
-            "name": "Queue 1",
-            "x": 40,
-            "y": 20,
-            "id": "1",
-            "to": "2",
-            "spec": {
-                "mu": 1,
-                "channels": 10,
-                "limit": -1
-            }
-        },
-        {
-            "type": "splitter",
-            "name": "Splitter 1",
-            "x": 70,
-            "y": 20,
-            "id": "2",
-            "toA": "1",
-            "toB": "3",
-            "spec": {
-                "pA": 0.5
-            }
-        },
-        {
-            "type": "sink",
-            "name": "Generator 1",
-            "x": 100,
-            "y": 20,
-            "id": "3",
-            "spec": {}
-        }
-    ]
+  "duration": 1000,
+  "name": "Model 1",
+  "objects": [
+    {
+      "type": "source",
+      "name": "Generator 1",
+      "x": 210,
+      "y": 20,
+      "id": 0,
+      "to": 1,
+      "spec": {
+        "lambda": 1
+      }
+    },
+    {
+      "type": "queue",
+      "name": "Queue 1",
+      "x": 420,
+      "y": 20,
+      "id": 1,
+      "to": 2,
+      "spec": {
+        "mu": 1,
+        "channels": 10,
+        "limit": -1
+      }
+    },
+    {
+      "type": "splitter",
+      "name": "Splitter 1",
+      "x": 630,
+      "y": 20,
+      "id": 2,
+      "toA": 1,
+      "toB": 3,
+      "spec": {
+        "pA": 0.5
+      }
+    },
+    {
+      "type": "sink",
+      "name": "Sink 1",
+      "x": 840,
+      "y": 20,
+      "id": 3,
+      "spec": {}
+    }
+  ]
 }

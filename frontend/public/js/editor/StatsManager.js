@@ -9,7 +9,7 @@ define([], function() {
 
             this.onProgress = function(value) {
                 windows.$progress.val(value);
-                windows.$progressLabel.val(value);
+                windows.$progressLabel.text(parseInt(value, 10) + '%');
             };
 
             this.onComplete = function(stats) {
