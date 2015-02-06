@@ -1,13 +1,13 @@
 define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
         function Source(stage, container, style, data) {
-            var _data = _.assign(_.cloneDeep(data), {
+            _.defaults(data, {
                 type: "source",
                 spec: {
                     lambda: 1
                 }
             });
-            _.extend(this, new QObject(stage, container, style, _data));
+            _.extend(this, new QObject(stage, container, style, data));
             this.setSelf(this);
 
             this.input = null;

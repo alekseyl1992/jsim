@@ -7,13 +7,13 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
             var _style = _.cloneDeep(style);  // style should stay read only
             _style.sizes.textOffset += s.w - s.bw;
 
-            var _data = _.assign(_.cloneDeep(data), {
+            _.defaults(data, {
                 type: "splitter",
                 spec: {
                     pA: 0.5
                 }
             });
-            _.extend(this, new QObject(stage, container, _style, _data));
+            _.extend(this, new QObject(stage, container, _style, data));
             this.setSelf(this);
 
             this.output = [

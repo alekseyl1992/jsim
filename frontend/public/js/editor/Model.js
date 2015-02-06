@@ -6,8 +6,9 @@ define([
     'editor/objects/Queue',
     'editor/objects/Splitter',
     'editor/objects/Sink',
-    'editor/Connection'
-], function(_, easeljs, Styles, Source, Queue, Splitter, Sink, Connection) {
+    'editor/Connection',
+    'editor/Exceptions'
+], function(_, easeljs, Styles, Source, Queue, Splitter, Sink, Connection, Exceptions) {
     function Model(stage, editor, data) {
         var self = this;
 
@@ -117,7 +118,7 @@ define([
         this.getObjectById = getObjectById;
 
         function addObject(data, justAddToStage) {
-            var _data = _.cloneDeep(data);  // ensure RO
+            var _data = data; //_.cloneDeep(data);  // ensure RO
             var typeEntry = self.typesMap[_data.type];
 
             if (!justAddToStage) {
@@ -155,9 +156,38 @@ define([
             }
         };
 
-        //TODO
-        this.updateObject = function(object, field, value) {
+        /**
+         * Sets property key of object to value according to obj[key] type
+         * @param obj {Object}
+         * @param key {String}
+         * @param value {String|Number}
+         * @private
+         */
+        this._setProp = function(obj, key, value) {
+            if (_.isNumber(obj[key])) {
+                var parsed = parseFloat(value);
+                if (!_.isNaN(parsed)) {
+                    obj[key] = parsed;
+                } else {
+                    throw Exceptions.CAST;
+                }
+            } else {
+                obj[key] = value;
+            }
+        };
 
+        this.update = function(key, value) {
+            this._setProp(this.data, key, value);
+        };
+
+        this.updateObject = function(key, value, object) {
+            object = object || this.selectedObject;
+            var objectData = object.getData();
+
+            if (key == "name")
+                this._setProp(objectData, key, value);
+            else
+                this._setProp(objectData.spec, key, value);
         };
 
         this.selectObject = function(object) {

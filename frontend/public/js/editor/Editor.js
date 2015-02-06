@@ -4,15 +4,12 @@ define([
         'easeljs',
         'mustache',
         'editor/KeyCoder',
-        'editor/objects/Source',
-        'editor/objects/Queue',
-        'editor/objects/Splitter',
-        'editor/objects/Sink',
         'editor/Palette',
         'editor/Styles',
-        'editor/Model'
+        'editor/Model',
+        'editor/Exceptions'
     ],
-    function($, _, easeljs, mustache, KeyCoder, Source, Queue, Splitter, Sink, Palette, Styles, Model) {
+    function($, _, easeljs, mustache, KeyCoder, Palette, Styles, Model, Exceptions) {
         function Editor(windows) {
             var self = this;
 
@@ -126,6 +123,30 @@ define([
                 $target.html(html);
             }
 
+            /**
+             * Input fields' change event handler
+             * @param input {DOMElement}
+             * @param updater {Function} - Function to call with (key, value)
+             * @private
+             */
+            this._onPropChange = function(input, updater) {
+                var $input = $(input);
+                var key = $input.data("key");
+                var value = $input.val();
+
+                //TODO: update window title
+
+                try {
+                    updater(key, value);
+                } catch(e) {
+                    if (e != Exceptions.CAST)
+                        throw e;
+
+                    //TODO: alertify
+                    window.alert(key + " should be Number");
+                }
+            };
+
             this.showObjectProps = function(object) {
                 var objectData = object.getData();
 
@@ -139,6 +160,10 @@ define([
 
                 // disallow user to modify type
                 $('#object-prop_type').prop('disabled', true);
+
+                this.$objectPropsTable.find("input").on("input", function(evt) {
+                    self._onPropChange(evt.target, self.model.updateObject.bind(self.model));
+                });
             };
 
             this.hideObjectProps = function() {
@@ -149,6 +174,10 @@ define([
                 var modelData = _.omit(model.getData(), "objects");
 
                 renderProps(modelData, this.template.modelProps, this.$modelPropsTable);
+
+                this.$modelPropsTable.find("input").on("input", function(evt) {
+                    self._onPropChange(evt.target, self.model.update.bind(self.model));
+                });
             };
 
             this.showModelProps(this.model);
