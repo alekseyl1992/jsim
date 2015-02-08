@@ -29,3 +29,11 @@ Array.prototype.remove = function (item) {
         this.splice(i, 1);
     }
 };
+
+/**
+ * Adds all elements from arr
+ * @param arr {Array}
+ */
+Array.prototype.pushArray = function(arr) {
+    this.push.apply(this, arr);
+};

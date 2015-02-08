@@ -136,7 +136,8 @@ define(['easeljs'], function(easeljs) {
             // calculate middle two points
             var middleFirst, middleLast;  // i want 'let' to be part of JS right now :(
 
-            if (maxY + s.h - start.y < start.y - minY) {  // go higher
+            var avgY = (start.y + end.y) / 2;
+            if (maxY + s.h - avgY < avgY - minY) {  // go higher
                 middleFirst = {
                     x: first.x,
                     y: maxY + s.h + positiveStep
@@ -200,6 +201,15 @@ define(['easeljs'], function(easeljs) {
         };
 
         this.remove = function() {
+            // disconnect from source
+            if (this.from)
+                this.from.object.removeConnection(this);
+
+            // disconnect from target
+            if (this.to)
+                this.to.object.removeConnection(this);
+
+            // remove from stage
             parentContainer.removeChild(this.shape);
             stage.update();
         };

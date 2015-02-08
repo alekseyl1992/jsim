@@ -15,6 +15,8 @@ function TaskManager() {
 
         task.status = Task.Status.SENT;
 
+        console.log("[TM] createTask: ", task);
+
         return task;
     };
 
@@ -31,6 +33,8 @@ function TaskManager() {
 
         task.status = Task.Status.IN_PROGRESS;
         task.progress = msg.progress;
+
+        console.log("[TM] onProgress: ", task);
     };
 
     this.onError = function(msg) {
@@ -42,6 +46,8 @@ function TaskManager() {
 
         task.status = Task.Status.ERROR;
         task.error = msg.message;
+
+        console.log("[TM] onError: ", task);
     };
 
     this.onFinished = function(msg) {
@@ -53,6 +59,8 @@ function TaskManager() {
 
         task.status = Task.Status.DONE;
         task.stats = msg.stats;
+
+        console.log("[TM] onFinished: ", task);
     };
 }
 

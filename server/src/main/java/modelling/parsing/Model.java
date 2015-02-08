@@ -98,8 +98,8 @@ public class Model {
     private void onTimeChanged(Integer time) {
         Double newProgress = ((double) time) / duration;
 
-        // notify each 10%
-        if (newProgress - progress > 0.1) {
+        // notify each 1%
+        if (newProgress - progress > 0.01) {
             progress = newProgress;
             
             if (progressCallback != null)

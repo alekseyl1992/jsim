@@ -131,6 +131,11 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                     console.log("Connecting");
                     evt.stopPropagation();
 
+                    // delete old connection if existed
+                    var oldConnection = point.connection;
+                    if (oldConnection)
+                        oldConnection.remove();
+
                     self.newConnection.setFrom({
                         object: self,
                         output: point
@@ -153,7 +158,10 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
 
                     var targetObject = self.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
 
-                    if (targetObject && targetObject.parent && targetObject.parent.jsimObject) {
+                    // ensure target is jsimObject and not equal to self (from != to)
+                    if (targetObject && targetObject.parent && targetObject.parent.jsimObject
+                        && targetObject.parent.jsimObject != self) {
+
                         var target = targetObject.parent.jsimObject;
 
                         self.newConnection.setTo({
@@ -187,6 +195,7 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
          */
         this.setSelf = function(newSelf) {
             self = newSelf;
+            this.container.jsimObject = self;
         };
 
         this.setText = setText;
@@ -202,7 +211,30 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
             this.stage.update();
         };
 
+        /**
+         * Disconnects and removes object from stage
+         */
         this.remove = function() {
+            // collect all (input and output) connections
+            var connections = [];
+            if (this.input)
+                connections.pushArray(this.input.connections);
+
+            if (this.output && this.output.connection) {
+                connections.push(this.output.connection);
+            } else if (_.isArray(this.output)) {
+                _.each(this.output, function(output) {
+                    if (output.connection)
+                        connections.push(output.connection);
+                });
+            }
+
+            // disconnect
+            _.each(connections, function(connection) {
+                connection.remove();
+            });
+
+            // remove from stage
             this.parentContainer.removeChild(this.container);
             this.stage.update();
         };
@@ -214,7 +246,7 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
             if (from.object == this) {
                 if (_.isArray(this.output)) {
                     console.assert(from.output.name, "output is array, but no has no 'name'");
-                    this.data[from.output.name].to = to.object.data.id;
+                    this.data[from.output.name] = to.object.data.id;
                 } else {
                     this.data.to = to.object.data.id;
                 }
