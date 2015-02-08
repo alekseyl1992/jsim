@@ -8,6 +8,7 @@
       <w>jsim</w>
       <w>keydown</w>
       <w>keyup</w>
+      <w>onresize</w>
       <w>unselect</w>
     </words>
   </dictionary>

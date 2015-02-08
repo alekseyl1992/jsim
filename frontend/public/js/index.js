@@ -5,7 +5,7 @@ require(['config'], function() {
     require(['jquery', 'jquery-ui', 'jquery.layout', 'editor/Editor', 'api/Client', 'editor/StatsManager'],
         function(_1, _2, _3, Editor, Client, StatsManager) {
             $(function() {
-                initLayout();
+                initLayout(resize);
 
                 var $window = $(window);
                 var $canvas = $('#editor-field');
@@ -29,20 +29,21 @@ require(['config'], function() {
                     $canvas.focus();
                 });
 
-                //TODO: add canvas's parent resize handler
                 var ctx = $canvas[0].getContext("2d");
-                $window.resize(function() {
+                function resize() {
                     ctx.canvas.width = $canvasWrapper.width();
                     ctx.canvas.height = $canvasWrapper.height();
                     editor.resize(ctx.canvas.width, ctx.canvas.height);
-                });
+                }
+
+                $window.resize(resize);
                 $window.resize();
             });
         }
     );
 });
 
-function initLayout() {
+function initLayout(onResize) {
     var $body = $('body');
 
     $body.layout({
@@ -59,7 +60,7 @@ function initLayout() {
         },
 
         center: {
-            resizable: false,
+            onresize: onResize
         },
 
         east: {
