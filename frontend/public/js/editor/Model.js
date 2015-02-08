@@ -184,10 +184,11 @@ define([
             object = object || this.selectedObject;
             var objectData = object.getData();
 
-            if (key == "name")
-                this._setProp(objectData, key, value);
-            else
+            if (key == "name") {
+                object.setName(value);
+            } else {
                 this._setProp(objectData.spec, key, value);
+            }
         };
 
         this.selectObject = function(object) {

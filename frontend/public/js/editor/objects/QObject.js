@@ -85,18 +85,25 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                 setPos(data.x, data.y);
 
             if (data.name)
-                setText(data.name);
+                setName(data.name);
         }
 
         this.parentContainer.addChild(this.container);
 
-        function setText(text) {
-            self.text.text = text;
+        function setName(name) {
+            self.text.text = name;
+            self.data.name = name;
+
+            stage.update();
         }
 
         function setPos(x, y) {
             self.container.x = x;
             self.container.y = y;
+
+            self.data.x = x;
+            self.data.y = y;
+            stage.update();
         }
 
         this.drawConnectionPoints = function() {
@@ -198,7 +205,7 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
             this.container.jsimObject = self;
         };
 
-        this.setText = setText;
+        this.setName = setName;
         this.setPos = setPos;
 
         this.select = function() {
