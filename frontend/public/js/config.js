@@ -10,6 +10,11 @@ requirejs.config({
                 'jquery', 'jquery-ui'
             ]
         },
+        'bootstrap-table': {
+            deps: [
+                'jquery'
+            ]
+        },
         easeljs: {
             exports: 'createjs'
         }
