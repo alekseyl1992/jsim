@@ -7,9 +7,10 @@ define([
         'editor/Palette',
         'editor/Styles',
         'editor/Model',
-        'editor/Exceptions'
+        'editor/Exceptions',
+        'util/Templater'
     ],
-    function($, _, easeljs, mustache, KeyCoder, Palette, Styles, Model, Exceptions) {
+    function($, _, easeljs, mustache, KeyCoder, Palette, Styles, Model, Exceptions, Templater) {
         /**
          * Main Editor class
          * @param windows {{$canvas: jQuery}}
@@ -31,14 +32,9 @@ define([
 
             var keyCoder = new KeyCoder(windows.$canvas);
 
-            // load templates as strings
-            function makeTemplate(str) {
-                return str.replace(/{/g, "{{").replace(/}/g, "}}");
-            }
-
             this.template = {
-                modelProps: makeTemplate($('#model-props-template').html()),
-                objectProps: makeTemplate($('#object-props-template').html())
+                modelProps: Templater.makeTemplate('#model-props-template'),
+                objectProps: Templater.makeTemplate('#object-props-template')
             };
 
             // cache jQ elements

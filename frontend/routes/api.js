@@ -40,4 +40,29 @@ router.get('/getProgress', function(req, res, next) {
     }
 });
 
+// TODO: get report from DB
+router.get('/getReport', function(req, res, next) {
+    var taskId = req.query.taskId;
+    console.log("/getReport: " + taskId);
+
+    var task = taskManager.getTask(taskId);
+
+    if (task) {
+        res.json({
+            reportSummary: {
+                modelName: task.model.name,
+                author: "Vasja Pupkin",
+                simulationDate: Date.now()
+            },
+            stats: task.stats
+        });
+    } else {
+        //TODO: implement sendError() and underlying protocol package format
+        res.json({
+            taskId: taskId,
+            status: Task.Status.ERROR
+        });
+    }
+});
+
 module.exports = router;

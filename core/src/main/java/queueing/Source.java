@@ -12,6 +12,7 @@ public class Source extends QObject {
 
     public Source(Simulation sim, double lambda, Random random) {
         super(sim);
+        type = "source";
 
         gen = new PoissonGenerator(1.0d / lambda, random);
 

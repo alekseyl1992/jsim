@@ -4,19 +4,34 @@
     <meta charset="UTF-8">
     <title>jsim report</title>
 
-    <link type="text/css" rel="stylesheet" href="/css/lib/bootstrap.css" />
-    <link type="text/css" rel="stylesheet" href="/css/lib/bootstrap-table.css" />
+    <link rel="stylesheet" href="/css/lib/bootstrap.css" />
+    <link rel="stylesheet" href="/css/lib/bootstrap-table.css" />
 
-    <!-- TODO: get rid of CDN -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-    <link type="text/css" rel="stylesheet" href="/css/report.css" />
+    <link rel="stylesheet" href="css/lib/jquery-ui.css">
+    <link rel="stylesheet" href="css/lib/jquery-ui.theme.css">
+    <link rel="stylesheet" href="/css/report.css" />
 
     <script data-main="/js/report" src="/js/lib/dev/require.js"></script>
 </head>
 <body>
 
-<div id="usage-stats">
-    <h2>Usage statistics:</h2>
+<div class="accordion">
+    <h3>Report summary</h3>
+    <div>
+        <table id="report-summary-table" class="card_view" data-cache="false" data-show-header="false">
+            <thead>
+            <tr>
+                <th data-field="key">Key</th>
+                <th data-field="value">Value</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="accordion" id="usage-stats">
+    <h3>Usage statistics</h3>
+    <div>
     <table id="usage-stats-table" data-cache="false">
         <thead>
         <tr>
@@ -25,6 +40,28 @@
         </tr>
         </thead>
     </table>
+    </div>
+</div>
+
+<div id="queues-stats" class="accordion">
+    <h3>Queue stats</h3>
+    <div id="queue-stats-container">
+        <script id="queue-stats-template" language="text/html">
+            <div class="accordion queue-stats">
+                <h3>{name}</h3>
+                <div>
+                    <table class="queue-stats-table card_view" data-cache="false" data-show-header="false">
+                        <thead>
+                        <tr>
+                            <th data-field="key">Key</th>
+                            <th data-field="value">Value</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </script>
+    </div>
 </div>
 
 </body>

@@ -9,6 +9,7 @@
       <w>keydown</w>
       <w>keyup</w>
       <w>onresize</w>
+      <w>templater</w>
       <w>unselect</w>
     </words>
   </dictionary>

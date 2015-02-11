@@ -31,10 +31,12 @@ function TaskManager() {
             return;
         }
 
-        task.status = Task.Status.IN_PROGRESS;
-        task.progress = msg.progress;
+        if (task.status != Task.Status.DONE) {
+            task.status = Task.Status.IN_PROGRESS;
+            task.progress = msg.progress;
 
-        console.log("[TM] onProgress: ", task);
+            console.log("[TM] onProgress: ", task);
+        }
     };
 
     this.onError = function(msg) {

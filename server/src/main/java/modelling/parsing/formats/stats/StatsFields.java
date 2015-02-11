@@ -5,6 +5,8 @@ package modelling.parsing.formats.stats;
 public class StatsFields {
     public static final String USE_COUNT = "useCount";
 
+    public static final String NAME = "name";
+    public static final String TYPE = "type";
     public static final String AVG_QUEUE_SIZE = "avgQueueSize";
     public static final String AVG_WAIT_TIME = "avgWaitTime";
 }

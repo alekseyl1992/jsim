@@ -6,6 +6,9 @@ public abstract class QObject {
     private Simulation sim;
 
     private String id;
+    private String name;
+
+    protected String type;
 
     private QObject to, toA, toB;
     private int useCount;
@@ -50,5 +53,17 @@ public abstract class QObject {
 
     public int getUseCount() {
         return useCount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
     }
 }

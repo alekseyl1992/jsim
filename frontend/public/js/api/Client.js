@@ -1,4 +1,4 @@
-define(['api/Exceptions'], function(Exceptions) {
+define(['jquery', 'api/Exceptions'], function($, Exceptions) {
     function Client() {
         var self = this;
 
@@ -67,6 +67,30 @@ define(['api/Exceptions'], function(Exceptions) {
                     callbacks.onError(error, Exceptions.POLLING);
                 });
         };
+
+        /**
+         * Gets JSON stats report
+         * @param taskId {String}
+         * @param callbacks {Object}
+         * @param callbacks.onError {Function}
+         * @param callbacks.onComplete {Function}
+         */
+        this.getReport = function(taskId, callbacks) {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/api/getReport",
+                data: {
+                    taskId: taskId
+                }
+            })
+                .done(function (msg) {
+                    callbacks.onComplete(msg);
+                })
+                .fail(function (error) {
+                    callbacks.onError(error);
+                });
+        }
     }
 
     return Client;

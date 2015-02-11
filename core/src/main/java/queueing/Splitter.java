@@ -10,6 +10,8 @@ public class Splitter extends QObject {
 
     public Splitter(Simulation sim, double pA, Random random) {
         super(sim);
+        type = "splitter";
+
         this.pA = pA;
 
         this.random = random;

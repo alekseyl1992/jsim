@@ -1,4 +1,4 @@
-define([], function() {
+define(['jquery'], function($) {
         /**
          * Deals with simulation process and stats visualisation
          * @param windows {Object}
@@ -13,7 +13,19 @@ define([], function() {
             };
 
             this.onComplete = function(stats) {
-                alert("onComplete" + stats);
+                $("#simulation-complete-dialog").dialog({
+                    width: "50%",
+                    modal: true,
+                    buttons: {
+                        "Yes": function() {
+                            window.open('/report?' + stats.taskId, '_blank');
+                            $(this).dialog("close");
+                        },
+                        "No": function() {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
             };
 
             this.onError = function(error, reason) {

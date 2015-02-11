@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>jsim</title>
 
-    <link type="text/css" rel="stylesheet" href="/css/lib/bootstrap.css" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-    <link type="text/css" rel="stylesheet" href="/css/lib/layout-default.css" />
-    <link type="text/css" rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/lib/bootstrap.css" />
+    <link rel="stylesheet" href="css/lib/jquery-ui.css">
+    <link rel="stylesheet" href="css/lib/jquery-ui.theme.css">
+
+    <link rel="stylesheet" href="/css/lib/layout-default.css" />
+    <link rel="stylesheet" href="/css/style.css" />
 
     <script data-main="/js/index" src="/js/lib/dev/require.js"></script>
 </head>
@@ -93,6 +95,16 @@
             </button>
         </span>
     </div>
+</div>
+
+<!-- jQ-ui dialogs -->
+<div id="simulation-complete-dialog" title="Simulation complete">
+    <p>
+        Simulation successfully complete.
+    </p>
+    <p>
+        Show report?
+    </p>
 </div>
 
 </body>

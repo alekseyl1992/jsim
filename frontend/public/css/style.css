@@ -18,7 +18,7 @@ body {
     vertical-align: middle;
 }
 
-.ui-button {
+.toolbar .ui-button {
     width: 40px;
     height: 40px;
 }
