@@ -26,9 +26,8 @@ public abstract class QObject {
         toB = second;
     }
 
-    public QObject setId(String id) {
+    public void setId(String id) {
         this.id = id;
-        return this;
     }
 
     public String getId() {

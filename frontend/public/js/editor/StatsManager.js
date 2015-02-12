@@ -18,7 +18,7 @@ define(['jquery'], function($) {
                     modal: true,
                     buttons: {
                         "Yes": function() {
-                            window.open('/report?' + stats.taskId, '_blank');
+                            window.open('/report?taskId=' + stats.taskId, '_blank');
                             $(this).dialog("close");
                         },
                         "No": function() {

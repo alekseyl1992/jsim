@@ -10,9 +10,6 @@ import modelling.parsing.formats.model.QObjectFields;
 import java.io.IOException;
 import java.io.InputStream;
 
-
-//TODO: think about id type (currently it is String)
-// and toA/toB not being part of spec, to not being part of "super" object
 public class ModelFactory {
     public static Model createModel(String json) throws ModelParsingError {
         try {
@@ -56,6 +53,7 @@ public class ModelFactory {
         return model;
     }
 
+    //TODO: move to test
     public static void main(String[] args) throws IOException {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         InputStream is = classloader.getResourceAsStream("js_model_test.json");

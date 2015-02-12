@@ -27,44 +27,8 @@ require(['config'], function() {
 
                 var $queueStatsContainer = $('#queue-stats-container');
 
-                //TODO: render reportData
-                var reportSummary = {
-                    modelName: "Model 1",
-                    author: "Vasya Pupkin",
-                    simulationDate: Date.now()
-                };
-
-                var stats = {
-                    "1": {
-                        "name": "Source 1",
-                        "type": "source",
-                        "useCount": 968
-                    },
-                    "2": {
-                        "name": "Queue 1",
-                        "type": "queue",
-                        "avgWaitTime": 0.999020568070519,
-                        "avgQueueSize": 2.0450450450450477,
-                        "useCount": 2046
-                    },
-                    "5": {
-                        "name": "Queue 2",
-                        "type": "queue",
-                        "avgWaitTime": 0.999020568070519,
-                        "avgQueueSize": 2.0450450450450477,
-                        "useCount": 2046
-                    },
-                    "3": {
-                        "name": "Splitter 1",
-                        "type": "splitter",
-                        "useCount": 2042
-                    },
-                    "4": {
-                        "name": "Sink 1",
-                        "type": "sink",
-                        "useCount": 964
-                    }
-                };
+                var reportSummary = reportData.reportSummary;
+                var stats = reportData.stats;
 
                 var usageStats = [];
                 _.forOwn(stats, function (object) {

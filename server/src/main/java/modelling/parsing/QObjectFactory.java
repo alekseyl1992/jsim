@@ -16,25 +16,39 @@ public class QObjectFactory {
 
     public QObject createQObject(JSONObject json)
             throws ModelParsingError {
+        try {
+            String id = json.getString(QObjectFields.ID);
+            String name = json.getString(QObjectFields.NAME);
+
+            QObject qObject = _createQObject(json);
+            qObject.setId(id);
+            qObject.setName(name);
+
+            return qObject;
+        } catch (JSONException e) {
+            throw new ModelParsingError(e);
+        }
+    }
+
+    private QObject _createQObject(JSONObject json)
+            throws ModelParsingError {
 
         try {
             String type = json.getString(QObjectFields.TYPE);
-            String id = json.getString(QObjectFields.ID);
 
             switch (type) {
                 case QObjectTypes.SOURCE:
-                    return createSource(json).setId(id);
+                    return createSource(json);
                 case QObjectTypes.QUEUE:
-                    return createQueue(json).setId(id);
+                    return createQueue(json);
                 case QObjectTypes.SPLITTER:
-                    return createSplitter(json).setId(id);
+                    return createSplitter(json);
                 case QObjectTypes.SINK:
-                    return createSink(json).setId(id);
+                    return createSink(json);
                 default:
                     throw new ModelParsingError("Unsupported type: " + type);
             }
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             throw new ModelParsingError(e);
         }
     }

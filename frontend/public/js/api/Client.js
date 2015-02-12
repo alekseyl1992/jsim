@@ -54,7 +54,7 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                         callbacks.onProgress(100);
                         console.log("Stats: ", msg.stats);
 
-                        callbacks.onComplete(JSON.stringify(msg));
+                        callbacks.onComplete(msg);
 
                         alert("Simulation finished!");
                     } else {
@@ -85,6 +85,7 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                 }
             })
                 .done(function (msg) {
+                    console.log("Report: ", msg);
                     callbacks.onComplete(msg);
                 })
                 .fail(function (error) {

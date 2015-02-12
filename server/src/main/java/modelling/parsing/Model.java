@@ -62,15 +62,16 @@ public class Model {
 
         for (QObject qObject: objects.values()) {
             JSONObject objStats = new JSONObject();
+
+            objStats.put(StatsFields.NAME, qObject.getName());
+            objStats.put(StatsFields.TYPE, qObject.getType());
+
             objStats.put(StatsFields.USE_COUNT, qObject.getUseCount());
 
             if (qObject instanceof Queue) {
                 Queue queue = (Queue) qObject;
 
                 //TODO: add deviations and usage percentage
-                objStats.put(StatsFields.NAME, queue.getName());
-                objStats.put(StatsFields.TYPE, queue.getType());
-
                 objStats.put(StatsFields.AVG_QUEUE_SIZE, queue.getStats().getSizesSeries().getAverage());
                 objStats.put(StatsFields.AVG_WAIT_TIME, queue.getStats().getDurationSeries().getAverage());
             }
