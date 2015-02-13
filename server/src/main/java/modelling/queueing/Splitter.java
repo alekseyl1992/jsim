@@ -1,4 +1,4 @@
-package queueing;
+package modelling.queueing;
 
 import core.Simulation;
 

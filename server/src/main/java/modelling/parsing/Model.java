@@ -4,8 +4,8 @@ import core.Simulation;
 import modelling.parsing.formats.stats.StatsFields;
 import org.json.JSONObject;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import queueing.QObject;
-import queueing.Queue;
+import modelling.queueing.QObject;
+import modelling.queueing.Queue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +74,8 @@ public class Model {
                 //TODO: add deviations and usage percentage
                 objStats.put(StatsFields.AVG_QUEUE_SIZE, queue.getStats().getSizesSeries().getAverage());
                 objStats.put(StatsFields.AVG_WAIT_TIME, queue.getStats().getDurationSeries().getAverage());
+
+                //TODO: add data from plotters
             }
 
             stats.put(qObject.getId(), objStats);

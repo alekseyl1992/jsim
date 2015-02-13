@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import modelling.parsing.formats.model.QObjectFields;
 import modelling.parsing.formats.model.SpecFields;
 import modelling.parsing.formats.model.QObjectTypes;
-import queueing.*;
+import modelling.queueing.*;
 
 public class QObjectFactory {
     private Model model;

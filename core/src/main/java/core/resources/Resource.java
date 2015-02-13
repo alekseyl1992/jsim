@@ -67,4 +67,8 @@ public class Resource {
     public int getFreeChannels() {
         return freeChannels;
     }
+
+    public int getQueueSize() {
+        return queue.size();
+    }
 }

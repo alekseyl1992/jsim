@@ -1,9 +1,9 @@
-package queueing;
+package modelling.queueing;
 
 import core.Simulation;
 
 public abstract class QObject {
-    private Simulation sim;
+    protected Simulation sim;
 
     private String id;
     private String name;

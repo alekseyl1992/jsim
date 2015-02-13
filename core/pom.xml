@@ -31,7 +31,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>queueing.HighloadModel</mainClass>
+                            <mainClass>modelling.queueing.HighloadModel</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -42,7 +42,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>queueing.HighloadModel</mainClass>
+                            <mainClass>modelling.queueing.HighloadModel</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
