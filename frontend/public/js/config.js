@@ -11,6 +11,11 @@ requirejs.config({
                 'jquery', 'jquery-ui'
             ]
         },
+        'jquery.flot': {
+            deps: [
+                'jquery'
+            ]
+        },
         'bootstrap-table': {
             deps: [
                 'jquery'

@@ -50,14 +50,26 @@
             <div class="accordion queue-stats">
                 <h3>{name}</h3>
                 <div>
-                    <table class="queue-stats-table card_view" data-cache="false" data-show-header="false">
-                        <thead>
-                        <tr>
-                            <th data-field="key">Key</th>
-                            <th data-field="value">Value</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div class="col-md-4">
+                        <table class="queue-stats-table card_view" data-cache="false" data-show-header="false">
+                            <thead>
+                            <tr>
+                                <th data-field="key">Key</th>
+                                <th data-field="value">Value</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="wait_time_vs_time_plot queue_plot"></div>
+                        <div class="queue_plot_title">Wait time vs. time</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="queue_size_vs_time_plot queue_plot"></div>
+                        <div class="queue_plot_title">Queue size vs. time</div>
+                    </div>
                 </div>
             </div>
         </script>

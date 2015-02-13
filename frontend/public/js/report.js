@@ -2,8 +2,8 @@
 //report entry point
 //load libs first to set baseUrl
 require(['config'], function() {
-    require(['jquery', 'jquery-ui', 'bootstrap-table', 'lodash', 'mustache', 'util/Templater', 'api/Client'],
-        function (_1, _2, _3, _, mustache, Templater, Client) {
+    require(['jquery', 'jquery-ui', 'bootstrap-table', 'jquery.flot', 'lodash', 'mustache', 'util/Templater', 'api/Client'],
+        function (_1, _2, _3, flot, _, mustache, Templater, Client) {
             $(function () {
                 var client = new Client();
 
@@ -41,14 +41,55 @@ require(['config'], function() {
                         var $queueStats = $(mustache.render(templates.queueStats, object));
 
                         // show queues stats
-                        $queueStats.find('table').bootstrapTable({
+                        var $queueTable = $queueStats.find('table');
+                        $queueTable.bootstrapTable({
                             // convert object to array of {key, value} pairs
                             data: _.map(object, function(value, key) {
                                 return {key: key, value: value};
                             })
                         });
 
+                        // add table to page to calc dimensions
                         $queueStats.appendTo($queueStatsContainer);
+
+                        // add plots
+                        var $waitPlot = $queueStats.find('.wait_time_vs_time_plot');
+                        $waitPlot.height($queueTable.height());
+
+                        var $sizePlot = $queueStats.find('.queue_size_vs_time_plot');
+                        $sizePlot.height($queueTable.height());
+
+                        var waitData = [{data:
+                            [
+                                [1, -183.96], [2, 328.52], [3, 1108.98], [4, 813.6], [5, 324.0]
+                            ]}
+                        ];
+
+                        var sizeData = [{data:
+                            [
+                                [1, -183.96], [2, 328.52], [3, 1108.98], [4, 813.6], [5, 324.0]
+                            ]}
+                        ];
+
+                        $.plot($waitPlot, waitData, {
+                            series: {
+                                lines: { show: true },
+                                points: { show: true }
+                            },
+                            xaxis: {
+                                tickDecimals: 0
+                            }
+                        });
+
+                        $.plot($sizePlot, sizeData, {
+                            series: {
+                                lines: { show: true },
+                                points: { show: true }
+                            },
+                            xaxis: {
+                                tickDecimals: 0
+                            }
+                        });
                     }
                 });
 

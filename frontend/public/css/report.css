@@ -22,3 +22,13 @@ div {
     font-weight: normal;
     color: #212121;
 }
+
+.queue_plot {
+    width: 100%;
+    height: 100%;
+}
+
+.queue_plot_title {
+    text-align: center;
+    font-weight: bold;
+}
