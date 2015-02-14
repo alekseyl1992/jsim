@@ -55,8 +55,6 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                         console.log("Stats: ", msg.stats);
 
                         callbacks.onComplete(msg);
-
-                        alert("Simulation finished!");
                     } else {
                         setTimeout(self.pollProgress.bind(self, taskId, callbacks), 500);
                     }

@@ -107,7 +107,6 @@ define([
 
             // subscribe to UI events
             $('#simulation-start').click(function() {
-                alert("Simulation start pressed");
                 client.sendModel(self.model.getData(), {
                     onError: statsManager.onError.bind(statsManager),
                     onComplete: statsManager.onComplete.bind(statsManager),

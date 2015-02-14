@@ -1,11 +1,12 @@
 package modelling.parsing;
 
+import core.stats.Plotter;
+import modelling.parsing.formats.model.QObjectFields;
+import modelling.parsing.formats.model.QObjectTypes;
+import modelling.parsing.formats.model.SpecFields;
+import modelling.queueing.*;
 import org.json.JSONException;
 import org.json.JSONObject;
-import modelling.parsing.formats.model.QObjectFields;
-import modelling.parsing.formats.model.SpecFields;
-import modelling.parsing.formats.model.QObjectTypes;
-import modelling.queueing.*;
 
 public class QObjectFactory {
     private Model model;
@@ -69,7 +70,11 @@ public class QObjectFactory {
         int channels = spec.getInt(SpecFields.CHANNELS);
         double mu = spec.getDouble(SpecFields.MU);
 
-        QObject queue = new Queue(model.getSim(), sizeLimit, channels, mu, model.getRandom());
+        Queue queue = new Queue(model.getSim(), sizeLimit, channels, mu, model.getRandom());
+
+        // setup plotters
+        queue.setSizePlotter(new Plotter(0, model.getDuration(), Plotter.DEFAULT_BUCKETS_COUNT));
+        queue.setTimePlotter(new Plotter(0, model.getDuration(), Plotter.DEFAULT_BUCKETS_COUNT));
 
         return queue;
     }

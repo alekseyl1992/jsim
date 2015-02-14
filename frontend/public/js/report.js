@@ -44,9 +44,11 @@ require(['config'], function() {
                         var $queueTable = $queueStats.find('table');
                         $queueTable.bootstrapTable({
                             // convert object to array of {key, value} pairs
-                            data: _.map(object, function(value, key) {
-                                return {key: key, value: value};
-                            })
+                            data: _.map(_.omit(object, "queueSizePlot", "waitTimePlot"),
+                                function(value, key) {
+                                    return {key: key, value: value};
+                                }
+                            )
                         });
 
                         // add table to page to calc dimensions
@@ -59,17 +61,13 @@ require(['config'], function() {
                         var $sizePlot = $queueStats.find('.queue_size_vs_time_plot');
                         $sizePlot.height($queueTable.height());
 
-                        var waitData = [{data:
-                            [
-                                [1, -183.96], [2, 328.52], [3, 1108.98], [4, 813.6], [5, 324.0]
-                            ]}
-                        ];
+                        var waitData = [{
+                            data: object.waitTimePlot
+                        }];
 
-                        var sizeData = [{data:
-                            [
-                                [1, -183.96], [2, 328.52], [3, 1108.98], [4, 813.6], [5, 324.0]
-                            ]}
-                        ];
+                        var sizeData = [{
+                            data: object.queueSizePlot
+                        }];
 
                         $.plot($waitPlot, waitData, {
                             series: {

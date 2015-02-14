@@ -16,6 +16,14 @@ define(['jquery'], function($) {
                 $("#simulation-complete-dialog").dialog({
                     width: "50%",
                     modal: true,
+                    show: {
+                        effect: "fade",
+                        duration: 300
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 300
+                    },
                     buttons: {
                         "Yes": function() {
                             window.open('/report?taskId=' + stats.taskId, '_blank');

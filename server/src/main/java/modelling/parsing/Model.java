@@ -76,6 +76,8 @@ public class Model {
                 objStats.put(StatsFields.AVG_WAIT_TIME, queue.getStats().getDurationSeries().getAverage());
 
                 //TODO: add data from plotters
+                objStats.put(StatsFields.QUEUE_SIZE_PLOT, queue.getSizePlotter().getJSONData());
+                objStats.put(StatsFields.WAIT_TIME_PLOT, queue.getTimePlotter().getJSONData());
             }
 
             stats.put(qObject.getId(), objStats);
@@ -115,5 +117,9 @@ public class Model {
 
     public double getProgress() {
         return progress;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 }

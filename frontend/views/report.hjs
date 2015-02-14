@@ -63,7 +63,7 @@
 
                     <div class="col-md-4">
                         <div class="wait_time_vs_time_plot queue_plot"></div>
-                        <div class="queue_plot_title">Wait time vs. time</div>
+                        <div class="queue_plot_title">Wait + Service time vs. time</div>
                     </div>
 
                     <div class="col-md-4">

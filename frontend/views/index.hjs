@@ -100,7 +100,7 @@
 <!-- jQ-ui dialogs -->
 <div id="simulation-complete-dialog" title="Simulation complete">
     <p>
-        Simulation successfully complete.
+        Simulation completed successfully.
     </p>
     <p>
         Show report?
