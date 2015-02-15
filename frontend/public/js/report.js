@@ -2,12 +2,12 @@
 //report entry point
 //load libs first to set baseUrl
 require(['config'], function() {
-    require(['jquery', 'jquery-ui', 'bootstrap-table', 'jquery.flot', 'lodash', 'mustache', 'util/Templater', 'api/Client'],
-        function (_1, _2, _3, flot, _, mustache, Templater, Client) {
+    require(['jquery', 'jquery-ui', 'bootstrap-table', 'jquery.flot', 'lodash', 'mustache', 'util/Templater', 'util/Url', 'api/Client'],
+        function (_1, _2, _3, flot, _, mustache, Templater, Url, Client) {
             $(function () {
                 var client = new Client();
 
-                var urlParams = getUrlParams();
+                var urlParams = Url.getParams();
                 var taskId = urlParams.taskId;
 
                 client.getReport(taskId, {
@@ -108,20 +108,6 @@ require(['config'], function() {
                 $(".accordion").accordion({
                     collapsible: true
                 });
-            }
-
-            function getUrlParams() {
-                var queryDict = {};
-
-                location.search
-                    .substr(1)
-                    .split("&")
-                    .forEach(function (item) {
-                        var pair = item.split("=");
-                        queryDict[pair[0]] = pair[1];
-                    });
-
-                return queryDict;
             }
         }
     );

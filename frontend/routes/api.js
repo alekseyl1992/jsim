@@ -65,4 +65,60 @@ router.get('/getReport', function(req, res, next) {
     }
 });
 
+router.get('/getModel', function(req, res, next) {
+    var modelName = req.query.modelName;
+    console.log("/getModel: " + modelName);
+
+    res.json({
+        "name": "Model 1",
+        "duration": 1000,
+        "objects": [
+            {
+                "type": "source",
+                "name": "Source 1",
+                "x": 210,
+                "y": 80,
+                "id": "1",
+                "to": "2",
+                "spec": {
+                    "lambda": 1
+                }
+            },
+            {
+                "type": "queue",
+                "name": "Queue 1",
+                "x": 420,
+                "y": 80,
+                "id": "2",
+                "to": "3",
+                "spec": {
+                    "mu": 1,
+                    "channels": 10,
+                    "limit": -1
+                }
+            },
+            {
+                "type": "splitter",
+                "name": "Splitter 1",
+                "x": 630,
+                "y": 80,
+                "id": "3",
+                "toA": "2",
+                "toB": "4",
+                "spec": {
+                    "pA": 0.5
+                }
+            },
+            {
+                "type": "sink",
+                "name": "Sink 1",
+                "x": 840,
+                "y": 80,
+                "id": "4",
+                "spec": {}
+            }
+        ]
+    });
+});
+
 module.exports = router;

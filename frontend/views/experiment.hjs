@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>jsim experiment</title>
+
+    <link rel="stylesheet" href="/css/lib/bootstrap.css" />
+    <link rel="stylesheet" href="/css/lib/bootstrap-table.css" />
+
+    <link rel="stylesheet" href="css/lib/jquery-ui.css">
+    <link rel="stylesheet" href="css/lib/jquery-ui.theme.css">
+    <link rel="stylesheet" href="/css/experiment.css" />
+
+    <script data-main="/js/experiment" src="/js/lib/dev/require.js"></script>
+</head>
+<body>
+
+<div class="accordion">
+    <h3>Experiment summary</h3>
+    <div>
+        <table id="exp-summary-table" class="card_view" data-cache="false" data-show-header="false">
+            <thead>
+            <tr>
+                <th data-field="key">Key</th>
+                <th data-field="value">Value</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="accordion">
+    <h3>Experiment iterations</h3>
+    <div>
+        <div id="exp-iterations-container">
+            <script id="exp-iteration-template" language="text/html">
+                <div class="accordion exp-iteration">
+                    <h3>
+                        Iteration {id}
+                    </h3>
+                    <div>
+                        <table class="exp-overrides-table">
+                            <tr>
+                                <th>object</th>
+                                <th>field</th>
+                                <th>value</th>
+                                <th> </th>
+                            </tr>
+                            <!-- Place for override template -->
+                        </table>
+                    </div>
+                </div>
+            </script>
+            <script id="exp-override-template" language="text/html">
+                <tr>
+                    <td>
+                        <select title="object" class="exp-object-select">Queue 1</select>
+                    </td>
+                    <td>
+                        <select title="field" class="exp-field-select">Queue 1</select>
+                    </td>
+                    <td>
+                        <input type="text" title="value" class="exp-value-input"/>
+                    </td>
+                    <td>
+                        <button class="exp-add-override-button">+</button>
+                    </td>
+                </tr>
+            </script>
+        </div>
+
+        <div>
+            <button class="exp-add-iteration-button">Add iteration</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

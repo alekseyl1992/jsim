@@ -89,7 +89,33 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                 .fail(function (error) {
                     callbacks.onError(error);
                 });
-        }
+        };
+
+        //TODO: refactor
+        /**
+         * Gets JSON stats report
+         * @param modelName {String}
+         * @param callbacks {Object}
+         * @param callbacks.onError {Function}
+         * @param callbacks.onComplete {Function}
+         */
+        this.getModel = function(modelName, callbacks) {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/api/getModel",
+                data: {
+                    modelName: modelName
+                }
+            })
+                .done(function (msg) {
+                    console.log("Model: ", msg);
+                    callbacks.onComplete(msg);
+                })
+                .fail(function (error) {
+                    callbacks.onError(error);
+                });
+        };
     }
 
     return Client;
