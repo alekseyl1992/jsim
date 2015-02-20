@@ -9,6 +9,10 @@ var passport = require('passport');
 var session = require('express-session');
 var requireTree = require('require-tree');
 
+// connect to mongodb
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/jsim');
+
 // initialize models
 var models = requireTree('./routes/models/');
 
@@ -43,9 +47,11 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', templates);
-app.use('/api', api);
+app.use('/user', templates);  // do not check auth at lhoin/register pages
+app.use('/api', auth.check, api);
 app.use('/auth', auth);
+app.use('/', auth.check, templates);
+
 
 // catch 404 and forward to error handler
 //TODO: figure out how this works

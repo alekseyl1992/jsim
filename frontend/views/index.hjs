@@ -27,7 +27,7 @@
             <span class="app-name">jsim: </span>
             <span class="model-name">Model 1</span>
         </div>
-        <div id="login-group">Alekseyl (logout)</div>
+        <div id="login-group">{{user.name}} (<a href="/auth/logout">logout</a>)</div>
     </div>
 </div>
 

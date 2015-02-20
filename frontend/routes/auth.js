@@ -17,8 +17,15 @@ function createPassword(password) {
     return password;
 }
 
+function check(req, res, next) {
+    if (req.isAuthenticated())
+        next();
+    else
+        res.redirect('/user/login');
+}
+
 passport.use(new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password'
 }, function(username, password, done){
     User.findOne({ username: username }, function (err, user) {
@@ -27,12 +34,12 @@ passport.use(new LocalStrategy({
 
         if (!user)
             return done(null, false, {
-                message: 'Incorrect username'
+                message: 'Wrong username or password'
             });
 
         if (!validatePassword(user, password))
             return done(null, false, {
-                message: 'Incorrect password'
+                message: 'Wrong username or password'
             });
 
         return done(null, user);
@@ -56,26 +63,37 @@ passport.deserializeUser(function(id, done) {
 
 router.post('/login', passport.authenticate('local', {
         successRedirect: '/',
-        failureRedirect: '/auth',
+        failureRedirect: '/user/login',
         failureFlash: true
     })
 );
 
-router.post('/logout', function(req, res, next) {
+router.all('/logout', function(req, res, next) {
     req.logout();
     res.redirect('/');
 });
 
 router.post('/register', function(req, res, next) {
+    if (!req.body.username || !req.body.password) {
+        req.flash('error', "Missing credentials");
+        return res.redirect('/user/register');
+    }
+
     var user = new User({
-        username: req.body.email,
+        username: req.body.username,
         password: createPassword(req.body.password)
     });
 
-    //TODO: fuck this shit
     user.save(function(err) {
-        if (err)
+        if (err) {
+            // dup entry?
+            if (err.code == 11000) {
+                req.flash('error', "Username already in use");
+                return res.redirect('/user/register');
+            }
+
             return next(err);
+        }
 
         req.logIn(user, function(err) {
             if (err)
@@ -87,3 +105,4 @@ router.post('/register', function(req, res, next) {
 });
 
 module.exports = router;
+module.exports.check = check;
