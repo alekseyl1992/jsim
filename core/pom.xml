@@ -62,6 +62,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.gatling.uncommons.maths</groupId>
             <artifactId>uncommons-maths</artifactId>
             <version>1.2.3</version>

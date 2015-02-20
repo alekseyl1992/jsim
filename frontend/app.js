@@ -4,9 +4,18 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var flash = require('connect-flash');
+var passport = require('passport');
+var session = require('express-session');
+var requireTree = require('require-tree');
 
-var routes = require('./routes/templates');
+// initialize models
+var models = requireTree('./routes/models/');
+
+// routes
+var templates = require('./routes/templates');
 var api = require('./routes/api');
+var auth = require('./routes/auth');
 
 var app = express();
 
@@ -20,10 +29,23 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use(session({
+    secret: 'keyboard cat',
+    //cookie: {
+    //    maxAge: 60000
+    //}
+}));
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/', templates);
 app.use('/api', api);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 //TODO: figure out how this works

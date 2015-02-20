@@ -166,8 +166,8 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                     var targetObject = self.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
 
                     // ensure target is jsimObject and not equal to self (from != to)
-                    if (targetObject && targetObject.parent && targetObject.parent.jsimObject
-                        && targetObject.parent.jsimObject != self) {
+                    if (targetObject && targetObject.parent && targetObject.parent.jsimObject &&
+                        targetObject.parent.jsimObject != self) {
 
                         var target = targetObject.parent.jsimObject;
 
