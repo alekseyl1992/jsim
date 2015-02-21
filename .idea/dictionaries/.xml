@@ -10,6 +10,7 @@
       <w>keydown</w>
       <w>keyup</w>
       <w>onresize</w>
+      <w>resave</w>
       <w>templater</w>
       <w>unselect</w>
     </words>

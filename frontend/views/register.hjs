@@ -2,24 +2,27 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>jsim register</title>
+    <title>jsim: register</title>
 
     <link rel="stylesheet" href="/css/lib/bootstrap.css" />
-    <link rel="stylesheet" href="/css/lib/bootstrap-table.css" />
-
-    <link rel="stylesheet" href="css/lib/jquery-ui.css">
-    <link rel="stylesheet" href="css/lib/jquery-ui.theme.css">
     <link rel="stylesheet" href="/css/auth.css" />
 
     <script data-main="/js/auth" src="/js/lib/dev/require.js"></script>
 </head>
 <body>
 
-<header>
-    jsim register
+<header class="navbar navbar-default">
+    <div class="container">
+        <h1>jsim
+            <small>register</small>
+        </h1>
+    </div>
 </header>
 
-<section class="container">
+<div class="container">
+    {{> welcome}}
+
+    <section class="container auth-form">
 <form action="/auth/register" method="post">
     <div class="form-group">
         <label for="username">Username</label>

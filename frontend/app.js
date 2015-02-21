@@ -11,7 +11,12 @@ var requireTree = require('require-tree');
 
 // connect to mongodb
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/jsim');
+mongoose.connect('mongodb://localhost/jsim', function(err) {
+    if (err) {
+        console.error("Unable to connect to MongoDB server", err);
+        process.exit(-1);
+    }
+});
 
 // initialize models
 var models = requireTree('./routes/models/');
@@ -27,6 +32,10 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hjs');
 
+app.locals.partials = {
+    welcome: "partials/welcome"
+};
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -36,6 +45,8 @@ app.use(cookieParser());
 
 app.use(session({
     secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false  // session will be changed by passportJS anyway
     //cookie: {
     //    maxAge: 60000
     //}
