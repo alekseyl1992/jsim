@@ -1,72 +1,72 @@
 define(['lodash'],
     function(_) {
-        function KeyCoder(listenerWindow) {
-            this.keys = [];
-            var self = this;
+        var KeyCoder = Class.create({
+            initialize: function (listenerWindow) {
+                this.keys = [];
+                var self = this;
 
-            this.listeners = [];
-            this.listenerWindow = listenerWindow;
+                this.listeners = [];
+                this.listenerWindow = listenerWindow;
 
-            this.keyEventsCallbacks = {
-                keydown: function(event) {
-                    self.keys[event.keyCode] = true;
+                this.keyEventsCallbacks = {
+                    keydown: function (event) {
+                        self.keys[event.keyCode] = true;
 
-                    _.each(self.listeners, function(el) {
-                        if (el.event === "keydown" && el.key === event.keyCode)
-                            el.handler(event);
-                    });
-                },
-                keyup: function(event) {
-                    self.keys[event.keyCode] = false;
+                        _.each(self.listeners, function (el) {
+                            if (el.event === "keydown" && el.key === event.keyCode)
+                                el.handler(event);
+                        });
+                    },
+                    keyup: function (event) {
+                        self.keys[event.keyCode] = false;
 
-                    _.each(self.listeners, function(el) {
-                        if (el.event === "keyup" && el.keyCode === event.keyCode) {
-                            el.handler(event);
-                        }
-                    });
-                },
-                keypress: function(event) {
-                    _.each(self.listeners, function(el) {
-                        if (el.event === "keypress" && el.keyCode === event.keyCode) {
-                            el.handler(event);
-                        }
-                    });
-                }
-            };
+                        _.each(self.listeners, function (el) {
+                            if (el.event === "keyup" && el.keyCode === event.keyCode) {
+                                el.handler(event);
+                            }
+                        });
+                    },
+                    keypress: function (event) {
+                        _.each(self.listeners, function (el) {
+                            if (el.event === "keypress" && el.keyCode === event.keyCode) {
+                                el.handler(event);
+                            }
+                        });
+                    }
+                };
 
-            _.each(_.keys(this.keyEventsCallbacks), function(keyEvent) {
-                self.listenerWindow.on(keyEvent, self.keyEventsCallbacks[keyEvent]);
-            });
+                _.each(_.keys(this.keyEventsCallbacks), function (keyEvent) {
+                    self.listenerWindow.on(keyEvent, self.keyEventsCallbacks[keyEvent]);
+                });
+            },
 
-
-
-            this.getKeys = function() {
+            getKeys: function() {
                 return {
                     keys: this.keys
                 };
-            };
+            },
 
-            this.addEventListener = function (event, keyCode, handler) {
+            addEventListener: function (event, keyCode, handler) {
                 this.listeners.push({
                     event: event,
                     keyCode: keyCode,
                     handler: handler
                 });
-            };
+            },
 
-            this.removeAllListeners = function() {
+            removeAllListeners: function() {
                 var self = this;
 
                 this.listeners = [];
                 this.keys = [];
-            };
+            },
 
-            this.removeAllEvents = function() {
+            removeAllEvents: function() {
                 this.listenerWindow.off('keydown');
                 this.listenerWindow.off('keypress');
                 this.listenerWindow.off('keyup');
-            };
-        }
+            },
+        });
 
         KeyCoder.KEY = {
             SHIFT: 16,

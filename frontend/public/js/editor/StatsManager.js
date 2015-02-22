@@ -1,18 +1,18 @@
 define(['jquery'], function($) {
         /**
          * Deals with simulation process and stats visualisation
-         * @param windows {Object}
-         * @constructor
          */
-        function StatsManager(windows) {
-            var self = this;
+        var StatsManager = Class.create({
+            initialize: function (windows) {
+                this.windows = windows;
+            },
 
-            this.onProgress = function(value) {
-                windows.$progress.val(value);
-                windows.$progressLabel.text(parseInt(value, 10) + '%');
-            };
+            onProgress: function(value) {
+                this.windows.$progress.val(value);
+                this.windows.$progressLabel.text(parseInt(value, 10) + '%');
+            },
 
-            this.onComplete = function(stats) {
+            onComplete: function(stats) {
                 $("#simulation-complete-dialog").dialog({
                     width: "50%",
                     modal: true,
@@ -34,14 +34,14 @@ define(['jquery'], function($) {
                         }
                     }
                 });
-            };
+            },
 
-            this.onError = function(error, reason) {
+            onError: function(error, reason) {
                 alert("Error");
                 alert(error);
                 alert(reason);
-            };
-        }
+            }
+        });
 
         return StatsManager;
     }

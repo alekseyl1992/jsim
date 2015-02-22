@@ -1,39 +1,45 @@
 define(['lodash', 'easeljs', 'editor/objects/QObject'],
     function(_, easeljs, QObject) {
-        function Splitter(stage, container, style, data) {
-            var s = style.sizes;
-            var c = style.colors;
+        var Splitter = Class.create(QObject, {
+            initialize: function ($super, stage, container, style, data) {
+                var s = style.sizes;
+                var c = style.colors;
 
-            var _style = _.cloneDeep(style);  // style should stay read only
-            _style.sizes.textOffset += s.w - s.bw;
+                var _style = _.cloneDeep(style);  // style should stay read only
+                _style.sizes.textOffset += s.w - s.bw;
 
-            _.defaults(data, {
-                type: "splitter",
-                spec: {
-                    pA: 0.5
-                }
-            });
-            _.extend(this, new QObject(stage, container, _style, data));
-            this.setSelf(this);
+                _.defaults(data, {
+                    type: "splitter",
+                    spec: {
+                        pA: 0.5
+                    }
+                });
+                $super(stage, container, _style, data);
 
-            this.output = [
-                {
-                    name: "toA",
-                    x: s.w,
-                    y: s.h / 2 - s.outputsDelta / 2,
-                    connection: null
-                },
-                {
-                    name: "toB",
-                    x: s.w,
-                    y: s.h / 2 + s.outputsDelta / 2,
-                    connection: null
-                }
-            ];
+                this.output = [
+                    {
+                        name: "toA",
+                        x: s.w,
+                        y: s.h / 2 - s.outputsDelta / 2,
+                        connection: null
+                    },
+                    {
+                        name: "toB",
+                        x: s.w,
+                        y: s.h / 2 + s.outputsDelta / 2,
+                        connection: null
+                    }
+                ];
 
+                this.render();
+                this.drawConnectionPoints();
+            },
 
-            this.render = function(selected) {
+            render: function(selected) {
                 var gfx = this.shape.graphics;
+                var s = this.style.sizes;
+                var c = this.style.colors;
+
                 var gradient = selected ? c.selectedGradient : c.gradient;
 
                 gfx.beginStroke(c.contour)
@@ -45,11 +51,8 @@ define(['lodash', 'easeljs', 'editor/objects/QObject'],
                     .lineTo(s.w - s.bw, s.h)
                     .lineTo(0, s.h / 2)
                     .closePath();
-            };
-
-            this.render();
-            this.drawConnectionPoints();
-        }
+            }
+        });
 
         return Splitter;
     }

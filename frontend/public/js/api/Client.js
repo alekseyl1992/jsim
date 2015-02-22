@@ -1,7 +1,5 @@
 define(['jquery', 'api/Exceptions'], function($, Exceptions) {
-    function Client() {
-        var self = this;
-
+    var Client = Class.create({
         /**
          * Sends model to the frontend server
          * @param model {String}
@@ -10,7 +8,7 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
          * @param callbacks.onProgress {Function}
          * @param callbacks.onComplete {Function}
          */
-        this.sendModel = function(model, callbacks) {
+        sendModel: function(model, callbacks) {
             console.log("Sending model: ", model);
 
             this._post("/api/simulate", {
@@ -28,9 +26,9 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                     self.pollProgress(msg.taskId, callbacks);
                 }
             });
-        };
+        },
 
-        this.pollProgress = function(taskId, callbacks) {
+        pollProgress: function(taskId, callbacks) {
             this._get("/api/getProgress", {
                 taskId: taskId
             }, {
@@ -55,7 +53,7 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                     }
                 }
             });
-        };
+        },
 
         /**
          * Gets JSON stats report
@@ -64,11 +62,11 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
          * @param callbacks.onError {Function}
          * @param callbacks.onComplete {Function}
          */
-        this.getReport = function(taskId, callbacks) {
+        getReport: function(taskId, callbacks) {
             this._get("/api/getReport", {
                 taskId: taskId
             }, callbacks);
-        };
+        },
 
         //TODO: define callbacks documentation somewhere in one place
         /**
@@ -78,25 +76,25 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
          * @param callbacks.onError {Function}
          * @param callbacks.onComplete {Function}
          */
-        this.getModel = function(modelName, callbacks) {
+        getModel: function(modelName, callbacks) {
             this._get("/api/getModel", {
                 modelName: modelName
             }, callbacks);
-        };
+        },
 
-        this.getModelList = function (callbacks) {
+        getModelList: function (callbacks) {
             this._get("/api/getModel", null, callbacks);
-        };
+        },
 
-        this.saveModel = function(model, callbacks) {
+        saveModel: function(model, callbacks) {
             this._post("/api/saveModel", model, callbacks);
-        };
+        },
 
-        this.createModel = function(data, callbacks) {
+        createModel: function(data, callbacks) {
             this._post("/api/createModel", data, callbacks);
-        };
+        },
 
-        this._get = function(url, data, callbacks) {
+        _get: function(url, data, callbacks) {
             $.ajax({
                 type: "GET",
                 contentType: "application/json",
@@ -109,9 +107,9 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                 .fail(function (error) {
                     callbacks.onError(error);
                 });
-        };
+        },
 
-        this._post = function (url, data, callbacks) {
+        _post: function (url, data, callbacks) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -125,8 +123,8 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                 .fail(function (error) {
                     callbacks.onError(error);
                 });
-        };
-    }
+        },
+    });
 
     return Client;
 });

@@ -1,47 +1,49 @@
 define(['easeljs'], function(easeljs) {
-    function Connection(stage, parentContainer, style) {
-        var self = this;
+    var Connection = Class.create({
+        initialize: function (stage, parentContainer, style) {
+            var self = this;
 
-        this.stage = stage;
-        this.parentContainer = parentContainer;
+            this.stage = stage;
+            this.parentContainer = parentContainer;
 
-        this.shape = null;
-        this.from = null;
-        this.to = null;
+            this.shape = null;
+            this.from = null;
+            this.to = null;
+        },
 
-        this.setFrom = function(from) {
+        setFrom: function(from) {
             this.from = from;
-            this.shape = new easeljs.Shape();
+            shape = new easeljs.Shape();
 
             // add to the background
             this.parentContainer.addChildAt(this.shape, 0);
-        };
+        },
 
-        this.getFrom = function() {
+        getFrom: function() {
             return this.from;
-        };
+        },
 
-        this.setTo = function(to) {
+        setTo: function(to) {
             this.to = to;
             this.render();
-        };
+        },
 
-        this.getTo = function() {
+        getTo: function() {
             return this.to;
-        };
+        },
 
         /**
          * @param {{x: Number, y: Number}} [endPoint=to]
          */
-        this.render = function(endPoint) {
+        render: function(endPoint) {
             var startPoint = this.from.object.getContainer()
                 .localToLocal(this.from.output.x, this.from.output.y, parentContainer);
 
-            this.shape.x = startPoint.x;
-            this.shape.y = startPoint.y;
+            shape.x = startPoint.x;
+            shape.y = startPoint.y;
 
             endPoint = endPoint || this.to.object.getContainer()
-                    .localToLocal(this.to.input.x, this.to.input.y, parentContainer);
+                .localToLocal(this.to.input.x, this.to.input.y, parentContainer);
 
             var gfx = this.shape.graphics;
             var s = style.sizes;
@@ -52,9 +54,9 @@ define(['easeljs'], function(easeljs) {
             this._roundingRender(gfx, s, c, endPoint);
 
             stage.update();
-        };
+        },
 
-        this._directRender = function(gfx, s, c, endPoint) {
+        _directRender: function(gfx, s, c, endPoint) {
             gfx.beginStroke(c.connection)
                 .setStrokeStyle(s.connection)
                 .moveTo(0, 0)
@@ -62,9 +64,9 @@ define(['easeljs'], function(easeljs) {
 
             var angle = Math.atan2(endPoint.x - this.shape.x, endPoint.y - this.shape.y);
             this._renderArrow(gfx, s, c, endPoint.x - this.shape.x, endPoint.y - this.shape.y, angle);
-        };
+        },
 
-        this._roundingRender = function(gfx, s, c, endPoint) {
+        _roundingRender: function(gfx, s, c, endPoint) {
             // step 1: trace from start to end and find obstacles
             var obstacles = [];
 
@@ -174,9 +176,9 @@ define(['easeljs'], function(easeljs) {
             });
 
             this._renderArrow(gfx, s, c, end.x - start.x, end.y - start.y, Math.PI / 2);
-        };
+        },
 
-        this._renderArrow = function(gfx, s, c, x, y, angle) {
+        _renderArrow: function(gfx, s, c, x, y, angle) {
             gfx.beginStroke(c.connection);
             gfx.setStrokeStyle(s.connection);
 
@@ -189,18 +191,18 @@ define(['easeljs'], function(easeljs) {
 
             gfx.moveTo(x, y);
             gfx.lineTo(x + s.connectionArrowLen * Math.cos(angleB), y + s.connectionArrowLen * Math.sin(angleB));
-        };
+        },
 
         /**
          * Saves connection data to the model
          * and input/output objects
          */
-        this.fix = function() {
+        fix: function() {
             this.from.object.addConnection(this);
             this.to.object.addConnection(this);
-        };
+        },
 
-        this.remove = function() {
+        remove: function() {
             // disconnect from source
             if (this.from)
                 this.from.object.removeConnection(this);
@@ -210,14 +212,14 @@ define(['easeljs'], function(easeljs) {
                 this.to.object.removeConnection(this);
 
             // remove from stage
-            parentContainer.removeChild(this.shape);
-            stage.update();
-        };
+            this.parentContainer.removeChild(this.shape);
+            this.stage.update();
+        },
 
-        this.getDispObj = function() {
+        getDispObj: function() {
             return this.shape;
-        };
-    }
+        }
+    });
 
     return Connection;
 });

@@ -1,112 +1,117 @@
 
 define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
-    function QObject(stage, parentContainer, style, data) {
-        var self = this;
+    var QObject = Class.create({
+        initialize: function(stage, parentContainer, style, data) {
+            var self = this;
 
-        this.stage = stage;
-        this.parentContainer = parentContainer;
+            this.stage = stage;
+            this.parentContainer = parentContainer;
 
-        this.data = data;
+            this.style = style;
+            this.data = data;
 
-        var s = style.sizes;
-        var c = style.colors;
+            var s = style.sizes;
+            var c = style.colors;
 
-        this.input = {
-            x: 0,
-            y: s.h / 2,
-            connections: []
-        };
+            this.input = {
+                x: 0,
+                y: s.h / 2,
+                connections: []
+            };
 
-        this.output = {
-            x: s.w,
-            y: s.h / 2,
-            connection: null
-        };
+            this.output = {
+                x: s.w,
+                y: s.h / 2,
+                connection: null
+            };
 
-        this.newConnection = new Connection(this.stage, this.parentContainer, style);
+            this.newConnection = new Connection(this.stage, this.parentContainer, style);
 
-        this.container = new easeljs.Container();
-        this.container.jsimObject = this;
+            this.container = new easeljs.Container();
+            this.container.jsimObject = this;
 
-        var clickDelta = {x: 0, y: 0};
+            var clickDelta = {x: 0, y: 0};
 
-        this.container.on("mousedown", function(evt) {
-            clickDelta.x = self.container.x - evt.stageX;
-            clickDelta.y = self.container.y - evt.stageY;
+            this.container.on("mousedown", function(evt) {
+                clickDelta.x = self.container.x - evt.stageX;
+                clickDelta.y = self.container.y - evt.stageY;
 
-            // bring to front
-            var childrenCount = self.parentContainer.getNumChildren();
-            self.parentContainer.setChildIndex(self.container, childrenCount - 1);
+                // bring to front
+                var childrenCount = self.parentContainer.getNumChildren();
+                self.parentContainer.setChildIndex(self.container, childrenCount - 1);
 
-            self.stage.update();
-        });
-
-        this.container.on("pressmove", function(evt) {
-            self.container.x = evt.stageX + clickDelta.x;
-            self.container.y = evt.stageY + clickDelta.y;
-
-            // update connections
-            var connections = [];
-
-            if (self.input)
-                connections = connections.concat(self.input.connections);
-
-            if (self.output) {
-                if (self.output.connection) {
-                    connections.push(self.output.connection);
-                } else if (_.isArray(self.output)) {
-                    _.each(self.output, function (output) {
-                        if (output.connection)
-                            connections.push(output.connection);
-                    });
-                }
-            }
-
-            _.each(connections, function(connection) {
-                connection.render();
+                self.stage.update();
             });
 
-            self.stage.update();
-        });
+            this.container.on("pressmove", function(evt) {
+                self.container.x = evt.stageX + clickDelta.x;
+                self.container.y = evt.stageY + clickDelta.y;
 
-        this.shape = new easeljs.Shape();
-        this.container.addChild(this.shape);
+                // update connections
+                var connections = [];
 
-        this.text = new easeljs.Text();
-        this.text.textBaseline = "middle";
-        this.text.font = style.labelFont;
-        this.text.x = s.textOffset;
-        this.text.y = s.h / 2;
+                if (self.input)
+                    connections = connections.concat(self.input.connections);
 
-        this.container.addChild(this.text);
+                if (self.output) {
+                    if (self.output.connection) {
+                        connections.push(self.output.connection);
+                    } else if (_.isArray(self.output)) {
+                        _.each(self.output, function (output) {
+                            if (output.connection)
+                                connections.push(output.connection);
+                        });
+                    }
+                }
 
-        if (data) {
-            if (data.x && data.y)
-                setPos(data.x, data.y);
+                _.each(connections, function(connection) {
+                    connection.render();
+                });
 
-            if (data.name)
-                setName(data.name);
-        }
+                self.stage.update();
+            });
 
-        this.parentContainer.addChild(this.container);
+            this.shape = new easeljs.Shape();
+            this.container.addChild(this.shape);
 
-        function setName(name) {
-            self.text.text = name;
-            self.data.name = name;
+            this.text = new easeljs.Text();
+            this.text.textBaseline = "middle";
+            this.text.font = style.labelFont;
+            this.text.x = s.textOffset;
+            this.text.y = s.h / 2;
 
-            stage.update();
-        }
+            this.container.addChild(this.text);
 
-        function setPos(x, y) {
-            self.container.x = x;
-            self.container.y = y;
+            if (data) {
+                if (data.x && data.y)
+                    this.setPos(data.x, data.y);
 
-            self.data.x = x;
-            self.data.y = y;
-            stage.update();
-        }
+                if (data.name)
+                    this.setName(data.name);
+            }
 
-        this.drawConnectionPoints = function() {
+            this.parentContainer.addChild(this.container);
+        },
+
+        setName: function(name) {
+            this.text.text = name;
+            this.data.name = name;
+
+            this.stage.update();
+        },
+
+        setPos: function(x, y) {
+            this.container.x = x;
+            this.container.y = y;
+
+            this.data.x = x;
+            this.data.y = y;
+            this.stage.update();
+        },
+
+        drawConnectionPoints: function() {
+            var self = this;
+
             // ensure array
             var points = _.compact(_.flatten([this.output]));
 
@@ -116,6 +121,9 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                 pointObject.y = point.y;
 
                 var gfx = pointObject.graphics;
+                var s = self.style.sizes;
+                var c = self.style.colors;
+
                 gfx.beginStroke(c.contour)
                     .beginFill(c.connectionPointFill)
                     .drawCircle(0, 0, s.connectionPointRadius);
@@ -124,13 +132,13 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                     var scaleFactor = 2;
                     evt.target.scaleX = scaleFactor;
                     evt.target.scaleY = scaleFactor;
-                    stage.update();
+                    self.stage.update();
                 });
 
                 pointObject.on("mouseout", function(evt) {
                     evt.target.scaleX = 1;
                     evt.target.scaleY = 1;
-                    stage.update();
+                    self.stage.update();
                 });
 
                 // connections stuff
@@ -180,48 +188,35 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                         self.newConnection.remove();
                     }
 
-                    self.newConnection = new Connection(stage, parentContainer, style);
+                    self.newConnection = new Connection(self.stage, self.parentContainer, self.style);
                 });
 
                 self.container.addChild(pointObject);
             });
-        };
+        },
 
-        this.getData = function() {
+        getData: function() {
             return data;
-        };
+        },
 
-        this.getContainer = function() {
-            return self.container;
-        };
+        getContainer: function() {
+            return this.container;
+        },
 
-        /**
-         * Should be called after _.extend(),
-         * so self will point on extended object, not to the source one
-         * @param newSelf - Object derived from QObject
-         */
-        this.setSelf = function(newSelf) {
-            self = newSelf;
-            this.container.jsimObject = self;
-        };
-
-        this.setName = setName;
-        this.setPos = setPos;
-
-        this.select = function() {
+        select: function() {
             this.render(true);
             this.stage.update();
-        };
+        },
 
-        this.unselect = function() {
+        unselect: function() {
             this.render();
             this.stage.update();
-        };
+        },
 
         /**
          * Disconnects and removes object from stage
          */
-        this.remove = function() {
+        remove: function() {
             // collect all (input and output) connections
             var connections = [];
             if (this.input)
@@ -244,9 +239,9 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
             // remove from stage
             this.parentContainer.removeChild(this.container);
             this.stage.update();
-        };
+        },
 
-        this.addConnection = function(connection) {
+        addConnection: function(connection) {
             var from = connection.getFrom();
             var to = connection.getTo();
 
@@ -266,9 +261,9 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                 console.error("connection: ", connection);
                 console.error("object: ", this);
             }
-        };
+        },
 
-        this.removeConnection = function(connection) {
+        removeConnection: function(connection) {
             var from = connection.getFrom();
             var to = connection.getTo();
 
@@ -288,32 +283,32 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                 console.error("connection: ", connection);
                 console.error("object: ", this);
             }
-        };
+        },
 
-        this.getOutputByName = function(name) {
+        getOutputByName: function(name) {
             if (name == "to")
                 return this.output;
 
             return _.find(this.output, function(output) {
                 return output.name == name;
             });
-        };
+        },
 
-        this.getInput = function() {
+        getInput: function() {
             return this.input;
-        };
+        },
 
-        this.getOutput = function() {
+        getOutput: function() {
             return this.output;
-        };
+        },
 
-        this.getPos = function() {
+        getPos: function() {
             return {
                 x: this.container.x,
                 y: this.container.y
             };
-        };
-    }
+        }
+    });
 
     return QObject;
 });
