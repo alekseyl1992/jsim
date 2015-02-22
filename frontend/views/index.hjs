@@ -18,9 +18,9 @@
 <div class="ui-layout-north toolbar-wrapper">
     <div class="ui-widget-header toolbar">
         <div class="btn-group">
-            <button id="save" class="ui-button" title="Save"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
-            <button id="open" class="ui-button" title="Open"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>
-            <button id="new" class="ui-button" title="New"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></button>
+            <button id="save-model" class="ui-button" title="Save"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
+            <button id="open-model" class="ui-button" title="Open"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>
+            <button id="create-model" class="ui-button" title="New"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></button>
         </div>
 
         <div id="app-title">
@@ -104,6 +104,22 @@
     </p>
     <p>
         Show report?
+    </p>
+</div>
+
+<div id="model-chooser-dialog" title="Choose a model to load">
+    <form>
+        <label for="model-chooser-dialog-select">Choose a model to load</label>
+        <select id="model-chooser-dialog-select"></select>
+    </form>
+</div>
+
+<div id="create-confirm-dialog" title="Create new model">
+    <p>
+        Do you really want to create a new model?
+    </p>
+    <p>
+        All unsaved data will be lost.
     </p>
 </div>
 

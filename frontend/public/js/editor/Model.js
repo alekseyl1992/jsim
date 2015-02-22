@@ -9,10 +9,12 @@ define([
     'editor/Connection',
     'editor/Exceptions'
 ], function(_, easeljs, Styles, Source, Queue, Splitter, Sink, Connection, Exceptions) {
-    function Model(stage, editor, data) {
+    function Model(stage, editor, model) {
         var self = this;
 
         this.stage = stage;
+        this.model = model;
+        this.data = null;
 
         this.modelContainer = new easeljs.Container();
         this.stage.addChild(this.modelContainer);
@@ -49,8 +51,8 @@ define([
             self.selectObject(null);
         });
 
-        if (data)
-            load(data);
+        if (model && model.data)
+            load(model.data);
         else
             create();
 
@@ -207,6 +209,10 @@ define([
 
         this.getData = function() {
             return data;
+        };
+
+        this.getModel = function() {
+            return model;
         };
     }
 

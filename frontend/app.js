@@ -58,7 +58,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/user', templates);  // do not check auth at lhoin/register pages
+app.use('/user', templates);  // do not check auth at login/register pages
 app.use('/api', auth.check, api);
 app.use('/auth', auth);
 app.use('/', auth.check, templates);

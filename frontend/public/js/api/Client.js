@@ -13,38 +13,33 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
         this.sendModel = function(model, callbacks) {
             console.log("Sending model: ", model);
 
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "/api/simulate",
-                dataType: "json",
-                data: JSON.stringify({
-                    "model": model
-                })
-            })
-                .done(function(msg) {
+            this._post("/api/simulate", {
+                model: model
+            }, {
+                onError: function (error) {
+                    alert("Error while trying to simulate model");
+                    console.log(error);
+                    callbacks.onError(error, Exceptions.SENDING);
+                },
+                onComplete: function (msg) {
                     console.log("Message received: ", msg);
                     console.log("Task id: " + msg.taskId);
 
                     self.pollProgress(msg.taskId, callbacks);
-                })
-                .fail(function(error) {
-                    alert("Error while trying to simulate model");
-                    console.log(error);
-                    callbacks.onError(error, Exceptions.SENDING);
-                });
+                }
+            });
         };
 
         this.pollProgress = function(taskId, callbacks) {
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "/api/getProgress",
-                data: {
-                    taskId: taskId
-                }
-            })
-                .done(function (msg) {
+            this._get("/api/getProgress", {
+                taskId: taskId
+            }, {
+                onError: function (error) {
+                    setTimeout(self.pollProgress.bind(self, taskId), 500);
+                    alert("Error while trying to poll progress");
+                    callbacks.onError(error, Exceptions.POLLING);
+                },
+                onComplete: function (msg) {
                     console.log("Message received: ", msg);
                     console.log("Progress: " + msg.progress);
 
@@ -58,12 +53,8 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                     } else {
                         setTimeout(self.pollProgress.bind(self, taskId, callbacks), 500);
                     }
-                })
-                .fail(function (error) {
-                    setTimeout(self.pollProgress.bind(self, taskId), 500);
-                    alert("Error while trying to poll progress");
-                    callbacks.onError(error, Exceptions.POLLING);
-                });
+                }
+            });
         };
 
         /**
@@ -74,24 +65,12 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
          * @param callbacks.onComplete {Function}
          */
         this.getReport = function(taskId, callbacks) {
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "/api/getReport",
-                data: {
-                    taskId: taskId
-                }
-            })
-                .done(function (msg) {
-                    console.log("Report: ", msg);
-                    callbacks.onComplete(msg);
-                })
-                .fail(function (error) {
-                    callbacks.onError(error);
-                });
+            this._get("/api/getReport", {
+                taskId: taskId
+            }, callbacks);
         };
 
-        //TODO: refactor
+        //TODO: define callbacks documentation somewhere in one place
         /**
          * Gets JSON stats report
          * @param modelName {String}
@@ -100,16 +79,47 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
          * @param callbacks.onComplete {Function}
          */
         this.getModel = function(modelName, callbacks) {
+            this._get("/api/getModel", {
+                modelName: modelName
+            }, callbacks);
+        };
+
+        this.getModelList = function (callbacks) {
+            this._get("/api/getModel", null, callbacks);
+        };
+
+        this.saveModel = function(model, callbacks) {
+            this._post("/api/saveModel", model, callbacks);
+        };
+
+        this.createModel = function(data, callbacks) {
+            this._post("/api/createModel", data, callbacks);
+        };
+
+        this._get = function(url, data, callbacks) {
             $.ajax({
                 type: "GET",
                 contentType: "application/json",
-                url: "/api/getModel",
-                data: {
-                    modelName: modelName
-                }
+                url: url,
+                data: data
             })
                 .done(function (msg) {
-                    console.log("Model: ", msg);
+                    callbacks.onComplete(msg);
+                })
+                .fail(function (error) {
+                    callbacks.onError(error);
+                });
+        };
+
+        this._post = function (url, data, callbacks) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: url,
+                dataType: "json",
+                data: JSON.stringify(data)
+            })
+                .done(function (msg) {
                     callbacks.onComplete(msg);
                 })
                 .fail(function (error) {

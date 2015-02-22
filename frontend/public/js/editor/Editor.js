@@ -37,63 +37,16 @@ define([
                 objectProps: Templater.makeTemplate('#object-props-template')
             };
 
+            this.dialogs = {
+                modelChooser: $("#model-chooser-dialog"),
+                createConfirm: $("#create-confirm-dialog")
+            };
+
             // cache jQ elements
             this.$objectPropsTable = $('#object-props-table');
             this.$modelPropsTable = $('#model-props-table');
 
 
-            var testModelData = {
-                "name": "Model 1",
-                "duration": 1000,
-                "objects": [
-                    {
-                        "type": "source",
-                        "name": "Source 1",
-                        "x": 210,
-                        "y": 80,
-                        "id": "1",
-                        "to": "2",
-                        "spec": {
-                            "lambda": 1
-                        }
-                    },
-                    {
-                        "type": "queue",
-                        "name": "Queue 1",
-                        "x": 420,
-                        "y": 80,
-                        "id": "2",
-                        "to": "3",
-                        "spec": {
-                            "mu": 1,
-                            "channels": 10,
-                            "limit": -1
-                        }
-                    },
-                    {
-                        "type": "splitter",
-                        "name": "Splitter 1",
-                        "x": 630,
-                        "y": 80,
-                        "id": "3",
-                        "toA": "2",
-                        "toB": "4",
-                        "spec": {
-                            "pA": 0.5
-                        }
-                    },
-                    {
-                        "type": "sink",
-                        "name": "Sink 1",
-                        "x": 840,
-                        "y": 80,
-                        "id": "4",
-                        "spec": {}
-                    }
-                ]
-            };
-
-            this.model = new Model(this.stage, this, testModelData);
             keyCoder.addEventListener("keyup", KeyCoder.KEY.DEL, function() {
                 self.model.removeObject();
             });
@@ -114,9 +67,93 @@ define([
                 });
             });
 
-
             this.stage.update();
 
+
+            this.chooseModel = function () {
+                client.getModelList({
+                        onError: function () {
+                            alert("Unable to get model list");
+                        },
+                        onComplete: function (models) {
+                            // setup chooser dialog
+                            var $dialog = self.dialogs.modelChooser;
+                            var $select = $dialog.find("model-chooser-dialog-select");
+                            $select.removeAllChildren();
+
+                            _.each(models, function(model) {
+                                $select.append(new Option(model.data.name, model._id));
+                            });
+
+                            // show chooser dialog
+                            $($dialog).dialog({
+                                width: "50%",
+                                modal: true,
+                                show: {
+                                    effect: "fade",
+                                    duration: 300
+                                },
+                                hide: {
+                                    effect: "fade",
+                                    duration: 300
+                                },
+                                buttons: {
+                                    "Open": function () {
+                                        var modelId = $('#model-chooser-dialog-select').val();
+                                        self.loadModel(modelId);
+                                        $(this).dialog("close");
+                                    },
+                                    "Cancel": function () {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                );
+            };
+
+            this.loadModel = function(modelId) {
+                client.getModel(modelId, {
+                    onError: function () {
+                        alert("Unable to get model: " + modelId);
+                    },
+                    onComplete: function (model) {
+                        self.model = new Model(self.stage, self, model);
+                        alert("Model loaded: " + modelId);
+                    }
+                });
+            };
+
+            this.createModel = function () {
+                this.model = new Model(this.stage, this, null);
+            };
+
+            this.saveModel = function () {
+                var model = this.model.getModel();
+                var data = this.model.getData();
+
+                if (model) {
+                    client.saveModel(model, {
+                        onError: function () {
+                            alert("Unable to save model");
+                        },
+                        onComplete: function () {
+                            alert("Model saved");
+                        }
+                    });
+                } else {
+                    client.createModel(data, {
+                        onError: function () {
+                            alert("Unable to create model");
+                        },
+                        onComplete: function (model) {
+                            self.model = new Model(self.stage, self, model);
+                            alert("Model created");
+                        }
+                    });
+                }
+            };
 
             this.resize = function(w, h) {
                 this.stage.update();
@@ -192,6 +229,7 @@ define([
                 });
             };
 
+            this.createModel();
             this.showModelProps(this.model);
         }
 
