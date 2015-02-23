@@ -97,11 +97,14 @@ router.get('/getModelList', function(req, res, next) {
     });
 });
 
-router.get('/saveModel', function(req, res, next) {
-    var model = req.query.model;
+router.post('/saveModel', function(req, res, next) {
+    var model = req.body;
     console.log("/saveModel");
 
-    Model.update(model._id, model, function (err) {
+    var id = model._id;
+    delete model._id;  // or mongo will try to save id as String
+
+    Model.update(id, model, function (err) {
         if (err)
             return console.error("MongoDB error: ", err);
 
@@ -110,9 +113,9 @@ router.get('/saveModel', function(req, res, next) {
     });
 });
 
-router.get('/createModel', function(req, res, next) {
-    var data = req.query.data;
-    console.log("/createModel");
+router.post('/createModel', function(req, res, next) {
+    var data = req.body;
+    console.log("/onCreateModel");
 
     var model = {
         author_id: req.user.id,

@@ -31,9 +31,6 @@ define([
                 this.stage = new easeljs.Stage(windows.$canvas[0]);
                 this.stage.enableMouseOver(30);
 
-                // create empty model
-                this.createModel();
-
                 var keyCoder = new KeyCoder(windows.$canvas);
 
                 this.template = {
@@ -59,6 +56,8 @@ define([
                     console.log("Model data: ", self.model.getData());
                 });
 
+                // create empty model
+                this.createModel();
 
                 var objectStyle = Styles.object;
                 var palette = new Palette(this.stage, self.model, objectStyle, Styles.palette);
@@ -76,7 +75,26 @@ define([
                 this.showModelProps(this.model);
             },
 
-            chooseModel: function () {
+            showModalDialog: function ($dialog, params) {
+                var fullParams = _.extend({
+                    width: "50%",
+                    modal: true,
+                    show: {
+                        effect: "fade",
+                        duration: 300
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 300
+                    }
+                }, params);
+
+                $dialog.dialog(fullParams);
+            },
+
+            onChooseModel: function () {
+                var self = this;
+
                 this.client.getModelList({
                         onError: function () {
                             alert("Unable to get model list");
@@ -85,28 +103,18 @@ define([
                             // setup chooser dialog
                             var $dialog = self.dialogs.modelChooser;
                             var $select = $dialog.find("model-chooser-dialog-select");
-                            $select.removeAllChildren();
+                            $select.empty();
 
                             _.each(models, function (model) {
                                 $select.append(new Option(model.data.name, model._id));
                             });
 
                             // show chooser dialog
-                            $($dialog).dialog({
-                                width: "50%",
-                                modal: true,
-                                show: {
-                                    effect: "fade",
-                                    duration: 300
-                                },
-                                hide: {
-                                    effect: "fade",
-                                    duration: 300
-                                },
+                            self.showModalDialog($dialog, {
                                 buttons: {
                                     "Open": function () {
                                         var modelId = $('#model-chooser-dialog-select').val();
-                                        self.loadModel(modelId);
+                                        self.onLoadModel(modelId);
                                         $(this).dialog("close");
                                     },
                                     "Cancel": function () {
@@ -119,7 +127,7 @@ define([
                 );
             },
 
-            loadModel: function (modelId) {
+            onLoadModel: function (modelId) {
                 this.client.getModel(modelId, {
                     onError: function () {
                         alert("Unable to get model: " + modelId);
@@ -131,11 +139,30 @@ define([
                 });
             },
 
+            onCreateModel: function () {
+                var self = this;
+                var $dialog = this.dialogs.createConfirm;
+
+                this.showModalDialog($dialog, {
+                    buttons: {
+                        "Ok": function () {
+                            self.createModel();
+                            $(this).dialog("close");
+                        },
+                        "Cancel": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            },
+
             createModel: function () {
                 this.model = new Model(this.stage, this, null);
             },
 
             saveModel: function () {
+                var self = this;
+
                 var model = this.model.getModel();
                 var data = this.model.getData();
 
@@ -149,7 +176,7 @@ define([
                         }
                     });
                 } else {
-                    this.client.createModel(data, {
+                    this.client.onCreateModel(data, {
                         onError: function () {
                             alert("Unable to create model");
                         },

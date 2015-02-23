@@ -19,6 +19,8 @@ define([
             this.model = model;
             this.data = null;
 
+            // TODO: remove old container on model recreation
+
             this.modelContainer = new easeljs.Container();
             this.stage.addChild(this.modelContainer);
 
@@ -61,11 +63,13 @@ define([
         },
 
         load: function (data) {
-            self.data = data;
+            var self = this;
+
+            this.data = data;
             // create objects according to specified data
-            _.each(self.data.objects, function (objectData) {
-                addObject(objectData, true);
-            });
+            _.each(this.data.objects, function (objectData) {
+                this.addObject(objectData, true);
+            }, this);
 
             // create connections for new objects
             _.each(self.objects, function (fromObject) {
@@ -73,19 +77,19 @@ define([
 
                 var toObject = null;  // because of lack of 'let' and block-scoped vars
                 if (fromObjectData.to) {
-                    toObject = getObjectById(fromObjectData.to);
-                    connectByOutputName(fromObject, toObject, "to");
+                    toObject = this.getObjectById(fromObjectData.to);
+                    this.connectByOutputName(fromObject, toObject, "to");
                 } else {
                     if (fromObjectData.toA) {
-                        toObject = getObjectById(fromObjectData.toA);
-                        connectByOutputName(fromObject, toObject, "toA");
+                        toObject = this.getObjectById(fromObjectData.toA);
+                        this.connectByOutputName(fromObject, toObject, "toA");
                     }
                     if (fromObjectData.toB) {
-                        toObject = getObjectById(fromObjectData.toB);
-                        connectByOutputName(fromObject, toObject, "toB");
+                        toObject = this.getObjectById(fromObjectData.toB);
+                        this.connectByOutputName(fromObject, toObject, "toB");
                     }
                 }
-            });
+            }, this);
         },
 
         create: function() {

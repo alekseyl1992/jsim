@@ -25,9 +25,9 @@ require(['config'], function() {
                 }, client, statsManager);
 
 
-                $('#open-model').click(editor.chooseModel.bind(editor));
+                $('#open-model').click(editor.onChooseModel.bind(editor));
                 $('#save-model').click(editor.saveModel.bind(editor));
-                $('#create-model').click(editor.createModel.bind(editor));
+                $('#create-model').click(editor.onCreateModel.bind(editor));
 
                 // for keyup/keydown to work
                 $canvas.click(function() {
