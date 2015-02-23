@@ -2,15 +2,17 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>jsim report</title>
+    <title>jsim: report</title>
 
     <link rel="stylesheet" href="/css/lib/bootstrap.css" />
     <link rel="stylesheet" href="/css/lib/bootstrap-table.css" />
 
-    <link rel="stylesheet" href="css/lib/jquery-ui.css">
-    <link rel="stylesheet" href="css/lib/jquery-ui.theme.css">
+    <link rel="stylesheet" href="/css/lib/jquery-ui.css">
+    <link rel="stylesheet" href="/css/lib/jquery-ui.theme.css">
     <link rel="stylesheet" href="/css/report.css" />
 
+    <!-- PrototypeJS 1.7.2 fails to work with AMD -->
+    <script src="/js/lib/dev/prototype.js"></script>
     <script data-main="/js/report" src="/js/lib/dev/require.js"></script>
 </head>
 <body>

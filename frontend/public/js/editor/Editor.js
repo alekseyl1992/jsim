@@ -73,7 +73,7 @@ define([
                 });
 
                 this.stage.update();
-                this._showModelProps(this.model);
+                this.showModelProps(this.model);
             },
 
             chooseModel: function () {
@@ -202,7 +202,7 @@ define([
                 }
             },
 
-            _showObjectProps: function (object) {
+            showObjectProps: function (object) {
                 var objectData = object.getData();
 
                 var props = {
@@ -221,11 +221,11 @@ define([
                 });
             },
 
-            _hideObjectProps: function () {
+            hideObjectProps: function () {
                 this.$objectPropsTable.html("");
             },
 
-            _showModelProps: function (model) {
+            showModelProps: function (model) {
                 var modelData = _.omit(model.getData(), "objects");
 
                 this._renderProps(modelData, this.template.modelProps, this.$modelPropsTable);

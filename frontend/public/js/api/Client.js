@@ -9,6 +9,8 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
          * @param callbacks.onComplete {Function}
          */
         sendModel: function(model, callbacks) {
+            var self = this;
+
             console.log("Sending model: ", model);
 
             this._post("/api/simulate", {
@@ -28,7 +30,9 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
             });
         },
 
-        pollProgress: function(taskId, callbacks) {
+        pollProgress: function (taskId, callbacks) {
+            var self = this;
+
             this._get("/api/getProgress", {
                 taskId: taskId
             }, {

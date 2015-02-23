@@ -120,8 +120,10 @@ define([
         },
 
         addObject: function (data, justAddToStage) {
+            var self  = this;
+
             var _data = data; //_.cloneDeep(data);  // ensure RO
-            var typeEntry = self.typesMap[_data.type];
+            var typeEntry = this.typesMap[_data.type];
 
             if (!justAddToStage) {
                 // generate name and id
@@ -132,17 +134,17 @@ define([
             }
 
             typeEntry.id++;
-            self.currentUID++;
+            this.currentUID++;
 
             // add to stage
-            var object = new typeEntry.ctor(self.stage, self.modelContainer, Styles.object, _data);
+            var object = new typeEntry.ctor(this.stage, this.modelContainer, Styles.object, _data);
             var container = object.getContainer();
 
             container.on("mousedown", function(evt) {
                 self.selectObject(object);
             });
 
-            self.objects.push(object);
+            this.objects.push(object);
 
             return object;
         },

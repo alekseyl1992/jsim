@@ -1,10 +1,9 @@
 define(['easeljs'], function(easeljs) {
     var Connection = Class.create({
         initialize: function (stage, parentContainer, style) {
-            var self = this;
-
             this.stage = stage;
             this.parentContainer = parentContainer;
+            this.style = style;
 
             this.shape = null;
             this.from = null;
@@ -13,7 +12,7 @@ define(['easeljs'], function(easeljs) {
 
         setFrom: function(from) {
             this.from = from;
-            shape = new easeljs.Shape();
+            this.shape = new easeljs.Shape();
 
             // add to the background
             this.parentContainer.addChildAt(this.shape, 0);
@@ -37,23 +36,23 @@ define(['easeljs'], function(easeljs) {
          */
         render: function(endPoint) {
             var startPoint = this.from.object.getContainer()
-                .localToLocal(this.from.output.x, this.from.output.y, parentContainer);
+                .localToLocal(this.from.output.x, this.from.output.y, this.parentContainer);
 
-            shape.x = startPoint.x;
-            shape.y = startPoint.y;
+            this.shape.x = startPoint.x;
+            this.shape.y = startPoint.y;
 
             endPoint = endPoint || this.to.object.getContainer()
-                .localToLocal(this.to.input.x, this.to.input.y, parentContainer);
+                .localToLocal(this.to.input.x, this.to.input.y, this.parentContainer);
 
             var gfx = this.shape.graphics;
-            var s = style.sizes;
-            var c = style.colors;
+            var s = this.style.sizes;
+            var c = this.style.colors;
 
             gfx.clear();
 
             this._roundingRender(gfx, s, c, endPoint);
 
-            stage.update();
+            this.stage.update();
         },
 
         _directRender: function(gfx, s, c, endPoint) {

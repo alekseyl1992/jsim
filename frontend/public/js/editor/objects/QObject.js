@@ -196,7 +196,7 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
         },
 
         getData: function() {
-            return data;
+            return this.data;
         },
 
         getContainer: function() {
