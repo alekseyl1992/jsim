@@ -253,6 +253,8 @@ define([
             },
 
             showModelProps: function (model) {
+                var self = this;
+
                 var modelData = _.omit(model.getData(), "objects");
 
                 this._renderProps(modelData, this.template.modelProps, this.$modelPropsTable);
