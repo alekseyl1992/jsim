@@ -73,7 +73,7 @@ function initLayout(onResize) {
             childOptions: {
                 minSize: 110,
                 north: {
-                    size: 110
+                    size: 140
                 }
             }
         },

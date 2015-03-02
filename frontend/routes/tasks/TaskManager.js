@@ -1,5 +1,8 @@
+var _ = require('lodash');
+
 var Task = require('./Task');
 var RmqFacade = require('./RmqFacade');
+
 
 function TaskManager() {
     var rmq = new RmqFacade(this);
@@ -7,7 +10,7 @@ function TaskManager() {
 
     var tasks = {};
 
-    this.createTask = function(model) {
+    this.createTask = function (model) {
         var task = new Task(model);
         tasks[task.id] = task;
 
@@ -20,11 +23,11 @@ function TaskManager() {
         return task;
     };
 
-    this.getTask = function(taskId) {
+    this.getTask = function (taskId) {
         return tasks[taskId];
     };
 
-    this.onProgress = function(msg) {
+    this.onProgress = function (msg) {
         var task = tasks[msg.taskId];
         if (!task) {
             console.warn("Task does not exist: " + msg.taskId);
@@ -39,7 +42,7 @@ function TaskManager() {
         }
     };
 
-    this.onError = function(msg) {
+    this.onError = function (msg) {
         var task = tasks[msg.taskId];
         if (!task) {
             console.warn("Task does not exist: " + msg.taskId);
@@ -52,7 +55,7 @@ function TaskManager() {
         console.log("[TM] onError: ", task);
     };
 
-    this.onFinished = function(msg) {
+    this.onFinished = function (msg) {
         var task = tasks[msg.taskId];
         if (!task) {
             console.warn("Task does not exist: " + msg.taskId);
@@ -60,9 +63,57 @@ function TaskManager() {
         }
 
         task.status = Task.Status.DONE;
-        task.stats = msg.stats;
+        task.stats = this.mergeStats(msg.stats);
 
         console.log("[TM] onFinished: ", task);
+    };
+
+    this.mergeStats = function (statsArray) {
+        var self = this;
+
+        if (statsArray.length == 1)
+            return statsArray[0];
+
+        var result =  {};
+        _.reduce(statsArray, function (result, stats) {
+            self._mergeStats(result, stats, statsArray.length);
+
+            return result;
+        }, result);
+
+        return result;
+    };
+
+    /**
+     * Recursive merge of two objects
+     * Averages all Numbers from source
+     * @param target {Object} Merge target
+     * @param source {Object} Object to merge in target
+     * @param denominator {Number} Denominator for averaging
+     * @private
+     */
+    this._mergeStats = function (target, source, denominator) {
+        var self = this;
+
+        _.forOwn(source, function (value, key) {
+            if (_.isNumber(value)) {
+                if (_.isUndefined(target[key]))
+                    target[key] = value / denominator;
+                else
+                    target[key] += value / denominator;
+            } else if (_.isObject(value) || _.isArray(value)) {
+                if (_.isUndefined(target[key])) {
+                    if (_.isArray(value))
+                        target[key] = [];
+                    else
+                        target[key] = {};
+                }
+
+                self._mergeStats(target[key], source[key], denominator);
+            } else {  // other primitive types (String, etc)
+                target[key] = value;
+            }
+        });
     };
 }
 

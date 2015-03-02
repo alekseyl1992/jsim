@@ -1,12 +1,13 @@
 package modelling.parsing.formats.rmq;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Stats {
     public static final String TASK_ID = "taskId";
     public static final String STATS = "stats";
 
-    public static String toJsonString(String taskId, JSONObject stats) {
+    public static String toJsonString(String taskId, JSONArray stats) {
         JSONObject json = new JSONObject();
         json.put(TASK_ID, taskId);
         json.put(STATS, stats);

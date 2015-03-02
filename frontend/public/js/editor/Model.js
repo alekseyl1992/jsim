@@ -96,6 +96,7 @@ define([
             this.data = {
                 name: "Model",
                 duration: 1000,
+                runs: 1,
                 objects: []
             };
         },

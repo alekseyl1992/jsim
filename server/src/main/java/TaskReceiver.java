@@ -1,10 +1,12 @@
 import modelling.parsing.Model;
 import modelling.parsing.ModelFactory;
 import modelling.parsing.ModelParsingError;
+import modelling.parsing.formats.model.ModelFields;
 import modelling.parsing.formats.rmq.Error;
 import modelling.parsing.formats.rmq.Progress;
 import modelling.parsing.formats.rmq.Stats;
 import modelling.parsing.formats.rmq.TaskFields;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,39 +41,58 @@ public class TaskReceiver implements Runnable {
     private void handleTask(String taskStr) {
         JSONObject modelJson;
         String taskId;
+        int runsCount;
         
         try {
             JSONObject task = new JSONObject(taskStr);
             taskId = task.getString(TaskFields.ID);
+
             modelJson = task.getJSONObject(TaskFields.MODEL);
+            runsCount = modelJson.getInt(ModelFields.RUNS_COUNT);
+
+            System.out.println("[TR] Model parsed for taskId: " + taskId);
         } catch (JSONException e) {
             System.err.println("[TR] Error parsing task: " + taskStr);
             e.printStackTrace();
             return;
         }
-            
-        try {
-            Model model = ModelFactory.createModel(modelJson);
-            model.setProgressCallback((Double progress) -> sendProgress(taskId, progress));
 
-            executorService.submit(() -> {
-                System.out.println("[TR] Simulation started for taskId: " + taskId);
-                JSONObject stats = model.startSimulation();
-                System.out.println("[TR] Simulation finished for taskId: " + taskId);
 
-                sendStats(taskId, stats);
-            });
-        } catch (ModelParsingError e) {
-            sendError(taskId, e);
-        }
+        executorService.submit(() -> {
+            System.out.println("[TR] Simulation started for taskId: " + taskId);
+
+            JSONArray statsArray = new JSONArray();
+
+            for (int i = 0; i < runsCount; ++i) {
+                final int runId = i;
+
+                try {
+                    Model model = ModelFactory.createModel(modelJson);
+                    model.setProgressCallback((Double progress) -> sendProgress(taskId, progress, runId, runsCount));
+
+                    System.out.format("[TR] Simulation run: %d for taskId: %s", runId, taskId);
+                    JSONObject stats = model.startSimulation();
+                    statsArray.put(stats);
+                } catch (ModelParsingError e) {
+                    sendError(taskId, e);
+                }
+            }
+
+            System.out.println("[TR] Simulation finished for taskId: " + taskId);
+
+            sendStats(taskId, statsArray);
+        });
+
     }
 
-    private void sendProgress(String taskId, double progress) {
-        String jsonStr = Progress.toJsonString(taskId, progress);
+    private void sendProgress(String taskId, double progress, int runId, int runsCount) {
+        double overallProgress = (double)runId / runsCount + progress / 10.0;
+
+        String jsonStr = Progress.toJsonString(taskId, overallProgress);
         rmq.send(PROGRESS_QUEUE_NAME, jsonStr);
     }
 
-    private void sendStats(String taskId, JSONObject stats) {
+    private void sendStats(String taskId, JSONArray stats) {
         String jsonStr = Stats.toJsonString(taskId, stats);
         rmq.send(STATS_QUEUE_NAME, jsonStr);
     }
