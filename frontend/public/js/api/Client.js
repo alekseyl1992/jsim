@@ -37,8 +37,6 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                 taskId: taskId
             }, {
                 onError: function (error) {
-                    setTimeout(self.pollProgress.bind(self, taskId), 500);
-                    alert("Error while trying to poll progress");
                     callbacks.onError(error, Exceptions.POLLING);
                 },
                 onComplete: function (msg) {
@@ -52,6 +50,8 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
                         console.log("Stats: ", msg.stats);
 
                         callbacks.onComplete(msg);
+                    } else if(msg.status == 'error') {
+                        callbacks.onError(msg.error, Exceptions.MODELLING);
                     } else {
                         setTimeout(self.pollProgress.bind(self, taskId, callbacks), 500);
                     }

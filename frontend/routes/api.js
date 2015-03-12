@@ -36,7 +36,8 @@ router.get('/getProgress', function(req, res, next) {
             taskId: task.id,
             status: task.status,
             progress: task.progress,
-            stats: task.stats
+            stats: task.stats,
+            error: task.error
         });
     } else {
         //TODO: implement sendError() and underlying protocol package format

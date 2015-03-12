@@ -2,6 +2,7 @@ package modelling.parsing;
 
 import core.Simulation;
 import modelling.parsing.formats.stats.StatsFields;
+import modelling.queueing.Splitter;
 import org.json.JSONObject;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import modelling.queueing.QObject;
@@ -121,5 +122,21 @@ public class Model {
 
     public int getDuration() {
         return duration;
+    }
+
+    public void validate() throws ModelParsingError {
+        // empty check
+        if (objects.isEmpty())
+            throw new ModelParsingError("Model is empty");
+
+        // splitters check
+        for (QObject obj: objects.values()) {
+            if (obj instanceof Splitter) {
+                Splitter s = (Splitter) obj;
+
+                if (s.getToA() == null || s.getToB() == null)
+                    throw new ModelParsingError("Both outputs of Splitter should be connected somewhere");
+            }
+        }
     }
 }

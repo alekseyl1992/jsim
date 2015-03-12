@@ -109,6 +109,15 @@
     </p>
 </div>
 
+<div id="simulation-error-dialog" title="Simulation error">
+    <p>
+        Simulation error occurred:
+    </p>
+    <p class="details">
+        No details specified
+    </p>
+</div>
+
 <div id="model-chooser-dialog" title="Choose a model to load">
     <form>
         <label for="model-chooser-dialog-select">Choose a model to load</label>

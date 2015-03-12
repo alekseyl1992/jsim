@@ -8,9 +8,11 @@ public class Splitter extends QObject {
     private double pA;
     private Random random;
 
+    public static final String TYPE = "splitter";
+
     public Splitter(Simulation sim, double pA, Random random) {
         super(sim);
-        type = "splitter";
+        type = TYPE;
 
         this.pA = pA;
 

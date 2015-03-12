@@ -59,6 +59,18 @@ public class TaskReceiver implements Runnable {
 
 
         executorService.submit(() -> {
+            System.out.println("[TR] Validation started for taskId: " + taskId);
+
+            try {
+                Model model = ModelFactory.createModel(modelJson);
+                model.validate();
+            } catch (ModelParsingError e) {
+                sendError(taskId, e);
+                System.out.println("[TR] Validation error for taskId: " + taskId);
+                return;
+            }
+            System.out.println("[TR] Validation successful for taskId: " + taskId);
+
             System.out.println("[TR] Simulation started for taskId: " + taskId);
 
             JSONArray statsArray = new JSONArray();
@@ -70,7 +82,7 @@ public class TaskReceiver implements Runnable {
                     Model model = ModelFactory.createModel(modelJson);
                     model.setProgressCallback((Double progress) -> sendProgress(taskId, progress, runId, runsCount));
 
-                    System.out.format("[TR] Simulation run: %d for taskId: %s", runId, taskId);
+                    System.out.format("[TR] Simulation run: %d for taskId: %s\n", runId, taskId);
                     JSONObject stats = model.startSimulation();
                     statsArray.put(stats);
                 } catch (ModelParsingError e) {

@@ -19,10 +19,12 @@ public class Queue extends QObject {
 
     private PoissonGenerator gen;
 
+    public static final String TYPE = "queue";
+
     //TODO: implement size
     public Queue(Simulation sim, int sizeLimit, int channels, double mu, Random random) {
         super(sim);
-        type = "queue";
+        type = TYPE;
 
         gen = new PoissonGenerator(1.0d / mu, random);
         res = new Resource(sim, channels);

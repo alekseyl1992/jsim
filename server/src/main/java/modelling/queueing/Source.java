@@ -10,9 +10,11 @@ import java.util.Random;
 public class Source extends QObject {
     private PoissonGenerator gen;
 
+    public static final String TYPE = "source";
+
     public Source(Simulation sim, double lambda, Random random) {
         super(sim);
-        type = "source";
+        type = TYPE;
 
         gen = new PoissonGenerator(1.0d / lambda, random);
 

@@ -37,9 +37,27 @@ define(['jquery'], function($) {
             },
 
             onError: function(error, reason) {
-                alert("Error");
-                alert(error);
-                alert(reason);
+                var $dialog = $("#simulation-error-dialog")
+                var $details = $dialog.find(".details");
+                $details.text(error);
+
+                $dialog.dialog({
+                    width: "50%",
+                    modal: true,
+                    show: {
+                        effect: "fade",
+                        duration: 300
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 300
+                    },
+                    buttons: {
+                        "OK": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
             }
         });
 
