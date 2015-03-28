@@ -19,22 +19,23 @@ public class Resource {
         this.freeChannels = channels;
     }
 
-    public Event use(int duration) {
+    public Request use(int duration) {
         return use(1, duration);
     }
 
     //TODO: release?..
 
-    public Event use(int channels, int duration) {
+    public Request use(int channels, int duration) {
+        Event handlingEvent = new Event(sim);
         Event handledEvent = new Event(sim);
         handledEvent.addHandler(this::handleQueue);
 
-        Request r = new Request(handledEvent, channels, duration);
+        Request r = new Request(handlingEvent, handledEvent, channels, duration);
 
         if (!queue.isEmpty() || !handleRequest(r))
             queue.add(r);
 
-        return handledEvent;
+        return r;
     }
 
     private void handleQueue(Event e) {
@@ -49,6 +50,8 @@ public class Resource {
         if (freeChannels >= r.getChannels()) {
             // handle (wait and fire)
             freeChannels -= r.getChannels();
+
+            r.getHandlingEvent().fire();
             sim.delay(r.getDuration(), (Event e) -> {
                 freeChannels += r.getChannels();
                 r.getHandledEvent().fire();

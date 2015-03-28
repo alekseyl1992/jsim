@@ -30,7 +30,7 @@ public class Container {
         Event handledEvent = new Event(sim);
         handledEvent.addHandler(this::handlePutQueue);
 
-        Request r = new Request(handledEvent, count);
+        Request r = new Request(null, handledEvent, count);
 
         if (!getQueue.isEmpty() || !handleGetRequest(r))
             getQueue.add(r);
@@ -42,7 +42,7 @@ public class Container {
         Event handledEvent = new Event(sim);
         handledEvent.addHandler(this::handleGetQueue);
 
-        Request r = new Request(handledEvent, count);
+        Request r = new Request(null, handledEvent, count);
 
         if (!putQueue.isEmpty() || !handlePutRequest(r))
             putQueue.add(r);

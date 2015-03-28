@@ -74,7 +74,8 @@ public class QObjectFactory {
 
         // setup plotters
         queue.setSizePlotter(new Plotter(0, model.getDuration(), Plotter.DEFAULT_BUCKETS_COUNT));
-        queue.setTimePlotter(new Plotter(0, model.getDuration(), Plotter.DEFAULT_BUCKETS_COUNT));
+        queue.setSystemTimePlotter(new Plotter(0, model.getDuration(), Plotter.DEFAULT_BUCKETS_COUNT));
+        queue.setQueueTimePlotter(new Plotter(0, model.getDuration(), Plotter.DEFAULT_BUCKETS_COUNT));
 
         return queue;
     }

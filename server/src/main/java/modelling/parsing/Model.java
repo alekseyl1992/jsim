@@ -73,12 +73,23 @@ public class Model {
                 Queue queue = (Queue) qObject;
 
                 //TODO: add deviations and usage percentage
-                objStats.put(StatsFields.AVG_QUEUE_SIZE, queue.getStats().getSizesSeries().getAverage());
-                objStats.put(StatsFields.AVG_WAIT_TIME, queue.getStats().getDurationSeries().getAverage());
+                objStats.put(StatsFields.AVG_QUEUE_SIZE, queue.getQueuePopulation().getSizesSeries().getAverage());
+                objStats.put(StatsFields.AVG_QUEUE_TIME, queue.getQueuePopulation().getDurationSeries().getAverage());
+                objStats.put(StatsFields.AVG_SYSTEM_TIME, queue.getSystemPopulation().getDurationSeries().getAverage());
 
                 //TODO: add data from plotters
                 objStats.put(StatsFields.QUEUE_SIZE_PLOT, queue.getSizePlotter().getJSONData());
-                objStats.put(StatsFields.WAIT_TIME_PLOT, queue.getTimePlotter().getJSONData());
+                objStats.put(StatsFields.QUEUE_TIME_PLOT, queue.getQueueTimePlotter().getJSONData());
+                objStats.put(StatsFields.SYSTEM_TIME_PLOT, queue.getSystemTimePlotter().getJSONData());
+
+                objStats.put(StatsFields.REJECTED_COUNT, queue.getRejectedCount());
+
+                double rejectedPercent = 0;
+                // prevent division by zero
+                if (queue.getUseCount() != 0) {
+                    rejectedPercent = ((double) queue.getRejectedCount()) / queue.getUseCount();
+                }
+                objStats.put(StatsFields.REJECTED_PERCENT, rejectedPercent);
             }
 
             stats.put(qObject.getId(), objStats);

@@ -27,7 +27,7 @@ public class HighloadModel {
 
         sim.start(8 * 60 * 60);
 
-        Population stats = queue.getStats();
+        Population stats = queue.getQueuePopulation();
         log("t_avg_mean = ", stats.getDurationSeries().getAverage());
         log("t_avg_dev = ", stats.getDurationSeries().getDeviation());
 

@@ -230,6 +230,8 @@ define([
             },
 
             showObjectProps: function (object) {
+                var self = this;
+
                 var objectData = object.getData();
 
                 var props = {

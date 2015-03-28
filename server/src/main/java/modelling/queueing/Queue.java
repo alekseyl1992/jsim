@@ -3,6 +3,7 @@ package modelling.queueing;
 import core.Event;
 import core.Simulation;
 import core.resources.Resource;
+import core.resources.Request;
 import core.stats.Plotter;
 import core.stats.Population;
 import org.uncommons.maths.random.PoissonGenerator;
@@ -12,10 +13,15 @@ import java.util.Random;
 //TODO: rename to Resource
 public class Queue extends QObject {
     private Resource res;
-    private Population stats;
+    private Population queuePopulation;
+    private Population systemPopulation;
 
     private Plotter sizePlotter;
-    private Plotter timePlotter;
+    private Plotter systemTimePlotter;
+    private Plotter queueTimePlotter;
+
+    private int sizeLimit;
+    private int rejectedCount = 0;
 
     private PoissonGenerator gen;
 
@@ -28,32 +34,54 @@ public class Queue extends QObject {
 
         gen = new PoissonGenerator(1.0d / mu, random);
         res = new Resource(sim, channels);
-        stats = new Population(sim);
+        queuePopulation = new Population(sim);
+        systemPopulation = new Population(sim);
+
+        this.sizeLimit = sizeLimit;
     }
 
     @Override
     public void use() {
         super.use();
 
-        int timeEntered = stats.enter();
+        // if we are out of queue size limit
+        if (sizeLimit != -1 && res.getQueueSize() >= sizeLimit) {
+            ++rejectedCount;
+            return;
+        }
+
+        int timeEntered = queuePopulation.enter();
+        systemPopulation.enter();
 
         if (sizePlotter != null)
             sizePlotter.record(timeEntered, res.getQueueSize());
 
-        res.use(gen.nextValue()).addHandler((Event e) -> {
-            stats.leave(timeEntered);
+        Request r = res.use(gen.nextValue());
+        r.getHandlingEvent()
+                .addHandler((Event e) -> {
+                    queuePopulation.leave(timeEntered);
 
-            if (timePlotter != null) {
-                int currentTime = sim.getSimTime();
-                timePlotter.record(currentTime, currentTime - timeEntered);
-            }
+                    if (queueTimePlotter != null) {
+                        int currentTime = sim.getSimTime();
+                        queueTimePlotter.record(currentTime, currentTime - timeEntered);
+                    }
+                });
 
-            getTo().use();
-        });
+        r.getHandledEvent()
+                .addHandler((Event e) -> {
+                    systemPopulation.leave(timeEntered);
+
+                    if (systemTimePlotter != null) {
+                        int currentTime = sim.getSimTime();
+                        systemTimePlotter.record(currentTime, currentTime - timeEntered);
+                    }
+
+                    getTo().use();
+                });
     }
 
-    public Population getStats() {
-        return stats;
+    public Population getQueuePopulation() {
+        return queuePopulation;
     }
 
     public Plotter getSizePlotter() {
@@ -64,11 +92,27 @@ public class Queue extends QObject {
         this.sizePlotter = sizePlotter;
     }
 
-    public Plotter getTimePlotter() {
-        return timePlotter;
+    public Plotter getSystemTimePlotter() {
+        return systemTimePlotter;
     }
 
-    public void setTimePlotter(Plotter timePlotter) {
-        this.timePlotter = timePlotter;
+    public void setSystemTimePlotter(Plotter systemTimePlotter) {
+        this.systemTimePlotter = systemTimePlotter;
+    }
+
+    public int getRejectedCount() {
+        return rejectedCount;
+    }
+
+    public Plotter getQueueTimePlotter() {
+        return queueTimePlotter;
+    }
+
+    public void setQueueTimePlotter(Plotter queueTimePlotter) {
+        this.queueTimePlotter = queueTimePlotter;
+    }
+
+    public Population getSystemPopulation() {
+        return systemPopulation;
     }
 }

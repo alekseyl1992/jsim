@@ -44,11 +44,19 @@ require(['config'], function() {
                         var $queueTable = $queueStats.find('table');
                         $queueTable.bootstrapTable({
                             // convert object to array of {key, value} pairs
-                            data: _.map(_.omit(object, "queueSizePlot", "waitTimePlot"),
+                            data: _.map(_.omit(object, "queueSizePlot", "systemTimePlot", "queueTimePlot"),
                                 function(value, key) {
                                     return {key: key, value: value};
                                 }
-                            )
+                            ),
+                            columns: [{
+                                field: 'key',
+                                title: 'Key'
+                            }, {
+                                field: 'value',
+                                title: 'Value',
+                                formatter: floatFormatter
+                            }]
                         });
 
                         // add table to page to calc dimensions
@@ -62,7 +70,7 @@ require(['config'], function() {
                         $sizePlot.height($queueTable.height());
 
                         var waitData = [{
-                            data: object.waitTimePlot
+                            data: object.queueTimePlot
                         }];
 
                         var sizeData = [{
@@ -101,13 +109,33 @@ require(['config'], function() {
 
                 // show usage stats
                 $('#usage-stats-table').bootstrapTable({
-                    data: usageStats
+                    data: usageStats,
+                    columns: [{
+                        field: 'name',
+                        title: 'Name'
+                    }, {
+                        field: 'value',
+                        title: 'Value',
+                        formatter: floatFormatter
+                    }]
                 });
 
 
                 $(".accordion").accordion({
                     collapsible: true
                 });
+            }
+
+            function floatFormatter (value) {
+                if (_.isNumber(value) && !isInt(value)) {
+                    return value.toFixed(2);
+                } else {
+                    return value;
+                }
+            }
+
+            function isInt(n) {
+                return n % 1 === 0;
             }
         }
     );

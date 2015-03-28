@@ -26,8 +26,10 @@
         <module name="server" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="core" target="1.8" />
+      <module name="jsim" target="1.8" />
+      <module name="server" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

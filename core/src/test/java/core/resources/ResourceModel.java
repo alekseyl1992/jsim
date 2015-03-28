@@ -17,7 +17,7 @@ public class ResourceModel {
             public void start(Event e) {
                 int duration = 4;
 
-                f.use(1, duration)
+                f.use(1, duration).getHandledEvent()
                         .addHandler((Event event) -> {
                             int cid = (int) event.getData();
 

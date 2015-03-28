@@ -23,7 +23,7 @@ public class TestModel {
 
         sim.start(1000);
 
-        Population stats = queue.getStats();
+        Population stats = queue.getQueuePopulation();
         log("t_avg_mean = ", stats.getDurationSeries().getAverage());
         log("t_avg_dev = ", stats.getDurationSeries().getDeviation());
 
