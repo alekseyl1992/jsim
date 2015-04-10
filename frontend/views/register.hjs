@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>jsim: register</title>
+    <title>jsim: {{s.subtitle}}</title>
 
     <link rel="stylesheet" href="/css/lib/bootstrap.css" />
     <link rel="stylesheet" href="/css/auth.css" />
@@ -14,7 +14,7 @@
 <header class="navbar navbar-default">
     <div class="container">
         <h1>jsim
-            <small>register</small>
+            <small>{{s.subtitle}}</small>
         </h1>
     </div>
 </header>
@@ -25,13 +25,13 @@
     <section class="container auth-form">
 <form action="/auth/register" method="post">
     <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" class="form-control" name="username" placeholder="Enter username"/>
+        <label for="username">{{s.username}}</label>
+        <input type="text" id="username" class="form-control" name="username" placeholder="{{s.usernamePlaceholder}}"/>
     </div>
 
     <div class="form-group">
-        <label for="username">Password</label>
-        <input type="password" id="password" class="form-control" name="password" placeholder="Enter password"/>
+        <label for="username">{{s.password}}</label>
+        <input type="password" id="password" class="form-control" name="password" placeholder="{{s.passwordPlaceholder}}"/>
     </div>
 
     {{#error}}
@@ -40,7 +40,7 @@
     </div>
     {{/error}}
 
-    <button type="submit" class="btn btn-default">Register</button>
+    <button type="submit" class="btn btn-default">{{s.register}}</button>
 </form>
 </section>
 

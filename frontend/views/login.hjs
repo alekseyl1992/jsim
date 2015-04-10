@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>jsim: log in</title>
+    <title>jsim: {{s.subtitle}}</title>
 
     <link rel="stylesheet" href="/css/lib/bootstrap.css" />
     <link rel="stylesheet" href="/css/auth.css" />
@@ -14,7 +14,7 @@
 <header class="navbar navbar-default">
     <div class="container">
         <h1>jsim
-            <small>log in</small>
+            <small>{{s.subtitle}}</small>
         </h1>
     </div>
 </header>
@@ -25,13 +25,13 @@
     <section class="container auth-form">
         <form action="/auth/login" method="post">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" class="form-control" name="username" placeholder="Enter username"/>
+                <label for="username">{{s.username}}</label>
+                <input type="text" id="username" class="form-control" name="username" placeholder="{{s.usernamePlaceholder}}"/>
             </div>
 
             <div class="form-group">
-                <label for="username">Password</label>
-                <input type="password" id="password" class="form-control" name="password" placeholder="Enter password"/>
+                <label for="username">{{s.password}}</label>
+                <input type="password" id="password" class="form-control" name="password" placeholder="{{s.passwordPlaceholder}}"/>
             </div>
 
             {{#error}}
@@ -40,9 +40,9 @@
             </div>
             {{/error}}
 
-            <button type="submit" class="btn btn-default">Log in</button>
-            or
-            <a href="/user/register">Register</a>
+            <button type="submit" class="btn btn-default">{{s.logIn}}</button>
+            {{s.or}}
+            <a href="/user/register">{{s.register}}</a>
         </form>
     </section>
 </div>

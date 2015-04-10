@@ -1,4 +1,4 @@
 <section>
-    <h4>Welcome to jsim - discrete event simulation system written in Java and JS.</h4>
-    <h5>Please log in or register to continue.</h5>
+    <h4>{{s.welcomeMessageTitle}}</h4>
+    <h5>{{s.welcomeMessageSubTitle}}</h5>
 </section>
