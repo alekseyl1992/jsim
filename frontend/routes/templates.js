@@ -34,15 +34,29 @@ var en = {
     },
     register: {
         subtitle: "register",
+        username: "Username",
+        password: "Password",
         usernamePlaceholder: "Enter username",
         passwordPlaceholder: "Enter password",
         register: "Register"
     },
+    report: {
+        subtitle: "report",
+        summary: "Report summary",
+        key: "Key",
+        value: "Value",
+        usageStats: "Usage statistics",
+        objectName: "Object name",
+        usageCount: "Usage count",
+        queueStats: "Queue stats",
+        waitTimeVsTime: "Wait time vs. time",
+        queueSizeVsTime: "Queue size vs. time"
+    },
 
     _partials: {
         welcome: {
-            welcomeMessageTitle: "Welcome to jsim - discrete event simulation system written in Java and JS.",
-            welcomeMessageSubTitle: "Please log in or register to continue."
+            title: "Welcome to jsim - discrete event simulation system written in Java and JS.",
+            subTitle: "Please log in or register to continue."
         }
     }
 };
@@ -67,12 +81,63 @@ var ru = {
         createConfirmTitle: "Создание новой модели",
         createConfirm: "Вы действительно хотите создать новую модель?",
         createConfirmDetails: "Все несохранённые данные будут утеряны."
+    },
+    login: {
+        subtitle: "авторизация",
+        username: "Имя пользователя",
+        password: "Пароль",
+        usernamePlaceholder: "Введите имя пользователя",
+        passwordPlaceholder: "Введите пароль",
+        logIn: "Войти",
+        or: "или",
+        register: "Зарегистрироваться"
+    },
+    register: {
+        subtitle: "регистрация",
+        username: "Имя пользователя",
+        password: "Пароль",
+        usernamePlaceholder: "Введите имя пользователя",
+        passwordPlaceholder: "Введите пароль",
+        register: "Зарегистрироваться"
+    },
+    report: {
+        subtitle: "отчёт",
+        summary: "Общая информация",
+        key: "Параметр",
+        value: "Значение",
+        usageStats: "Статистика использования",
+        objectName: "Название объекта",
+        usageCount: "Количество использований",
+        queueStats: "Статистика по очередям",
+        waitTimeVsTime: "Время ожидания от модельного времени",
+        queueSizeVsTime: "Размер очереди от модельного времени"
+    },
+
+    _partials: {
+        welcome: {
+            title: "Добро пожаловать в jsim - дискретно-событийную систему имитационного моделирования, написанную на Java и JS.",
+            subTitle: "Пожалуйста, зайдите или зарегистрируйтесь для продолжения работы."
+        }
     }
 };
 
+function getLocalizedStrings(page) {
+    var locales = {
+        en: en,
+        ru: ru
+    };
+
+    var locale = "ru";
+    var result = locales[locale][page];
+
+    result._p = locales[locale]._partials;
+
+    return result;
+}
+
 router.get('/', function(req, res, next) {
     res.render('index', {
-        s: en.index,
+        s: getLocalizedStrings('index'),
         user: {
             name: req.user.username
         }
@@ -80,19 +145,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/report', function(req, res, next) {
-    res.render('report', { s: en.report });
+    res.render('report', { s: getLocalizedStrings('report') });
 });
 
 router.get('/experiment', function(req, res, next) {
-    res.render('experiment', { s: en.experiment });
+    res.render('experiment', { s: getLocalizedStrings('experiment') });
 });
 
 router.get('/register', function(req, res, next) {
-    res.render('register', { s: en.register, error: req.flash('error') });
+    res.render('register', { s: getLocalizedStrings('register'), error: req.flash('error') });
 });
 
 router.get('/login', function(req, res, next) {
-    res.render('login', { s: en.login, error: req.flash('error') });
+    res.render('login', { s: getLocalizedStrings('login'), error: req.flash('error') });
 });
 
 module.exports = router;

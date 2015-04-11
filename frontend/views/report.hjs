@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>jsim: report</title>
+    <title>jsim: {{s.subtitle}}</title>
 
     <link rel="stylesheet" href="/css/lib/bootstrap.css" />
     <link rel="stylesheet" href="/css/lib/bootstrap-table.css" />
@@ -18,13 +18,13 @@
 <body>
 
 <div class="accordion">
-    <h3>Report summary</h3>
+    <h3>{{s.summary}}</h3>
     <div>
         <table id="report-summary-table" class="card_view" data-cache="false" data-show-header="false">
             <thead>
             <tr>
-                <th data-field="key">Key</th>
-                <th data-field="value">Value</th>
+                <th data-field="key">{{s.key}}</th>
+                <th data-field="value">{{s.value}}</th>
             </tr>
             </thead>
         </table>
@@ -32,13 +32,13 @@
 </div>
 
 <div class="accordion" id="usage-stats">
-    <h3>Usage statistics</h3>
+    <h3>{{s.usageStats}}</h3>
     <div>
     <table id="usage-stats-table" data-cache="false">
         <thead>
         <tr>
-            <th data-field="name">Object name</th>
-            <th data-field="value">Usage count</th>
+            <th data-field="name">{{s.objectName}}</th>
+            <th data-field="value">{{s.usageCount}}</th>
         </tr>
         </thead>
     </table>
@@ -46,7 +46,7 @@
 </div>
 
 <div id="queues-stats" class="accordion">
-    <h3>Queue stats</h3>
+    <h3>{{s.queueStats}}</h3>
     <div id="queue-stats-container">
         <script id="queue-stats-template" language="text/html">
             <div class="accordion queue-stats">
@@ -56,8 +56,8 @@
                         <table class="queue-stats-table card_view" data-cache="false" data-show-header="false">
                             <thead>
                             <tr>
-                                <th data-field="key">Key</th>
-                                <th data-field="value">Value</th>
+                                <th data-field="key">{{s.key}}</th>
+                                <th data-field="value">{{s.value}}</th>
                             </tr>
                             </thead>
                         </table>
@@ -65,12 +65,12 @@
 
                     <div class="col-md-4">
                         <div class="wait_time_vs_time_plot queue_plot"></div>
-                        <div class="queue_plot_title">Wait time vs. time</div>
+                        <div class="queue_plot_title">{{s.waitTimeVsTime}}</div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="queue_size_vs_time_plot queue_plot"></div>
-                        <div class="queue_plot_title">Queue size vs. time</div>
+                        <div class="queue_plot_title">{{s.queueSizeVsTime}}</div>
                     </div>
                 </div>
             </div>
