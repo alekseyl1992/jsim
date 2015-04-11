@@ -47,7 +47,7 @@
                 {#props}
                 <tr>
                     <td>
-                        <label for="model-prop_{key}"><b>{key}</b></label>
+                        <label for="model-prop_{key}"><b>{label}</b></label>
                     </td>
                     <td>
                         <input id="model-prop_{key}" type="text" data-key="{key}" value="{value}" />
@@ -64,7 +64,7 @@
                 {#props}
                 <tr>
                     <td>
-                        <label for="object-prop_{key}"><b>{key}</b></label>
+                        <label for="object-prop_{key}"><b>{label}</b></label>
                     </td>
                     <td>
                         <input id="object-prop_{key}" type="text" data-key="{key}" value="{value}" />

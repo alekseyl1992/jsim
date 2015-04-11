@@ -2,8 +2,18 @@
 //report entry point
 //load libs first to set baseUrl
 require(['config'], function() {
-    require(['jquery', 'jquery-ui', 'bootstrap-table', 'jquery.flot', 'lodash', 'mustache', 'util/Templater', 'util/Url', 'api/Client'],
-        function (_1, _2, _3, flot, _, mustache, Templater, Url, Client) {
+    require(['jquery',
+            'jquery-ui',
+            'bootstrap-table',
+            'jquery.flot',
+            'lodash',
+            'mustache',
+            'util/Templater',
+            'util/Url',
+            'api/Client',
+            'editor/StringRes'],
+
+        function (_1, _2, _3, flot, _, mustache, Templater, Url, Client, StringRes) {
             $(function () {
                 var client = new Client();
 
@@ -46,15 +56,15 @@ require(['config'], function() {
                             // convert object to array of {key, value} pairs
                             data: _.map(_.omit(object, "queueSizePlot", "systemTimePlot", "queueTimePlot"),
                                 function(value, key) {
-                                    return {key: key, value: value};
+                                    return {key: StringRes.report[key], value: value};
                                 }
                             ),
                             columns: [{
                                 field: 'key',
-                                title: 'Key'
+                                title: StringRes.reportPage.key
                             }, {
                                 field: 'value',
-                                title: 'Value',
+                                title: StringRes.reportPage.value,
                                 formatter: floatFormatter
                             }]
                         });
@@ -103,7 +113,7 @@ require(['config'], function() {
                 $('#report-summary-table').bootstrapTable({
                     // convert object to array of {key, value} pairs
                     data: _.map(reportSummary, function(value, key) {
-                        return {key: key, value: value};
+                        return {key: StringRes.report[key], value: value};
                     })
                 });
 
@@ -112,10 +122,10 @@ require(['config'], function() {
                     data: usageStats,
                     columns: [{
                         field: 'name',
-                        title: 'Name'
+                        title: StringRes.reportPage.name
                     }, {
                         field: 'value',
-                        title: 'Value',
+                        title: StringRes.reportPage.value,
                         formatter: floatFormatter
                     }]
                 });

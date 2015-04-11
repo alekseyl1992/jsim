@@ -8,9 +8,10 @@ define([
         'editor/Styles',
         'editor/Model',
         'editor/Exceptions',
-        'util/Templater'
+        'util/Templater',
+        'editor/StringRes'
     ],
-    function($, _, easeljs, mustache, KeyCoder, Palette, Styles, Model, Exceptions, Templater) {
+    function($, _, easeljs, mustache, KeyCoder, Palette, Styles, Model, Exceptions, Templater, StringRes) {
         /**
          * Main Editor class
          * @param windows {{$canvas: jQuery}}
@@ -194,7 +195,7 @@ define([
 
             _renderProps: function (props, template, $target) {
                 var propsArray = _.map(props, function (value, key) {
-                    return {key: key, value: value};
+                    return {key: key, label: StringRes.props[key], value: value};
                 });
 
                 var view = {

@@ -7,8 +7,9 @@ define([
     'editor/objects/Splitter',
     'editor/objects/Sink',
     'editor/Connection',
-    'editor/Exceptions'
-], function(_, easeljs, Styles, Source, Queue, Splitter, Sink, Connection, Exceptions) {
+    'editor/Exceptions',
+    'editor/StringRes'
+], function(_, easeljs, Styles, Source, Queue, Splitter, Sink, Connection, Exceptions, StringRes) {
     var Model = Class.create({
         initialize: function (stage, editor, model) {
             var self = this;
@@ -32,22 +33,22 @@ define([
             this.typesMap = {
                 "source": {
                     ctor: Source,
-                    name: "Source",
+                    name: StringRes.source,
                     id: 1  // type-wide unique id
                 },
                 "queue": {
                     ctor: Queue,
-                    name: "Queue",
+                    name: StringRes.queue,
                     id: 1
                 },
                 "splitter": {
                     ctor: Splitter,
-                    name: "Splitter",
+                    name: StringRes.splitter,
                     id: 1
                 },
                 "sink": {
                     ctor: Sink,
-                    name: "Sink",
+                    name: StringRes.sink,
                     id: 1
                 }
             };

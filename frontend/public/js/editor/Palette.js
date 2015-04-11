@@ -5,9 +5,10 @@ define([
         'editor/objects/Source',
         'editor/objects/Queue',
         'editor/objects/Splitter',
-        'editor/objects/Sink'
+        'editor/objects/Sink',
+        'editor/StringRes'
     ],
-    function(_, easeljs, KeyCoder, Source, Queue, Splitter, Sink) {
+    function(_, easeljs, KeyCoder, Source, Queue, Splitter, Sink, StringRes) {
         var Palette = Class.create({
             initialize: function (stage, model, objectStyle, paletteStyle) {
                 var self = this;
@@ -21,6 +22,11 @@ define([
                 _.forEach(_os, function (field, fieldName) {
                     _os[fieldName] = field / 2;
                 });
+
+                var growFactor = 1.2;
+                _os.w *= growFactor;
+                _os.h *= growFactor;
+                _os.bw *= growFactor;
                 _objectStyle.labelFont = "bold 14px Arial";
 
                 var s = paletteStyle.sizes;
@@ -33,7 +39,7 @@ define([
                 var label = new easeljs.Text();
                 label.x = s.objectOffset;
                 label.y = s.objectOffset / 2;
-                label.text = "Palette";
+                label.text = StringRes.palette;
                 label.font = paletteStyle.labelFont;
                 var labelHeight = label.getMeasuredLineHeight() + s.objectOffset;
 
@@ -59,25 +65,25 @@ define([
                 var source = new Source(this.stage, this.container, _objectStyle, {
                     x: s.objectOffset,
                     y: s.objectOffset + labelHeight,
-                    name: "Source"
+                    name: StringRes.source
                 });
 
                 var queue = new Queue(this.stage, this.container, _objectStyle, {
                     x: s.objectOffset,
                     y: s.objectOffset * 2 + _os.h + labelHeight,
-                    name: "Queue"
+                    name: StringRes.queue
                 });
 
                 var splitter = new Splitter(this.stage, this.container, _objectStyle, {
                     x: s.objectOffset,
                     y: s.objectOffset * 3 + _os.h * 2 + labelHeight,
-                    name: "Splitter"
+                    name: StringRes.splitter
                 });
 
                 var sink = new Sink(this.stage, this.container, _objectStyle, {
                     x: s.objectOffset,
                     y: s.objectOffset * 4 + _os.h * 3 + labelHeight,
-                    name: "Sink"
+                    name: StringRes.sink
                 });
 
                 var objects = [source, queue, splitter, sink];
