@@ -32,11 +32,21 @@ var en = {
         name: "name",
         type: "type",
         useCount: "use count",
-        avgQueueSize: "avg queue size",
-        avgQueueTime: "avg queue time",
-        avgSystemTime: "avg system time",
-        rejectedCount: "rejected count",
-        rejectedPercent: "rejected percentage"
+
+        queue: {
+            name: "name",
+            type: "type",
+            useCount: "use count",
+            avgQueueSize: "avg queue size",
+            devQueueSize: "queue size dev",
+            avgQueueTime: "avg queue time",
+            devQueueTime: "queue time dev",
+            avgSystemTime: "avg system time",
+            devSystemTime: "system time dev",
+            serverUsage: "server usage",
+            rejectedCount: "rejected count",
+            rejectedPercent: "rejected percentage"
+        }
     }
 };
 
@@ -73,11 +83,21 @@ var ru = {
         name: "Название",
         type: "Тип",
         useCount: "Использований",
-        avgQueueSize: "Средний размер очереди",
-        avgQueueTime: "Среднее время ожидания",
-        avgSystemTime: "Среднее время в системе",
-        rejectedCount: "Количество отказов",
-        rejectedPercent: "Процент отказов"
+
+        queue: {
+            name: "Название",
+            type: "Тип",
+            useCount: "Использований",
+            avgQueueSize: "Средний размер очереди",
+            devQueueSize: "Дисперсия размера очереди",
+            avgQueueTime: "Среднее время ожидания",
+            devQueueTime: "Дисперсия времени ожидания",
+            avgSystemTime: "Среднее время в системе",
+            devSystemTime: "Дисперсия времени в системе",
+            serverUsage: "Коэффициент загрузки",
+            rejectedCount: "Количество отказов",
+            rejectedPercent: "Процент отказов"
+        }
     }
 };
 

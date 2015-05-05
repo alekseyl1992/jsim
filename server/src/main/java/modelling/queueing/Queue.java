@@ -26,6 +26,7 @@ public class Queue extends QObject {
     private PoissonGenerator gen;
 
     public static final String TYPE = "queue";
+    private int serverUsage;
 
     //TODO: implement size
     public Queue(Simulation sim, int sizeLimit, int channels, double mu, Random random) {
@@ -74,6 +75,7 @@ public class Queue extends QObject {
                     if (systemTimePlotter != null) {
                         int currentTime = sim.getSimTime();
                         systemTimePlotter.record(currentTime, currentTime - timeEntered);
+                        serverUsage += r.getDuration();
                     }
 
                     getTo().use();
@@ -114,5 +116,11 @@ public class Queue extends QObject {
 
     public Population getSystemPopulation() {
         return systemPopulation;
+    }
+
+    public double getServerUsage() {
+        return ((double) serverUsage)
+                / res.getChannels()
+                / sim.getSimTime();
     }
 }

@@ -54,9 +54,9 @@ require(['config'], function() {
                         var $queueTable = $queueStats.find('table');
                         $queueTable.bootstrapTable({
                             // convert object to array of {key, value} pairs
-                            data: _.map(_.omit(object, "queueSizePlot", "systemTimePlot", "queueTimePlot"),
+                            data: _.map(StringRes.report.queue,
                                 function(value, key) {
-                                    return {key: StringRes.report[key], value: value};
+                                    return {key: value, value: object[key]};
                                 }
                             ),
                             columns: [{

@@ -72,12 +72,15 @@ public class Model {
             if (qObject instanceof Queue) {
                 Queue queue = (Queue) qObject;
 
-                //TODO: add deviations and usage percentage
                 objStats.put(StatsFields.AVG_QUEUE_SIZE, queue.getQueuePopulation().getSizesSeries().getAverage());
+                objStats.put(StatsFields.DEV_QUEUE_SIZE, queue.getQueuePopulation().getSizesSeries().getDeviation());
                 objStats.put(StatsFields.AVG_QUEUE_TIME, queue.getQueuePopulation().getDurationSeries().getAverage());
+                objStats.put(StatsFields.DEV_QUEUE_TIME, queue.getQueuePopulation().getDurationSeries().getDeviation());
                 objStats.put(StatsFields.AVG_SYSTEM_TIME, queue.getSystemPopulation().getDurationSeries().getAverage());
+                objStats.put(StatsFields.DEV_SYSTEM_TIME, queue.getSystemPopulation().getDurationSeries().getDeviation());
 
-                //TODO: add data from plotters
+                objStats.put(StatsFields.SERVER_USAGE, queue.getServerUsage());
+
                 objStats.put(StatsFields.QUEUE_SIZE_PLOT, queue.getSizePlotter().getJSONData());
                 objStats.put(StatsFields.QUEUE_TIME_PLOT, queue.getQueueTimePlotter().getJSONData());
                 objStats.put(StatsFields.SYSTEM_TIME_PLOT, queue.getSystemTimePlotter().getJSONData());
