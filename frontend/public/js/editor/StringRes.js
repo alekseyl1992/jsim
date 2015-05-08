@@ -14,7 +14,7 @@ var en = {
         lambda: "λ",
         mu: "μ",
         channels: "channels",
-        limit: "limit",
+        limit: "size",
         pA: "pA"
     },
 
@@ -65,7 +65,7 @@ var ru = {
         lambda: "λ",
         mu: "μ",
         channels: "каналы",
-        limit: "предел",
+        limit: "размер",
         pA: "pA"
     },
 

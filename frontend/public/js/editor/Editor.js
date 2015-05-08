@@ -60,9 +60,6 @@ define([
                 // create empty model
                 this.createModel();
 
-                var objectStyle = Styles.object;
-                var palette = new Palette(this.stage, self.model, objectStyle, Styles.palette);
-
                 // subscribe to UI events
                 $('#simulation-start').click(function () {
                     client.sendModel(self.model.getData(), {
@@ -103,7 +100,7 @@ define([
                         onComplete: function (models) {
                             // setup chooser dialog
                             var $dialog = self.dialogs.modelChooser;
-                            var $select = $dialog.find("model-chooser-dialog-select");
+                            var $select = $dialog.find("#model-chooser-dialog-select");
                             $select.empty();
 
                             _.each(models, function (model) {
@@ -114,7 +111,7 @@ define([
                             self.showModalDialog($dialog, {
                                 buttons: {
                                     "Open": function () {
-                                        var modelId = $('#model-chooser-dialog-select').val();
+                                        var modelId = $select.val();
                                         self.onLoadModel(modelId);
                                         $(this).dialog("close");
                                     },
@@ -129,12 +126,13 @@ define([
             },
 
             onLoadModel: function (modelId) {
+                var self = this;
                 this.client.getModel(modelId, {
                     onError: function () {
                         alert("Unable to get model: " + modelId);
                     },
                     onComplete: function (model) {
-                        self.model = new Model(self.stage, self, model);
+                        self.createModel(model);
                         alert("Model loaded: " + modelId);
                     }
                 });
@@ -157,8 +155,9 @@ define([
                 });
             },
 
-            createModel: function () {
-                this.model = new Model(this.stage, this, null);
+            createModel: function (data) {
+                this.model = new Model(this.stage, this, data, this.model);
+                var palette = new Palette(this.stage, this.model, Styles.object, Styles.palette);
             },
 
             saveModel: function () {
@@ -177,7 +176,7 @@ define([
                         }
                     });
                 } else {
-                    this.client.onCreateModel(data, {
+                    this.client.createModel(data, {
                         onError: function () {
                             alert("Unable to create model");
                         },

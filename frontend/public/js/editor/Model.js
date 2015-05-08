@@ -11,7 +11,7 @@ define([
     'editor/StringRes'
 ], function(_, easeljs, Styles, Source, Queue, Splitter, Sink, Connection, Exceptions, StringRes) {
     var Model = Class.create({
-        initialize: function (stage, editor, model) {
+        initialize: function (stage, editor, model, oldModel) {
             var self = this;
 
             this.stage = stage;
@@ -20,7 +20,8 @@ define([
             this.model = model;
             this.data = null;
 
-            // TODO: remove old container on model recreation
+            if (oldModel)
+                this.stage.removeChild(oldModel.modelContainer);
 
             this.modelContainer = new easeljs.Container();
             this.stage.addChild(this.modelContainer);
@@ -61,6 +62,8 @@ define([
                 this.load(model.data);
             else
                 this.create();
+
+            this.stage.update();
         },
 
         load: function (data) {
@@ -106,7 +109,7 @@ define([
             var input = toObject.getInput();
             var output = fromObject.getOutputByName(outputName);
 
-            var connection = new Connection(self.stage, self.modelContainer, Styles.object);
+            var connection = new Connection(this.stage, this.modelContainer, Styles.object);
             connection.setFrom({
                 object: fromObject,
                 output: output
@@ -120,7 +123,7 @@ define([
 
 
         getObjectById: function (id) {
-            return _.find(self.objects, function(object) {
+            return _.find(this.objects, function(object) {
                 return object.getData().id == id;
             });
         },

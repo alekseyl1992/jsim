@@ -47,6 +47,10 @@ define(['easeljs', 'editor/Connection'], function(easeljs, Connection) {
                 self.container.x = evt.stageX + clickDelta.x;
                 self.container.y = evt.stageY + clickDelta.y;
 
+                // update data
+                self.data.x = self.container.x;
+                self.data.y = self.container.y;
+
                 // update connections
                 var connections = [];
 

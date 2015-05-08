@@ -75,19 +75,19 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
         //TODO: define callbacks documentation somewhere in one place
         /**
          * Gets JSON stats report
-         * @param modelName {String}
+         * @param modelId {String}
          * @param callbacks {Object}
          * @param callbacks.onError {Function}
          * @param callbacks.onComplete {Function}
          */
-        getModel: function(modelName, callbacks) {
+        getModel: function(modelId, callbacks) {
             this._get("/api/getModel", {
-                modelName: modelName
+                modelId: modelId
             }, callbacks);
         },
 
         getModelList: function (callbacks) {
-            this._get("/api/getModel", null, callbacks);
+            this._get("/api/getModelList", null, callbacks);
         },
 
         saveModel: function(model, callbacks) {
