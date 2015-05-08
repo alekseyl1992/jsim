@@ -90,7 +90,7 @@ router.get('/getModelList', function(req, res, next) {
     console.log("/getModelList");
 
     var userId = req.user.id;
-    Model.find({author_id: userId}, function (err, models) {
+    Model.find({authorId: userId}, function (err, models) {
         if (err)
             return console.error("MongoDB error: ", err);
 
@@ -119,7 +119,7 @@ router.post('/createModel', function(req, res, next) {
     console.log("/onCreateModel");
 
     var model = {
-        author_id: req.user.id,
+        authorId: req.user.id,
         data: data
     };
 
