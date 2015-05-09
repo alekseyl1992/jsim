@@ -2,16 +2,8 @@ var mongoose = require('mongoose');
 
 var reportSchema = new mongoose.Schema({
     reportSummary: {
-        author: {
-            type: String,
-            unique: true,
-            required: true
-        },
-        modelName: {
-            type: String,
-            unique: false,
-            required: true
-        },
+        userId: mongoose.Schema.ObjectId,
+        model: JSON,
         simulationDate: {
             type: Date,
             default: Date.now

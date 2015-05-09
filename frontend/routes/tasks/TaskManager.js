@@ -3,6 +3,7 @@ var _ = require('lodash');
 var Task = require('./Task');
 var RmqFacade = require('./RmqFacade');
 
+var Report = require('mongoose').model('report');
 
 function TaskManager() {
     var rmq = new RmqFacade(this);
@@ -10,8 +11,8 @@ function TaskManager() {
 
     var tasks = {};
 
-    this.createTask = function (model) {
-        var task = new Task(model);
+    this.createTask = function (model, userId) {
+        var task = new Task(model, userId);
         tasks[task.id] = task;
 
         rmq.sendTask(task);
@@ -64,6 +65,16 @@ function TaskManager() {
 
         task.status = Task.Status.DONE;
         task.stats = this.mergeStats(msg.stats);
+
+        // save report to DB
+        Report.create({
+            _id: msg.taskId,
+            reportSummary: {
+                model: model,
+                userId: task.userId
+            },
+            stats: task.stats
+        });
 
         console.log("[TM] onFinished: ", task);
     };

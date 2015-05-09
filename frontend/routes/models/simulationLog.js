@@ -1,14 +1,19 @@
 var mongoose = require('mongoose');
+var logger = require('util/Logger');
 
 var simulationLogSchema = new mongoose.Schema({
     modelId: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
+    userId: {
+        type: mongoose.Schema.ObjectId,
+        required: true
+    },
     status: {
         type: String,
         required: true,
-        enum: ['started', 'finished', 'error']
+        enum: Logger.simulationStatus
     },
     message: {
         type: String,

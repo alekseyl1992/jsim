@@ -11,13 +11,18 @@ var mongoose = require('mongoose');
 
 var User = mongoose.model('user');
 var Model = mongoose.model('model');
+var Report = mongoose.model('model');
+
+var Logger = require('util/Logger');
 
 
 router.post('/simulate', function(req, res, next) {
     var model = req.body.model;
+    var userId = req.body.user._id;
+
     console.log("/simulate: ", model);
 
-    var task = taskManager.createTask(model);
+    var task = taskManager.createTask(model, userId);
 
     res.json({
         taskId: task.id,
@@ -53,24 +58,22 @@ router.get('/getReport', function(req, res, next) {
     var taskId = req.query.taskId;
     console.log("/getReport: " + taskId);
 
-    var task = taskManager.getTask(taskId);
+    Report.findById(taskId, function (err, report) {
+        if (err) {
+            //TODO: implement sendError() and underlying protocol package format
+            res.json({
+                taskId: taskId,
+                status: Task.Status.ERROR
+            });
+            return console.error("MongoDB error: ", err);
+        }
 
-    if (task) {
-        res.json({
-            reportSummary: {
-                modelName: task.model.name,
-                author: "Vasja Pupkin",
-                simulationDate: Date.now()
-            },
-            stats: task.stats
-        });
-    } else {
-        //TODO: implement sendError() and underlying protocol package format
-        res.json({
-            taskId: taskId,
-            status: Task.Status.ERROR
-        });
-    }
+        // remove model from response
+        report.modelName = report.model.name;
+        report.model = undefined;
+
+        res.json(report);
+    });
 });
 
 router.get('/getModel', function(req, res, next) {

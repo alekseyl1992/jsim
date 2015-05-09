@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
+var logger = require('util/Logger');
 
 var accessLog = new mongoose.Schema({
     subsystem: {
         type: String,
-        enum: ['frontend', 'db', 'rmq', 'server']
+        enum: Logger.subsystem
     },
     level: {
         type: String,
-        enum: ["warn", "error", "critical"]
+        enum: Logger.errorLevel
     },
     message: String,
     date: {
