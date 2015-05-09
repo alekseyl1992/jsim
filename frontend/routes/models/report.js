@@ -1,8 +1,15 @@
 var mongoose = require('mongoose');
 
 var reportSchema = new mongoose.Schema({
+    taskId: {
+        type: String,
+        unique: true
+    },
     reportSummary: {
-        userId: mongoose.Schema.ObjectId,
+        userId: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'user'
+        },
         model: JSON,
         simulationDate: {
             type: Date,

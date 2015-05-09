@@ -8,17 +8,18 @@ var taskManager = new TaskManager();
 
 // mongodb models
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 
 var User = mongoose.model('user');
 var Model = mongoose.model('model');
-var Report = mongoose.model('model');
+var Report = mongoose.model('report');
 
-var Logger = require('util/Logger');
+var Logger = require('./util/Logger');
 
 
 router.post('/simulate', function(req, res, next) {
     var model = req.body.model;
-    var userId = req.body.user._id;
+    var userId = req.user.id;
 
     console.log("/simulate: ", model);
 
@@ -53,27 +54,25 @@ router.get('/getProgress', function(req, res, next) {
     }
 });
 
-// TODO: get report from DB
 router.get('/getReport', function(req, res, next) {
     var taskId = req.query.taskId;
     console.log("/getReport: " + taskId);
 
-    Report.findById(taskId, function (err, report) {
-        if (err) {
-            //TODO: implement sendError() and underlying protocol package format
-            res.json({
-                taskId: taskId,
-                status: Task.Status.ERROR
-            });
-            return console.error("MongoDB error: ", err);
+    Report.findOne({ taskId: taskId })
+        .populate('reportSummary.userId', 'username')
+        .exec(function (err, report) {
+            if (err) {
+                //TODO: implement sendError() and underlying protocol package format
+                res.json({
+                    taskId: taskId,
+                    status: Task.Status.ERROR
+                });
+                return console.error("MongoDB error: ", err);
+            }
+
+            res.json(report);
         }
-
-        // remove model from response
-        report.modelName = report.model.name;
-        report.model = undefined;
-
-        res.json(report);
-    });
+    );
 });
 
 router.get('/getModel', function(req, res, next) {
@@ -92,7 +91,7 @@ router.get('/getModel', function(req, res, next) {
 router.get('/getModelList', function(req, res, next) {
     console.log("/getModelList");
 
-    var userId = req.user.id;
+    var userId = new ObjectId(req.user.id);
     Model.find({authorId: userId}, function (err, models) {
         if (err)
             return console.error("MongoDB error: ", err);

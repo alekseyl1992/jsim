@@ -181,7 +181,7 @@ define([
                             alert("Unable to create model");
                         },
                         onComplete: function (model) {
-                            self.model = new Model(self.stage, self, model);
+                            self.createModel(model);
                             alert("Model created");
                         }
                     });

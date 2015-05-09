@@ -1,14 +1,15 @@
+var _ = require('lodash');
 var mongoose = require('mongoose');
-var logger = require('util/Logger');
+var LoggerEnums = require('../util/LoggerEnums');
 
-var accessLog = new mongoose.Schema({
+var errorLog = new mongoose.Schema({
     subsystem: {
         type: String,
-        enum: Logger.subsystem
+        enum: _.keys(LoggerEnums.subsystem)
     },
     level: {
         type: String,
-        enum: Logger.errorLevel
+        enum: _.keys(LoggerEnums.errorLevel)
     },
     message: String,
     date: {
@@ -17,4 +18,4 @@ var accessLog = new mongoose.Schema({
     }
 });
 
-mongoose.model('accessLog', accessLog);
+mongoose.model('errorLog', errorLog);

@@ -1,7 +1,10 @@
 var mongoose = require('mongoose');
 
 var modelSchema = new mongoose.Schema({
-    authorId: mongoose.Schema.ObjectId,
+    authorId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'user'
+    },
     data: {
         name: String,
         objects: [{

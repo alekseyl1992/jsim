@@ -1,19 +1,22 @@
+var _ = require('lodash');
 var mongoose = require('mongoose');
-var logger = require('util/Logger');
+var LoggerEnums = require('../util/LoggerEnums');
 
-var simulationLogSchema = new mongoose.Schema({
+var simulationLog = new mongoose.Schema({
     modelId: {
         type: mongoose.Schema.ObjectId,
-        required: true
+        required: true,
+        ref: 'model'
     },
     userId: {
         type: mongoose.Schema.ObjectId,
-        required: true
+        required: true,
+        ref: 'user'
     },
     status: {
         type: String,
         required: true,
-        enum: Logger.simulationStatus
+        enum: _.keys(LoggerEnums.simulationStatus)
     },
     message: {
         type: String,
@@ -25,4 +28,4 @@ var simulationLogSchema = new mongoose.Schema({
     }
 });
 
-mongoose.model('accessLog', simulationLogSchema);
+mongoose.model('simulationLog', simulationLog);

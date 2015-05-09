@@ -68,12 +68,16 @@ function TaskManager() {
 
         // save report to DB
         Report.create({
-            _id: msg.taskId,
+            taskId: msg.taskId,
             reportSummary: {
-                model: model,
+                model: task.model,
                 userId: task.userId
             },
             stats: task.stats
+        }, function (err, report) {
+            if (err) {
+                return console.error("MongoDB error: ", err);
+            }
         });
 
         console.log("[TM] onFinished: ", task);

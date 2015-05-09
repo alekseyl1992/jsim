@@ -1,28 +1,11 @@
+var _ = require('lodash');
 var mongoose = require('mongoose');
+var loggerEnums = require('./LoggerEnums');
 var simulationLog = mongoose.model('simulationLog');
-var accessLog = mongoose.model('accessLog');
+var accessLog = mongoose.model('errorLog');
 var errorLog = mongoose.model('errorLog');
 
 module.exports = {
-    simulationStatus: {
-        started: 'started',
-        finished: 'finished',
-        error: 'error'
-    },
-
-    subsystem: {
-        http: 'http',
-        db: 'db',
-        rmq: 'rmq',
-        server: 'server'
-    },
-
-    errorLevel: {
-        warn: 'warn',
-        error: 'error',
-        critical: 'critical'
-    },
-
     /**
      *
      * @param modelId {mongoose.Schema.ObjectId}
@@ -71,3 +54,4 @@ module.exports = {
         });
     }
 };
+module.exports = _.merge(module.exports, loggerEnums);

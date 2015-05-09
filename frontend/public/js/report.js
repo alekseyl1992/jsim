@@ -38,6 +38,12 @@ require(['config'], function() {
                 var $queueStatsContainer = $('#queue-stats-container');
 
                 var reportSummary = reportData.reportSummary;
+                reportSummary = {
+                    modelName: reportSummary.model.name,
+                    author: reportSummary.userId.username,
+                    simulationDate: (new Date(reportSummary.simulationDate)).toLocaleString()
+                };
+
                 var stats = reportData.stats;
 
                 var usageStats = [];
