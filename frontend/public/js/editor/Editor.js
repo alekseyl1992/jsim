@@ -3,6 +3,7 @@ define([
         'lodash',
         'easeljs',
         'mustache',
+        'alertify',
         'editor/KeyCoder',
         'editor/Palette',
         'editor/Styles',
@@ -11,7 +12,7 @@ define([
         'util/Templater',
         'editor/StringRes'
     ],
-    function($, _, easeljs, mustache, KeyCoder, Palette, Styles, Model, Exceptions, Templater, StringRes) {
+    function($, _, easeljs, mustache, alertify, KeyCoder, Palette, Styles, Model, Exceptions, Templater, StringRes) {
         /**
          * Main Editor class
          * @param windows {{$canvas: jQuery}}
@@ -66,7 +67,7 @@ define([
                     client.sendModel(self.model.getData(), {
                         onError: self.onSimulationError.bind(self),
                         onComplete: self.onSimulationComplete.bind(self),
-                        onProgress: self.onSimulationProgress.bind(self),
+                        onProgress: self.onSimulationProgress.bind(self)
                     });
                 });
 
@@ -96,7 +97,7 @@ define([
 
                 this.client.getModelList({
                         onError: function () {
-                            alert("Unable to get model list");
+                            alertify.error(StringRes.messages.unableToGetModelList);
                         },
                         onComplete: function (models) {
                             // setup chooser dialog
@@ -133,11 +134,11 @@ define([
                 var self = this;
                 this.client.getModel(modelId, {
                     onError: function () {
-                        alert("Unable to get model: " + modelId);
+                        alertify.error(StringRes.messages.unableToLoadModel + ': ' + modelId);
                     },
                     onComplete: function (model) {
                         self.createModel(model);
-                        alert("Model loaded: " + modelId);
+                        alertify.success(StringRes.messages.modelLoaded + ': ' + model.data.name);
                     }
                 });
             },
@@ -179,20 +180,19 @@ define([
                 if (model) {
                     this.client.saveModel(model, {
                         onError: function () {
-                            alert("Unable to save model");
+                            alertify.error(StringRes.messages.unableToSaveModel);
                         },
                         onComplete: function () {
-                            alert("Model saved");
+                            alertify.success(StringRes.messages.modelSaved);
                         }
                     });
                 } else {
                     this.client.createModel(data, {
                         onError: function () {
-                            alert("Unable to create model");
+                            alertify.error(StringRes.messages.unableToSaveModel);
                         },
-                        onComplete: function (model) {
-                            self.createModel(model);
-                            alert("Model created");
+                        onComplete: function () {
+                            alertify.success(StringRes.messages.modelSaved);
                         }
                     });
                 }
@@ -235,8 +235,7 @@ define([
                     if (e != Exceptions.CAST)
                         throw e;
 
-                    //TODO: alertify
-                    window.alert(key + " should be Number");
+                    alertify.error(key + StringRes.messages.shouldBeANumber);
                 }
             },
 

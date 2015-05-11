@@ -14,6 +14,15 @@ var en = {
         no: 'No'
     },
 
+    messages: {
+        shouldBeANumber: 'should be a number',
+        unableToGetModelList: 'Unable to get model list',
+        unableToLoadModel: 'Unable to get model',
+        modelLoaded: 'Model loaded',
+        unableToSaveModel: 'Unable to save model',
+        modelSaved: 'Model saved'
+    },
+
     props: {
         model: {
             name: "name",
@@ -82,7 +91,16 @@ var ru = {
         cancel: 'Отмена',
         open: 'Открыть',
         yes: 'Да',
-        no: 'Нет'
+        no: 'Нет',
+    },
+
+    messages: {
+        shouldBeANumber: 'должно быть числом',
+        unableToGetModelList: 'Не удалось получить список моделей',
+        unableToLoadModel: 'Не удалось загрузить модель',
+        modelLoaded: 'Модель загружена',
+        unableToSaveModel: 'Не удалось сохранить модель',
+        modelSaved: 'Модель сохранена'
     },
 
     props: {
