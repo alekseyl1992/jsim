@@ -9,12 +9,15 @@ var passport = require('passport');
 var session = require('express-session');
 var requireTree = require('require-tree');
 
+var MongoStore = require('connect-mongo')(session);
+
 // connect to mongodb
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/jsim', function(err) {
     if (err) {
         console.error("Unable to connect to MongoDB server", err);
         process.exit(-1);
+        return;
     }
 });
 
@@ -46,10 +49,16 @@ app.use(cookieParser());
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: false  // session will be changed by passportJS anyway
+    saveUninitialized: false,  // session will be changed by passportJS anyway
     //cookie: {
     //    maxAge: 60000
-    //}
+    //},
+    store: new MongoStore({
+            db: mongoose.connection.db.databaseName
+        },
+        function(err){
+            console.log(err || 'connect-mongodb setup ok');
+        })
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
