@@ -16,6 +16,11 @@ requirejs.config({
                 'jquery'
             ]
         },
+        'jquery.flot.axislabels': {
+            deps: [
+                'jquery.flot'
+            ]
+        },
         'bootstrap-table': {
             deps: [
                 'jquery'

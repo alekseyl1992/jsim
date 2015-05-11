@@ -6,6 +6,7 @@ require(['config'], function() {
             'jquery-ui',
             'bootstrap-table',
             'jquery.flot',
+            'jquery.flot.axislabels',
             'lodash',
             'mustache',
             'util/Templater',
@@ -13,7 +14,7 @@ require(['config'], function() {
             'api/Client',
             'editor/StringRes'],
 
-        function (_1, _2, _3, flot, _, mustache, Templater, Url, Client, StringRes) {
+        function (_1, _2, _3, flot, flotAxisLabels, _, mustache, Templater, Url, Client, StringRes) {
             $(function () {
                 var client = new Client();
 
@@ -93,29 +94,13 @@ require(['config'], function() {
                             data: object.queueSizePlot
                         }];
 
-                        $.plot($waitPlot, waitData, {
-                            series: {
-                                lines: { show: true },
-                                points: { show: true }
-                            },
-                            xaxis: {
-                                tickDecimals: 0
-                            }
-                        });
-
-                        $.plot($sizePlot, sizeData, {
-                            series: {
-                                lines: { show: true },
-                                points: { show: true }
-                            },
-                            xaxis: {
-                                tickDecimals: 0
-                            }
-                        });
+                        var plotsR = StringRes.report.plots;
+                        plot($waitPlot, waitData, plotsR.modelTime, plotsR.waitTime);
+                        plot($sizePlot, sizeData, plotsR.modelTime, plotsR.queueSize);
                     }
                 });
 
-                // shw report summary
+                // show report summary
                 $('#report-summary-table').bootstrapTable({
                     // convert object to array of {key, value} pairs
                     data: _.map(reportSummary, function(value, key) {
@@ -139,6 +124,32 @@ require(['config'], function() {
 
                 $(".accordion").accordion({
                     collapsible: true
+                });
+            }
+
+            function plot($div, data, xLabel, yLabel) {
+                $.plot($div, data, {
+                    axisLabels: {
+                        show: true
+                    },
+                    series: {
+                        lines: { show: true },
+                        points: { show: true }
+                    },
+                    xaxis: {
+                        axisLabel: xLabel,
+                        tickDecimals: 0,
+                        tickFormatter: function (value, axis) {
+                            return (value / 1000) + "к";
+                        }
+                    },
+                    yaxis: {
+                        axisLabel: yLabel,
+                        axisLabelPadding: 28,
+                        tickFormatter: function (value, axis) {
+                            return (value / 1000) + "к";
+                        }
+                    }
                 });
             }
 

@@ -46,6 +46,12 @@ var en = {
             serverUsage: "server usage",
             rejectedCount: "rejected count",
             rejectedPercent: "rejected percentage"
+        },
+
+        plots: {
+            modelTime: "Model time",
+            waitTime: "Wait time",
+            queueSize: "Queue size"
         }
     }
 };
@@ -97,6 +103,12 @@ var ru = {
             serverUsage: "Коэффициент загрузки",
             rejectedCount: "Количество отказов",
             rejectedPercent: "Процент отказов"
+        },
+
+        plots: {
+            modelTime: "Модельное время",
+            waitTime: "Время ожидания",
+            queueSize: "Размер очереди"
         }
     }
 };

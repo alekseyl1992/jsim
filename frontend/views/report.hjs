@@ -64,13 +64,13 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="wait_time_vs_time_plot queue_plot"></div>
                         <div class="queue_plot_title">{{s.waitTimeVsTime}}</div>
+                        <div class="wait_time_vs_time_plot queue_plot"></div>
                     </div>
 
                     <div class="col-md-4">
-                        <div class="queue_size_vs_time_plot queue_plot"></div>
                         <div class="queue_plot_title">{{s.queueSizeVsTime}}</div>
+                        <div class="queue_size_vs_time_plot queue_plot"></div>
                     </div>
                 </div>
             </div>
