@@ -16,19 +16,15 @@ define([
          * Main Editor class
          * @param windows {{$canvas: jQuery}}
          * @param client {Client}
-         * @param statsManager {StatsManager}
          * @constructor
          */
         var Editor = Class.create({
-            initialize: function(windows, client, statsManager) {
+            initialize: function(windows, client) {
                 var self = this;
-
-                this.FPS = 30;
                 this.appName = 'jsim';
 
                 this.windows = windows;
                 this.client = client;
-                this.statsManager = statsManager;
 
                 this.stage = new easeljs.Stage(windows.$canvas[0]);
                 this.stage.enableMouseOver(30);
@@ -42,7 +38,9 @@ define([
 
                 this.dialogs = {
                     modelChooser: $("#model-chooser-dialog"),
-                    createConfirm: $("#create-confirm-dialog")
+                    createConfirm: $("#create-confirm-dialog"),
+                    simulationComplete: $('#simulation-complete-dialog'),
+                    simulationError: $('#simulation-error-dialog'),
                 };
 
                 // cache jQ elements
@@ -66,9 +64,9 @@ define([
                 // subscribe to UI events
                 $('#simulation-start').click(function () {
                     client.sendModel(self.model.getData(), {
-                        onError: statsManager.onError.bind(statsManager),
-                        onComplete: statsManager.onComplete.bind(statsManager),
-                        onProgress: statsManager.onProgress.bind(statsManager),
+                        onError: self.onSimulationError.bind(self),
+                        onComplete: self.onSimulationComplete.bind(self),
+                        onProgress: self.onSimulationProgress.bind(self),
                     });
                 });
 
@@ -112,16 +110,19 @@ define([
 
                             // show chooser dialog
                             self.showModalDialog($dialog, {
-                                buttons: {
-                                    "Open": function () {
+                                buttons: [{
+                                    text: StringRes.ui.open,
+                                    click: function () {
                                         var modelId = $select.val();
                                         self.onLoadModel(modelId);
                                         $(this).dialog("close");
-                                    },
-                                    "Cancel": function () {
+                                    }
+                                }, {
+                                    text: StringRes.ui.cancel,
+                                    click: function () {
                                         $(this).dialog("close");
                                     }
-                                }
+                                }]
                             });
                         }
                     }
@@ -146,15 +147,18 @@ define([
                 var $dialog = this.dialogs.createConfirm;
 
                 this.showModalDialog($dialog, {
-                    buttons: {
-                        "Ok": function () {
+                    buttons: [{
+                        text: StringRes.ui.ok,
+                        click: function () {
                             self.createModel();
                             $(this).dialog("close");
-                        },
-                        "Cancel": function () {
+                        }
+                    }, {
+                        text: StringRes.ui.cancel,
+                        click: function () {
                             $(this).dialog("close");
                         }
-                    }
+                    }]
                 });
             },
 
@@ -288,6 +292,43 @@ define([
             updateTitle: function (value) {
                 this.$modelName.text(value);
                 window.document.title = this.appName + ': ' + value;
+            },
+
+            onSimulationProgress: function(value) {
+                this.windows.$progress.val(value);
+                this.windows.$progressLabel.text(parseInt(value, 10) + '%');
+            },
+
+            onSimulationComplete: function(stats) {
+                this.showModalDialog(this.dialogs.simulationComplete, {
+                    buttons: [{
+                        text: StringRes.ui.yes,
+                        click: function () {
+                            window.open('/report?taskId=' + stats.taskId, '_blank');
+                            $(this).dialog("close");
+                        }
+                    }, {
+                        text: StringRes.ui.no,
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+            },
+
+            onSimulationError: function(error, reason) {
+                var $dialog = this.dialogs.simulationError;
+                var $details = $dialog.find(".details");
+                $details.text(error);
+
+                this.showModalDialog($dialog, {
+                    buttons: [{
+                        text: StringRes.ui.ok,
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
             }
         });
 

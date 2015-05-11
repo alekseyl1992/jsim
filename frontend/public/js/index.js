@@ -2,8 +2,8 @@
 //app entry point
 //load libs first to set baseUrl
 require(['config'], function() {
-    require(['jquery', 'jquery-ui', 'jquery.layout', 'editor/Editor', 'api/Client', 'editor/StatsManager'],
-        function(_1, _2, _3, Editor, Client, StatsManager) {
+    require(['jquery', 'jquery-ui', 'jquery.layout', 'editor/Editor', 'api/Client'],
+        function(_1, _2, _3, Editor, Client) {
             $(function() {
                 initLayout(resize);
 
@@ -11,18 +11,15 @@ require(['config'], function() {
                 var $canvas = $('#editor-field');
                 var $canvasWrapper = $('#canvas-wrapper');
 
-                var statsManager = new StatsManager({
-                    $progress: $('#simulation-progress'),
-                    $progressLabel: $('#simulation-progress-label')
-                });
-
                 var client = new Client();
 
                 var editor = new Editor({
                     $canvas: $canvas,
                     $modelProps: $('#model-props'),
-                    $objectProps: $('#object-props')
-                }, client, statsManager);
+                    $objectProps: $('#object-props'),
+                    $progress: $('#simulation-progress'),
+                    $progressLabel: $('#simulation-progress-label')
+                }, client);
 
 
                 $('#open-model').click(editor.onChooseModel.bind(editor));

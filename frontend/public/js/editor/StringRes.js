@@ -6,6 +6,14 @@ var en = {
     splitter: "Splitter",
     sink: "Sink",
 
+    ui: {
+        ok: 'Ok',
+        cancel: 'Cancel',
+        open: 'Open',
+        yes: 'Yes',
+        no: 'No'
+    },
+
     props: {
         model: {
             name: "name",
@@ -68,6 +76,14 @@ var ru = {
     queue: "Очередь",
     splitter: "Делитель",
     sink: "Сток",
+
+    ui: {
+        ok: 'Ок',
+        cancel: 'Отмена',
+        open: 'Открыть',
+        yes: 'Да',
+        no: 'Нет'
+    },
 
     props: {
         model: {
