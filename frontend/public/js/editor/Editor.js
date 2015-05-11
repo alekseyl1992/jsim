@@ -24,6 +24,7 @@ define([
                 var self = this;
 
                 this.FPS = 30;
+                this.appName = 'jsim';
 
                 this.windows = windows;
                 this.client = client;
@@ -45,6 +46,8 @@ define([
                 };
 
                 // cache jQ elements
+                this.$modelName = $('.model-name');
+
                 this.$objectPropsTable = $('#object-props-table');
                 this.$modelPropsTable = $('#model-props-table');
 
@@ -158,6 +161,9 @@ define([
             createModel: function (data) {
                 this.model = new Model(this.stage, this, data, this.model);
                 var palette = new Palette(this.stage, this.model, Styles.object, Styles.palette);
+
+                this.showModelProps(this.model);
+                this.updateTitle(this.model.getData().name);
             },
 
             saveModel: function () {
@@ -192,9 +198,9 @@ define([
                 this.stage.update();
             },
 
-            _renderProps: function (props, template, $target) {
+            _renderProps: function (props, template, $target, locale) {
                 var propsArray = _.map(props, function (value, key) {
-                    return {key: key, label: StringRes.props[key], value: value};
+                    return {key: key, label: locale[key], value: value};
                 });
 
                 var view = {
@@ -216,7 +222,8 @@ define([
                 var key = $input.data("key");
                 var value = $input.val();
 
-                //TODO: update window title
+                if (key == 'name')
+                    this.updateTitle(value);
 
                 try {
                     updater(key, value);
@@ -240,7 +247,10 @@ define([
                 };
                 props = _.assign(props, objectData.spec);
 
-                this._renderProps(props, this.template.objectProps, this.$objectPropsTable);
+                this._renderProps(props,
+                    this.template.objectProps,
+                    this.$objectPropsTable,
+                    StringRes.props.objects);
 
                 // disallow user to modify type
                 $('#object-prop_type').prop('disabled', true);
@@ -251,19 +261,33 @@ define([
             },
 
             hideObjectProps: function () {
-                this.$objectPropsTable.html("");
+                this.$objectPropsTable.html('');
             },
 
             showModelProps: function (model) {
                 var self = this;
 
-                var modelData = _.omit(model.getData(), "objects");
+                //var modelData = _.omit(model.getData(), 'objects', 'dateCreated');
 
-                this._renderProps(modelData, this.template.modelProps, this.$modelPropsTable);
+                // preserve order
+                var modelData = {};
+                _.each(_.keys(StringRes.props.model), function (key) {
+                    modelData[key] = model.getData()[key];
+                });
+
+                this._renderProps(modelData,
+                    this.template.modelProps,
+                    this.$modelPropsTable,
+                    StringRes.props.model);
 
                 this.$modelPropsTable.find("input").on("input", function (evt) {
                     self._onPropChange(evt.target, self.model.update.bind(self.model));
                 });
+            },
+
+            updateTitle: function (value) {
+                this.$modelName.text(value);
+                window.document.title = this.appName + ': ' + value;
             }
         });
 

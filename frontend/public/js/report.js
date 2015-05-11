@@ -139,16 +139,12 @@ require(['config'], function() {
                     xaxis: {
                         axisLabel: xLabel,
                         tickDecimals: 0,
-                        tickFormatter: function (value, axis) {
-                            return (value / 1000) + "к";
-                        }
+                        tickFormatter: tickFormatter
                     },
                     yaxis: {
                         axisLabel: yLabel,
                         axisLabelPadding: 28,
-                        tickFormatter: function (value, axis) {
-                            return (value / 1000) + "к";
-                        }
+                        tickFormatter: tickFormatter
                     }
                 });
             }
@@ -159,6 +155,13 @@ require(['config'], function() {
                 } else {
                     return value;
                 }
+            }
+
+            function tickFormatter(value, axis) {
+                if (value < 1000)
+                    return value;
+                else
+                    return (value / 1000) + "к";
             }
 
             function isInt(n) {

@@ -7,15 +7,21 @@ var en = {
     sink: "Sink",
 
     props: {
-        name: "name",
-        duration: "duration",
-        runs: "runs",
-        type: "type",
-        lambda: "λ",
-        mu: "μ",
-        channels: "channels",
-        limit: "size",
-        pA: "pA"
+        model: {
+            name: "name",
+            duration: "duration",
+            runs: "runs"
+        },
+
+        objects: {
+            type: "type",
+            name: "name",
+            lambda: "λ",
+            mu: "μ",
+            channels: "channels",
+            limit: "size",
+            pA: "pA"
+        }
     },
 
     reportPage: {
@@ -64,15 +70,21 @@ var ru = {
     sink: "Сток",
 
     props: {
-        name: "название",
-        duration: "время",
-        runs: "запуски",
-        type: "тип",
-        lambda: "λ",
-        mu: "μ",
-        channels: "каналы",
-        limit: "размер",
-        pA: "pA"
+        model: {
+            name: "название",
+            duration: "время",
+            runs: "запуски"
+        },
+
+        objects: {
+            type: "тип",
+            name: "название",
+            lambda: "λ",
+            mu: "μ",
+            channels: "каналы",
+            limit: "размер",
+            pA: "pA"
+        }
     },
 
     reportPage: {
