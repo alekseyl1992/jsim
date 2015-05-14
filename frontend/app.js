@@ -29,6 +29,8 @@ var templates = require('./routes/templates');
 var api = require('./routes/api');
 var auth = require('./routes/auth');
 
+var myLogger = require('./routes/util/Logger');
+
 var app = express();
 
 // view engine setup
@@ -42,6 +44,7 @@ app.locals.partials = {
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -67,6 +70,8 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(myLogger.express.bind(myLogger));
+
 app.use('/user', templates);  // do not check auth at login/register pages
 app.use('/api', auth.check, api);
 app.use('/auth', auth);
@@ -74,7 +79,6 @@ app.use('/', auth.check, templates);
 
 
 // catch 404 and forward to error handler
-//TODO: figure out how this works
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
