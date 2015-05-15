@@ -2,11 +2,12 @@ package modelling.parsing;
 
 import core.Simulation;
 import modelling.parsing.formats.stats.StatsFields;
+import modelling.queueing.QObject;
+import modelling.queueing.Queue;
+import modelling.queueing.Sink;
 import modelling.queueing.Splitter;
 import org.json.JSONObject;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import modelling.queueing.QObject;
-import modelling.queueing.Queue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -150,6 +151,9 @@ public class Model {
 
                 if (s.getToA() == null || s.getToB() == null)
                     throw new ModelParsingError("Both outputs of Splitter should be connected somewhere");
+            } else if (!(obj instanceof Sink)) {
+                if (obj.getTo() == null)
+                    throw new ModelParsingError("All outputs should be connected somewhere");
             }
         }
     }

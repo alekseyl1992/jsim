@@ -64,7 +64,9 @@ define([
 
                 // subscribe to UI events
                 $('#simulation-start').click(function () {
-                    client.sendModel(self.model.getData(), {
+                    var modelData = self.model.getModel() || self.model.getData();
+
+                    client.sendModel(modelData, {
                         onError: self.onSimulationError.bind(self),
                         onComplete: self.onSimulationComplete.bind(self),
                         onProgress: self.onSimulationProgress.bind(self)
@@ -318,7 +320,12 @@ define([
             onSimulationError: function(error, reason) {
                 var $dialog = this.dialogs.simulationError;
                 var $details = $dialog.find(".details");
-                $details.text(error);
+
+                if (_.isString(error)) {
+                    $details.text(error);
+                } else {
+                    $details.text(StringRes.messages.httpError);
+                }
 
                 this.showModalDialog($dialog, {
                     buttons: [{

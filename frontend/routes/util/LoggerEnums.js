@@ -1,7 +1,7 @@
 
 module.exports = {
     simulationStatus: {
-        started: 'started',
+        sent: 'sent',
         finished: 'finished',
         error: 'error'
     },
@@ -9,8 +9,7 @@ module.exports = {
     subsystem: {
         http: 'http',
         db: 'db',
-        rmq: 'rmq',
-        server: 'server'
+        tasks: 'tasks'
     },
 
     errorLevel: {

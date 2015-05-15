@@ -3,7 +3,11 @@ var _ = require('lodash');
 var Task = require('./Task');
 var RmqFacade = require('./RmqFacade');
 
-var Report = require('mongoose').model('report');
+var mongoose = require('mongoose');
+var Report = mongoose.model('report');
+
+var logger = require('../util/Logger');
+var loggerEnums = require('../util/LoggerEnums');
 
 function TaskManager() {
     var rmq = new RmqFacade(this);
@@ -11,8 +15,8 @@ function TaskManager() {
 
     var tasks = {};
 
-    this.createTask = function (model, userId) {
-        var task = new Task(model, userId);
+    this.createTask = function (model, modelId, userId) {
+        var task = new Task(model, modelId, userId);
         tasks[task.id] = task;
 
         rmq.sendTask(task);
@@ -20,6 +24,7 @@ function TaskManager() {
         task.status = Task.Status.SENT;
 
         console.log("[TM] createTask: ", task);
+        logger.simulation(modelId, userId, loggerEnums.simulationStatus.sent, "Task created", task.id);
 
         return task;
     };
@@ -32,6 +37,7 @@ function TaskManager() {
         var task = tasks[msg.taskId];
         if (!task) {
             console.warn("Task does not exist: " + msg.taskId);
+            logger.error(loggerEnums.subsystem.tasks, loggerEnums.errorLevel.warn, "Task does not exist: " + msg.taskId);
             return;
         }
 
@@ -47,11 +53,14 @@ function TaskManager() {
         var task = tasks[msg.taskId];
         if (!task) {
             console.warn("Task does not exist: " + msg.taskId);
+            logger.error(loggerEnums.subsystem.tasks, loggerEnums.errorLevel.warn, "Task does not exist: " + msg.taskId);
             return;
         }
 
         task.status = Task.Status.ERROR;
         task.error = msg.message;
+
+        logger.simulation(task.modelId, task.userId, loggerEnums.simulationStatus.error, msg.message, msg.taskId);
 
         console.log("[TM] onError: ", task);
     };
@@ -60,6 +69,7 @@ function TaskManager() {
         var task = tasks[msg.taskId];
         if (!task) {
             console.warn("Task does not exist: " + msg.taskId);
+            logger.error(loggerEnums.subsystem.tasks, loggerEnums.errorLevel.warn, "Task does not exist: " + msg.taskId);
             return;
         }
 
@@ -76,11 +86,16 @@ function TaskManager() {
             stats: task.stats
         }, function (err, report) {
             if (err) {
-                return console.error("MongoDB error: ", err);
+                console.error("MongoDB error: ", err);
+                logger.error(loggerEnums.subsystem.db,
+                    loggerEnums.errorLevel.critical,
+                    err
+                );
             }
         });
 
         console.log("[TM] onFinished: ", task);
+        logger.simulation(task.modelId, task.userId, loggerEnums.simulationStatus.finished, 'Simulation finished', msg.taskId);
     };
 
     this.mergeStats = function (statsArray) {

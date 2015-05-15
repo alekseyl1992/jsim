@@ -1,39 +1,55 @@
+'use strict';
+
 var _ = require('lodash');
 var mongoose = require('mongoose');
 var loggerEnums = require('./LoggerEnums');
 var simulationLog = mongoose.model('simulationLog');
 var accessLog = mongoose.model('errorLog');
 var errorLog = mongoose.model('errorLog');
-
-
 var onFinished = require('on-finished');
 
-module.exports = {
+class Logger {
     /**
      *
      * @param modelId {mongoose.Schema.ObjectId}
      * @param userId {mongoose.Schema.ObjectId}
      * @param status {String} @see Logger.simulationStatus
      * @param message {String}
+     * @param taskId {String}
      */
-    simulation: function(modelId, userId, status, message) {
+    simulation(modelId, userId, status, message, taskId) {
         simulationLog.create({
             modelId: modelId,
             userId: userId,
             status: status,
-            message: message
+            message: message,
+            taskId: taskId
         });
-    },
+    }
 
     /**
      *
+     * @param ip {String}
      * @param method {String}
      * @param url {String}
      * @param statusCode {Number}
      * @param time {Number}
      * @param dataSize {Number}
      */
-    access: function(ip, method, url, statusCode, time, dataSize) {
+    access(ip, method, url, statusCode, time, dataSize) {
+        // log errors to errorLog
+        if (statusCode != 200 && statusCode != 302) {
+            var level = loggerEnums.errorLevel.warn;
+            if (statusCode == 500)
+                level = loggerEnums.errorLevel.critical;
+
+            this.error(loggerEnums.subsystem.http,
+                loggerEnums.errorLevel.warn,
+                JSON.stringify(arguments)
+            );
+        }
+
+        // log access
         accessLog.create({
             ip: ip,
             method: method,
@@ -42,7 +58,7 @@ module.exports = {
             time: time,
             dataSize: dataSize
         });
-    },
+    }
 
     /**
      *
@@ -50,16 +66,18 @@ module.exports = {
      * @param level {String} @see errorLevel
      * @param message {String}
      */
-    error: function(subsystem, level, message) {
+    error(subsystem, level, message) {
         errorLog.create({
             subsystem: subsystem,
             level: level,
             message: message
         });
-    },
+    }
 
     // attention: this function relies on morgan to be enabled
-    express: function(req, res, next) {
+    express(req, res, next) {
+        var self = this;
+
         onFinished(res, function () {
             var entry = {
                 ip: (function () {
@@ -86,9 +104,10 @@ module.exports = {
                 dataSize: parseInt(res._headers['content-length'])
             };
 
-            module.exports.access.apply(module.exports, _.values(entry));
+            self.access.apply(self, _.values(entry));
         });
         next();
     }
-};
-module.exports = _.merge(module.exports, loggerEnums);
+}
+
+module.exports = new Logger();

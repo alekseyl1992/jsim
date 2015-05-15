@@ -1,8 +1,9 @@
 var UUIDGenerator = require('../util/UUIDGenerator');
 
-function Task(model, userId) {
+function Task(model, modelId, userId) {
     this.id = UUIDGenerator.generate();
     this.model = model;
+    this.modelId = modelId;
     this.userId = userId;
 
     this.progress = 0;

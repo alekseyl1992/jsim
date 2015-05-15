@@ -14,7 +14,8 @@ var User = mongoose.model('user');
 var Model = mongoose.model('model');
 var Report = mongoose.model('report');
 
-var Logger = require('./util/Logger');
+var logger = require('./util/Logger');
+var loggerEnums = require('./util/LoggerEnums');
 
 
 router.post('/simulate', function(req, res, next) {
@@ -23,7 +24,8 @@ router.post('/simulate', function(req, res, next) {
 
     console.log("/simulate: ", model);
 
-    var task = taskManager.createTask(model, userId);
+    // model could be either (id, data) or just data
+    var task = taskManager.createTask(model.data || model, model.id, userId);
 
     res.json({
         taskId: task.id,
@@ -46,6 +48,11 @@ router.get('/getProgress', function(req, res, next) {
             error: task.error
         });
     } else {
+        logger.error(loggerEnums.subsystem.tasks,
+            loggerEnums.errorLevel.critical,
+            "No such task: " + taskId
+        );
+
         //TODO: implement sendError() and underlying protocol package format
         res.json({
             taskId: taskId,
@@ -67,7 +74,14 @@ router.get('/getReport', function(req, res, next) {
                     taskId: taskId,
                     status: Task.Status.ERROR
                 });
-                return console.error("MongoDB error: ", err);
+
+                console.error("MongoDB error: ", err);
+                logger.error(loggerEnums.subsystem.db,
+                    loggerEnums.errorLevel.critical,
+                    err
+                );
+
+                res.json(null);
             }
 
             res.json(report);
@@ -81,8 +95,16 @@ router.get('/getModel', function(req, res, next) {
 
     //TODO: check user is owner of model
     Model.findById(modelId, function (err, model) {
-        if (err)
-            return console.error("MongoDB error: ", err);
+        if (err) {
+            console.error("MongoDB error: ", err);
+            logger.error(loggerEnums.subsystem.db,
+                loggerEnums.errorLevel.critical,
+                err
+            );
+
+            res.json(null);
+            return;
+        }
 
         res.json(model);
     });
@@ -93,8 +115,16 @@ router.get('/getModelList', function(req, res, next) {
 
     var userId = new ObjectId(req.user.id);
     Model.find({authorId: userId}, function (err, models) {
-        if (err)
-            return console.error("MongoDB error: ", err);
+        if (err) {
+            console.error("MongoDB error: ", err);
+            logger.error(loggerEnums.subsystem.db,
+                loggerEnums.errorLevel.critical,
+                err
+            );
+
+            res.json(null);
+            return;
+        }
 
         res.json(models);
     });
@@ -108,8 +138,16 @@ router.post('/saveModel', function(req, res, next) {
     delete model._id;  // or mongo will try to save id as String
 
     Model.update(id, model, function (err) {
-        if (err)
-            return console.error("MongoDB error: ", err);
+        if (err) {
+            console.error("MongoDB error: ", err);
+            logger.error(loggerEnums.subsystem.db,
+                loggerEnums.errorLevel.critical,
+                err
+            );
+
+            res.json(null);
+            return;
+        }
 
         //TODO: protocols, protocols, protocols...
         res.json({status: 'ok'});
@@ -126,8 +164,16 @@ router.post('/createModel', function(req, res, next) {
     };
 
     Model.create(model, function (err, model) {
-        if (err)
-            return console.error("MongoDB error: ", err);
+        if (err) {
+            console.error("MongoDB error: ", err);
+            logger.error(loggerEnums.subsystem.db,
+                        loggerEnums.errorLevel.critical,
+                        err
+            );
+
+            res.json(null);
+            return;
+        }
 
         //TODO: protocols, protocols, protocols...
         res.json(model);

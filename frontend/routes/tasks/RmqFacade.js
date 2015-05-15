@@ -1,4 +1,4 @@
-amqplib = require('amqplib');
+var amqplib = require('amqplib');
 
 var queues = {
     tasks: 'jsim.tasks',

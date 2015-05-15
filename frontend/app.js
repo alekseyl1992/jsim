@@ -18,6 +18,8 @@ mongoose.connect('mongodb://localhost/jsim', function(err) {
         console.error("Unable to connect to MongoDB server", err);
         process.exit(-1);
         return;
+    } else {
+        console.log("Connected to MongoDB server");
     }
 });
 

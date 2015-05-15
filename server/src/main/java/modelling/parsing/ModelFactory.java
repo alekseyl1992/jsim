@@ -39,14 +39,22 @@ public class ModelFactory {
             String idFrom = jsonObject.getString(QObjectFields.ID);
 
             if (jsonObject.has(QObjectFields.TO)) {
-                String idTo = jsonObject.getString(QObjectFields.TO);
-                model.connect(idFrom, idTo);
+                try {
+                    String idTo = jsonObject.getString(QObjectFields.TO);
+                    model.connect(idFrom, idTo);
+                } catch (JSONException e) {
+                    throw new ModelParsingError("All outputs should be connected somewhere");
+                }
             } else if (jsonObject.has(QObjectFields.TO_A)
                     && jsonObject.has(QObjectFields.TO_B)) {
-                String idToA = jsonObject.getString(QObjectFields.TO_A);
-                String idToB = jsonObject.getString(QObjectFields.TO_B);
+                try {
+                    String idToA = jsonObject.getString(QObjectFields.TO_A);
+                    String idToB = jsonObject.getString(QObjectFields.TO_B);
 
-                model.connect(idFrom, idToA, idToB);
+                    model.connect(idFrom, idToA, idToB);
+                } catch (JSONException e) {
+                    throw new ModelParsingError("Both outputs of Splitter should be connected somewhere");
+                }
             }
         }
 

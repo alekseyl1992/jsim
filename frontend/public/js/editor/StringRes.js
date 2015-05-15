@@ -20,7 +20,9 @@ var en = {
         unableToLoadModel: 'Unable to get model',
         modelLoaded: 'Model loaded',
         unableToSaveModel: 'Unable to save model',
-        modelSaved: 'Model saved'
+        modelSaved: 'Model saved',
+
+        httpError: "Server is unreachable"
     },
 
     props: {
@@ -100,7 +102,9 @@ var ru = {
         unableToLoadModel: 'Не удалось загрузить модель',
         modelLoaded: 'Модель загружена',
         unableToSaveModel: 'Не удалось сохранить модель',
-        modelSaved: 'Модель сохранена'
+        modelSaved: 'Модель сохранена',
+
+        httpError: "Сервер недоступен"
     },
 
     props: {
