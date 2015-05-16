@@ -4,7 +4,7 @@ var _ = require('lodash');
 var mongoose = require('mongoose');
 var loggerEnums = require('./LoggerEnums');
 var simulationLog = mongoose.model('simulationLog');
-var accessLog = mongoose.model('errorLog');
+var accessLog = mongoose.model('accessLog');
 var errorLog = mongoose.model('errorLog');
 var onFinished = require('on-finished');
 
@@ -24,6 +24,8 @@ class Logger {
             status: status,
             message: message,
             taskId: taskId
+        }, function (err) {
+            err && console.error("MongoDB error: ", err);
         });
     }
 
@@ -57,6 +59,8 @@ class Logger {
             statusCode: statusCode,
             time: time,
             dataSize: dataSize
+        }, function (err) {
+            err && console.error("MongoDB error: ", err);
         });
     }
 
@@ -71,6 +75,8 @@ class Logger {
             subsystem: subsystem,
             level: level,
             message: message
+        }, function (err) {
+            err && console.error("MongoDB error: ", err);
         });
     }
 
@@ -101,7 +107,7 @@ class Logger {
                     var ms = diff[0] * 1e3 + diff[1] * 1e-6;
                     return ms;
                 })(),
-                dataSize: parseInt(res._headers['content-length'])
+                dataSize: parseInt(res._headers['content-length']) || undefined
             };
 
             self.access.apply(self, _.values(entry));
