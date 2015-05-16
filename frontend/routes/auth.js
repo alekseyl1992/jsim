@@ -1,4 +1,5 @@
 var express = require('express');
+var crypto = require('crypto');
 var _ = require('lodash');
 
 var router = express.Router();
@@ -8,13 +9,24 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('mongoose').model('user');
 
-//TODO: add md5 and some salt
 function validatePassword(user, password) {
-    return user.password === password;
+    return user.password === createPassword(password);
 }
 
 function createPassword(password) {
-    return password;
+    var sha256 = crypto.createHash('sha256')
+        .update(password)
+        .update(salt(password))
+        .digest("hex");
+    return sha256;
+}
+
+function salt(password) {
+    return _.reduce(
+        _.sortBy(password),
+        function (ch, result) {
+            return result + ch;
+        });
 }
 
 function check(req, res, next) {
