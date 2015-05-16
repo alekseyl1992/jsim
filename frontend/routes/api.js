@@ -114,20 +114,27 @@ router.get('/getModelList', function(req, res, next) {
     console.log("/getModelList");
 
     var userId = new ObjectId(req.user.id);
-    Model.find({authorId: userId}, function (err, models) {
-        if (err) {
-            console.error("MongoDB error: ", err);
-            logger.error(loggerEnums.subsystem.db,
-                loggerEnums.errorLevel.critical,
-                err
-            );
+    var filter = {authorId: userId};
+    if (req.user.isAdmin) {
+        filter = {};
+    }
 
-            res.json(null);
-            return;
-        }
+    Model.find(filter)
+        .populate('authorId', 'username')
+        .exec(function (err, models) {
+            if (err) {
+                console.error("MongoDB error: ", err);
+                logger.error(loggerEnums.subsystem.db,
+                    loggerEnums.errorLevel.critical,
+                    err
+                );
 
-        res.json(models);
-    });
+                res.json(null);
+                return;
+            }
+
+            res.json(models);
+        });
 });
 
 router.post('/saveModel', function(req, res, next) {
@@ -177,6 +184,27 @@ router.post('/createModel', function(req, res, next) {
 
         //TODO: protocols, protocols, protocols...
         res.json(model);
+    });
+});
+
+router.post('/removeModel', function(req, res, next) {
+    console.log("/removeModel");
+
+    var modelId = new ObjectId(req.body.modelId);
+    Model.remove({_id: modelId}, function (err) {
+        if (err) {
+            console.error("MongoDB error: ", err);
+            logger.error(loggerEnums.subsystem.db,
+                loggerEnums.errorLevel.critical,
+                err
+            );
+
+            res.json(null);
+            return;
+        }
+
+        //TODO: protocols, protocols, protocols...
+        res.json({status: 'ok'});
     });
 });
 

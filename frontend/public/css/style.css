@@ -72,6 +72,10 @@ progress {
     width: 100%;
 }
 
+.props {
+    width: 100% !important;
+}
+
 #simulation-show-stats-toggle {
     padding-top: 8px;
 }

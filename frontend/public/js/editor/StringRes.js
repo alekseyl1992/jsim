@@ -21,6 +21,10 @@ var en = {
         modelLoaded: 'Model loaded',
         unableToSaveModel: 'Unable to save model',
         modelSaved: 'Model saved',
+        unableToRemoveModel: 'Unable to remove model',
+        modelRemoved: 'Model removed',
+
+        modelRemove: 'Do you really want to remove that model?',
 
         httpError: "Server is unreachable"
     },
@@ -41,6 +45,11 @@ var en = {
             limit: "size",
             pA: "pA"
         }
+    },
+
+    modelChooser: {
+        modelName: "Model",
+        author: "Author"
     },
 
     reportPage: {
@@ -103,6 +112,10 @@ var ru = {
         modelLoaded: 'Модель загружена',
         unableToSaveModel: 'Не удалось сохранить модель',
         modelSaved: 'Модель сохранена',
+        unableToRemoveModel: 'Не удалось удалить модель',
+        modelRemoved: 'Модель удалена',
+
+        modelRemove: 'Вы действительно хотите удалить эту модель?',
 
         httpError: "Сервер недоступен"
     },
@@ -123,6 +136,11 @@ var ru = {
             limit: "размер",
             pA: "pA"
         }
+    },
+
+    modelChooser: {
+        modelName: "Модель",
+        author: "Автор"
     },
 
     reportPage: {

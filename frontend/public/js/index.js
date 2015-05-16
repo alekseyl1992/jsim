@@ -2,8 +2,8 @@
 //app entry point
 //load libs first to set baseUrl
 require(['config'], function() {
-    require(['jquery', 'jquery-ui', 'jquery.layout', 'editor/Editor', 'api/Client'],
-        function(_1, _2, _3, Editor, Client) {
+    require(['jquery', 'jquery-ui', 'jquery.layout', 'bootstrap-table', 'editor/Editor', 'api/Client'],
+        function(_1, _2, _3, _4, Editor, Client) {
             $(function() {
                 initLayout(resize);
 
@@ -68,7 +68,7 @@ function initLayout(onResize) {
         east: {
             size: 230,
             childOptions: {
-                minSize: 110,
+                minSize: 160,
                 north: {
                     size: 140
                 }

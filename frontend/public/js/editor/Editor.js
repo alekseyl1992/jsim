@@ -34,7 +34,8 @@ define([
 
                 this.template = {
                     modelProps: Templater.makeTemplate('#model-props-template'),
-                    objectProps: Templater.makeTemplate('#object-props-template')
+                    objectProps: Templater.makeTemplate('#object-props-template'),
+                    modelRemove: Templater.makeTemplate('#model-remove-template')
                 };
 
                 this.dialogs = {
@@ -104,23 +105,59 @@ define([
                         onComplete: function (models) {
                             // setup chooser dialog
                             var $dialog = self.dialogs.modelChooser;
-                            var $select = $dialog.find("#model-chooser-dialog-select");
-                            $select.empty();
+                            var $table = $dialog.find("#model-chooser-dialog-table");
+                            $table.bootstrapTable('destroy');
+                            $table.empty();
 
-                            _.each(models, function (model) {
-                                $select.append(new Option(model.data.name, model._id));
+                            $table.bootstrapTable({
+                                data: _.map(models,
+                                    function(model) {
+                                        return {
+                                            modelName: model.data.name,
+                                            author: model.authorId.username,
+                                            id: model._id
+                                        };
+                                    }
+                                ),
+                                columns: [{
+                                    field: 'modelName',
+                                    title: StringRes.modelChooser.modelName,
+                                    formatter: function (name, model) {
+                                        //TODO: render link
+                                        return name;
+                                    }
+                                }, {
+                                    field: 'author',
+                                    title: StringRes.modelChooser.author
+                                }, {
+                                    formatter: function (field, model) {
+                                        return mustache.render(
+                                            self.template.modelRemove,
+                                            { modelId: model.id }
+                                        );
+                                    },
+                                    events: {
+                                        'click .model-remove': function (e, value, row, index) {
+                                            alertify.confirm(
+                                                StringRes.messages.modelRemove,
+                                                function (e) {
+                                                    e && self.onRemoveModel(row.id);
+                                                }
+                                            );
+                                            e.stopPropagation();
+                                        }
+                                    }
+                                }],
+                                onClickRow: function (row) {
+                                    self.onLoadModel(row.id);
+                                    $dialog.dialog("close");
+                                }
                             });
+                            $table.bootstrapTable('hideLoading');
 
                             // show chooser dialog
                             self.showModalDialog($dialog, {
                                 buttons: [{
-                                    text: StringRes.ui.open,
-                                    click: function () {
-                                        var modelId = $select.val();
-                                        self.onLoadModel(modelId);
-                                        $(this).dialog("close");
-                                    }
-                                }, {
                                     text: StringRes.ui.cancel,
                                     click: function () {
                                         $(this).dialog("close");
@@ -198,6 +235,18 @@ define([
                         }
                     });
                 }
+            },
+
+            onRemoveModel: function (modelId) {
+                var self = this;
+                this.client.removeModel({ modelId: modelId }, {
+                    onError: function () {
+                        alertify.error(StringRes.messages.unableToRemoveModel);
+                    },
+                    onComplete: function () {
+                        alertify.success(StringRes.messages.modelRemoved);
+                    }
+                });
             },
 
             resize: function (w, h) {

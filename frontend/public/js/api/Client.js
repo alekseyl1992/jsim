@@ -98,6 +98,10 @@ define(['jquery', 'api/Exceptions'], function($, Exceptions) {
             this._post("/api/createModel", data, callbacks);
         },
 
+        removeModel: function(data, callbacks) {
+            this._post("/api/removeModel", data, callbacks);
+        },
+
         _get: function(url, data, callbacks) {
             $.ajax({
                 type: "GET",

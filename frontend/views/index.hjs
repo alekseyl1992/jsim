@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/css/style.css" />
 
     <link rel="stylesheet" href="/css/lib/alertify.core.css" />
-    <link rel="stylesheet" href="/css/lib/alertify.default.css" />
+    <link rel="stylesheet" href="/css/lib/alertify.bootstrap.css" />
 
     <!-- PrototypeJS 1.7.2 fails to work with AMD -->
     <script src="/js/lib/dev/prototype.js"></script>
@@ -43,7 +43,7 @@
 </div>
 
 <div id="properties-wrapper" class="ui-layout-east">
-    <div id="model-props" class="ui-layout-north">
+    <div id="model-props" class="ui-layout-north props">
         <div>{{s.modelProps}}</div>
         <table id="model-props-table" class="props-table">
             <script id="model-props-template" language="text/html">
@@ -60,7 +60,7 @@
             </script>
         </table>
     </div>
-    <div id="object-props" class="ui-layout-center">
+    <div id="object-props" class="ui-layout-center props">
         <div>{{s.selectedObjectProps}}</div>
         <table id="object-props-table" class="props-table">
             <script id="object-props-template" language="text/html">
@@ -111,10 +111,13 @@
 </div>
 
 <div id="model-chooser-dialog" title="{{s.chooseModelTitle}}">
-    <form>
-        <label for="model-chooser-dialog-select">{{s.chooseModel}}</label>
-        <select id="model-chooser-dialog-select"></select>
-    </form>
+    <table id="model-chooser-dialog-table"></table>
+    <script id="model-remove-template" language="text/html">
+        <button class="ui-button form-control model-remove" data-model-id="{modelId}" title="Remove">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true">
+            </span>
+        </button>
+    </script>
 </div>
 
 <div id="create-confirm-dialog" title="{{s.createConfirmTitle}}">
