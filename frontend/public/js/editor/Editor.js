@@ -244,6 +244,7 @@ define([
                         alertify.error(StringRes.messages.unableToRemoveModel);
                     },
                     onComplete: function () {
+                        self.onChooseModel();
                         alertify.success(StringRes.messages.modelRemoved);
                     }
                 });
