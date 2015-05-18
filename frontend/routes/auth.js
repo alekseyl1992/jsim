@@ -2,6 +2,12 @@ var express = require('express');
 var crypto = require('crypto');
 var _ = require('lodash');
 
+var StringRes = require('./util/StringRes');
+var s = {
+    login: StringRes.getLocalizedStrings('login'),
+    register: StringRes.getLocalizedStrings('register')
+};
+
 var router = express.Router();
 
 var passport = require('passport');
@@ -46,12 +52,12 @@ passport.use(new LocalStrategy({
 
         if (!user)
             return done(null, false, {
-                message: 'Wrong username or password'
+                message: s.login.wrongLoginOrPassword
             });
 
         if (!validatePassword(user, password))
             return done(null, false, {
-                message: 'Wrong username or password'
+                message: s.login.wrongLoginOrPassword
             });
 
         return done(null, user);
@@ -76,7 +82,8 @@ passport.deserializeUser(function(id, done) {
 router.post('/login', passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/user/login',
-        failureFlash: true
+        failureFlash: true,
+        badRequestMessage: s.login.missingCredentials
     })
 );
 
@@ -87,7 +94,7 @@ router.all('/logout', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
     if (!req.body.username || !req.body.password) {
-        req.flash('error', "Missing credentials");
+        req.flash('error', s.register.missingCredentials);
         return res.redirect('/user/register');
     }
 
@@ -100,7 +107,7 @@ router.post('/register', function(req, res, next) {
         if (err) {
             // dup entry?
             if (err.code == 11000) {
-                req.flash('error', "Username already in use");
+                req.flash('error', s.register.alreadyInUse);
                 return res.redirect('/user/register');
             }
 

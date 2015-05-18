@@ -287,7 +287,7 @@ define([
                     if (e != Exceptions.CAST)
                         throw e;
 
-                    alertify.error(key + StringRes.messages.shouldBeANumber);
+                    alertify.error(key + ' ' + StringRes.messages.shouldBeANumber);
                 }
             },
 
