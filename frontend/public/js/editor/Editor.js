@@ -138,12 +138,20 @@ define([
                                     },
                                     events: {
                                         'click .model-remove': function (e, value, row, index) {
+                                            alertify.set({
+                                                labels: {
+                                                    ok: StringRes.ui.ok,
+                                                    cancel: StringRes.ui.cancel
+                                                }
+                                            });
+
                                             alertify.confirm(
                                                 StringRes.messages.modelRemove,
                                                 function (e) {
                                                     e && self.onRemoveModel(row.id);
                                                 }
                                             );
+
                                             e.stopPropagation();
                                         }
                                     }

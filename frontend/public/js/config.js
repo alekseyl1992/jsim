@@ -21,6 +21,12 @@ requirejs.config({
                 'jquery.flot'
             ]
         },
+        'bootstrap-table.ru': {
+            deps: [
+                'jquery',
+                'bootstrap-table'
+            ]
+        },
         'bootstrap-table': {
             deps: [
                 'jquery'

@@ -5,6 +5,7 @@ require(['config'], function() {
     require(['jquery',
             'jquery-ui',
             'bootstrap-table',
+            'bootstrap-table.ru',
             'jquery.flot',
             'jquery.flot.axislabels',
             'lodash',
@@ -14,7 +15,7 @@ require(['config'], function() {
             'api/Client',
             'editor/StringRes'],
 
-        function (_1, _2, _3, flot, flotAxisLabels, _, mustache, Templater, Url, Client, StringRes) {
+        function (_1, _2, _3, _4, flot, flotAxisLabels, _, mustache, Templater, Url, Client, StringRes) {
             $(function () {
                 var client = new Client();
 
