@@ -47,7 +47,7 @@ public class QObjectFactory {
                 case QObjectTypes.SINK:
                     return createSink(json);
                 default:
-                    throw new ModelParsingError("Unsupported type: " + type);
+                    throw new ModelParsingError(ModelParsingError.UNSUPPORTED_TYPE);
             }
         } catch (JSONException e) {
             throw new ModelParsingError(e);

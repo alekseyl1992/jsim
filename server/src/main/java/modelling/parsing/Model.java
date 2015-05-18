@@ -142,7 +142,7 @@ public class Model {
     public void validate() throws ModelParsingError {
         // empty check
         if (objects.isEmpty())
-            throw new ModelParsingError("Model is empty");
+            throw new ModelParsingError(ModelParsingError.EMPTY_MODEL);
 
         // splitters check
         for (QObject obj: objects.values()) {
@@ -150,10 +150,10 @@ public class Model {
                 Splitter s = (Splitter) obj;
 
                 if (s.getToA() == null || s.getToB() == null)
-                    throw new ModelParsingError("Both outputs of Splitter should be connected somewhere");
+                    throw new ModelParsingError(ModelParsingError.NOT_CONNECTED);
             } else if (!(obj instanceof Sink)) {
                 if (obj.getTo() == null)
-                    throw new ModelParsingError("All outputs should be connected somewhere");
+                    throw new ModelParsingError(ModelParsingError.NOT_CONNECTED);
             }
         }
     }

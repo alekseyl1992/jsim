@@ -43,7 +43,7 @@ public class ModelFactory {
                     String idTo = jsonObject.getString(QObjectFields.TO);
                     model.connect(idFrom, idTo);
                 } catch (JSONException e) {
-                    throw new ModelParsingError("All outputs should be connected somewhere");
+                    throw new ModelParsingError(ModelParsingError.NOT_CONNECTED);
                 }
             } else if (jsonObject.has(QObjectFields.TO_A)
                     && jsonObject.has(QObjectFields.TO_B)) {
@@ -53,7 +53,7 @@ public class ModelFactory {
 
                     model.connect(idFrom, idToA, idToB);
                 } catch (JSONException e) {
-                    throw new ModelParsingError("Both outputs of Splitter should be connected somewhere");
+                    throw new ModelParsingError(ModelParsingError.NOT_CONNECTED);
                 }
             }
         }

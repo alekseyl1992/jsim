@@ -18,7 +18,13 @@ var en = {
         chooseModel: "Choose a model to load",
         createConfirmTitle: "Create new model?",
         createConfirm: "Do you really want to create a new model?",
-        createConfirmDetails: "All unsaved data will be lost."
+        createConfirmDetails: "All unsaved data will be lost.",
+
+        error: {
+            emptyModel: "Model is empty",
+            notConnected: "All outputs should be connected somewhere",
+            unsupportedType: "Unsupported type"
+        }
     },
     login: {
         subtitle: "log in",
@@ -84,7 +90,13 @@ var ru = {
         chooseModel: "Выберите модель для загрузки",
         createConfirmTitle: "Создание новой модели",
         createConfirm: "Вы действительно хотите создать новую модель?",
-        createConfirmDetails: "Все несохранённые данные будут утеряны."
+        createConfirmDetails: "Все несохранённые данные будут утеряны.",
+
+        error: {
+            emptyModel: "Модель пуста",
+            notConnected: "Все выходы должны быть соединены со входами",
+            unsupportedType: "Неподдерживаемый тип"
+        }
     },
     login: {
         subtitle: "авторизация",

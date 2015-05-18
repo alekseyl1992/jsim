@@ -9,6 +9,9 @@ var Report = mongoose.model('report');
 var logger = require('../util/Logger');
 var loggerEnums = require('../util/LoggerEnums');
 
+var StringRes = require('../util/StringRes');
+var s = StringRes.getLocalizedStrings('index');
+
 function TaskManager() {
     var rmq = new RmqFacade(this);
     rmq.start();
@@ -58,7 +61,7 @@ function TaskManager() {
         }
 
         task.status = Task.Status.ERROR;
-        task.error = msg.message;
+        task.error = s.error[msg.message];
 
         logger.simulation(task.modelId, task.userId, loggerEnums.simulationStatus.error, msg.message, msg.taskId);
 
