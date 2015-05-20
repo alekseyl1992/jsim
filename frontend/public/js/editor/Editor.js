@@ -212,9 +212,11 @@ define([
 
             createModel: function (data) {
                 this.model = new Model(this.stage, this, data, this.model);
+
                 var palette = new Palette(this.stage, this.model, Styles.object, Styles.palette);
 
                 this.showModelProps(this.model);
+                this.hideObjectProps();
                 this.updateTitle(this.model.getData().name);
             },
 
@@ -238,7 +240,8 @@ define([
                         onError: function () {
                             alertify.error(StringRes.messages.unableToSaveModel);
                         },
-                        onComplete: function () {
+                        onComplete: function (model) {
+                            self.createModel(model);
                             alertify.success(StringRes.messages.modelSaved);
                         }
                     });
@@ -285,9 +288,6 @@ define([
                 var $input = $(input);
                 var key = $input.data("key");
                 var value = $input.val();
-
-                if (key == 'name')
-                    this.updateTitle(value);
 
                 try {
                     updater(key, value);
@@ -344,7 +344,12 @@ define([
                     StringRes.props.model);
 
                 this.$modelPropsTable.find("input").on("input", function (evt) {
-                    self._onPropChange(evt.target, self.model.update.bind(self.model));
+                    self._onPropChange(evt.target, function (key, value) {
+                        self.model.update(key, value);
+
+                        if (key == 'name')
+                            self.updateTitle(value);
+                    });
                 });
             },
 

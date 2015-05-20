@@ -98,7 +98,7 @@ public class TaskReceiver implements Runnable {
     }
 
     private void sendProgress(String taskId, double progress, int runId, int runsCount) {
-        double overallProgress = (double)runId / runsCount + progress / 10.0;
+        double overallProgress = (double)runId / runsCount + progress / runsCount;
 
         String jsonStr = Progress.toJsonString(taskId, overallProgress);
         rmq.send(PROGRESS_QUEUE_NAME, jsonStr);
