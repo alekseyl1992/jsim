@@ -144,7 +144,7 @@ router.post('/saveModel', function(req, res, next) {
     var id = model._id;
     delete model._id;  // or mongo will try to save id as String
 
-    Model.update(id, model, {upsert: true}, function (err) {
+    Model.update({_id: id}, model, {upsert: true}, function (err) {
         if (err) {
             console.error("MongoDB error: ", err);
             logger.error(loggerEnums.subsystem.db,
