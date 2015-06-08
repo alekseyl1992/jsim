@@ -13,7 +13,7 @@ var reportSchema = new mongoose.Schema({
         model: JSON,
         simulationDate: {
             type: Date,
-            default: Date.now
+            'default': Date.now
         }
     },
     stats: JSON

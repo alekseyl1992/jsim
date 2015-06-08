@@ -3,20 +3,16 @@ var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({
     username: {
         type: String,
-        unique: true,
-        required: true
+        unique: true
     },
-    password: {
-        type: String,
-        required: true
-    },
+    password: String,
     dateRegistered: {
         type: Date,
-        default: Date.now
+        'default': Date.now
     },
     isAdmin: {
         type: Boolean,
-        default: false
+        'default': false
     }
 });
 

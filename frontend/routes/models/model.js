@@ -12,46 +12,25 @@ var modelSchema = new mongoose.Schema({
             name: String,
             type: {
                 type: String,
-                enum: ['source', 'queue', 'splitter', 'sink']
+                'enum': ['source', 'queue', 'splitter', 'sink']
             },
             x: Number,
             y: Number,
             spec: {
-                lambda: {
-                    type: Number,
-                    required: false
-                },
-                mu: {
-                    type: Number,
-                    required: false
-                },
-                channels: {
-                    type: Number,
-                    required: false
-                },
-                limit: {
-                    type: Number,
-                    required: false
-                }
+                lambda: Number,
+                mu: Number,
+                channels: Number,
+                limit: Number
             },
-            to: {
-                type: String,
-                required: false
-            },
-            toA: {
-                type: String,
-                required: false
-            },
-            toB: {
-                type: String,
-                required: false
-            }
+            to: String,
+            toA: String,
+            toB: String
         }],
         duration: Number,
         runs: Number,
         dateCreated: {
             type: Date,
-            default: Date.now
+            'default': Date.now
         }
     }
 });

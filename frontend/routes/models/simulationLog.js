@@ -13,14 +13,12 @@ var simulationLog = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: _.keys(LoggerEnums.simulationStatus)
+        'enum': _.keys(LoggerEnums.simulationStatus)
     },
-    message: {
-        type: String
-    },
+    message: String,
     date: {
         type: Date,
-        default: Date.now
+        'default': Date.now
     }
 });
 

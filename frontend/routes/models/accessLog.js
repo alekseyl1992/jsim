@@ -9,7 +9,7 @@ var accessLog = new mongoose.Schema({
     dataSize: Number,
     date: {
         type: Date,
-        default: Date.now
+        'default': Date.now
     }
 });
 

@@ -5,16 +5,16 @@ var LoggerEnums = require('../util/LoggerEnums');
 var errorLog = new mongoose.Schema({
     subsystem: {
         type: String,
-        enum: _.keys(LoggerEnums.subsystem)
+        'enum': _.keys(LoggerEnums.subsystem)
     },
     level: {
         type: String,
-        enum: _.keys(LoggerEnums.errorLevel)
+        'enum': _.keys(LoggerEnums.errorLevel)
     },
     message: String,
     date: {
         type: Date,
-        default: Date.now
+        'default': Date.now
     }
 });
 
