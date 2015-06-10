@@ -54,10 +54,10 @@ public class Queue extends QObject {
         int timeEntered = queuePopulation.enter();
         systemPopulation.enter();
 
+        Request r = res.use(gen.nextValue());
         if (sizePlotter != null)
             sizePlotter.record(timeEntered, res.getQueueSize());
 
-        Request r = res.use(gen.nextValue());
         r.getHandlingEvent()
                 .addHandler((Event e) -> {
                     queuePopulation.leave(timeEntered);
