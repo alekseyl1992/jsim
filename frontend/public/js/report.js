@@ -159,10 +159,14 @@ require(['config'], function() {
             }
 
             function tickFormatter(value, axis) {
+                var prec = 2;
+
                 if (value < 1000)
-                    return value;
+                    return (value % 1)
+                        ? value.toFixed(prec)
+                        : value;
                 else
-                    return (value / 1000) + "к";
+                    return (value / 1000).toFixed(0) + "к";
             }
 
             function isInt(n) {
