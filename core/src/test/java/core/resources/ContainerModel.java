@@ -1,7 +1,7 @@
 package core.resources;
 
 import core.Event;
-import core.Process;
+import core.Handler;
 import core.Simulation;
 
 public class ContainerModel {
@@ -10,7 +10,7 @@ public class ContainerModel {
 
         Container container = new Container(sim, 10, 10);
 
-        Process producer = new Process() {
+        Handler producer = new Handler() {
             @Override
             public void start(Event startEvent) {
                 container.put(1)
@@ -21,7 +21,7 @@ public class ContainerModel {
             }
         };
 
-        Process consumer = new Process() {
+        Handler consumer = new Handler() {
             @Override
             public void start(Event startEvent) {
                 container.get(5)
@@ -32,8 +32,8 @@ public class ContainerModel {
             }
         };
 
-        sim.addProcess(producer);
-        sim.addProcess(consumer);
+        sim.runHandler(producer);
+        sim.runHandler(consumer);
 
         sim.start(200);
     }

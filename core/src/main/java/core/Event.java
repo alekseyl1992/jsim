@@ -14,7 +14,7 @@ public class Event {
     private int timeCreated = 0;
     private int timeScheduled = 0;
 
-    private Queue<Process> handlers = new ArrayDeque<>();
+    private Queue<Handler> handlers = new ArrayDeque<>();
 
     public Event(Simulation sim) {
         this(sim, "", NOT_SCHEDULED);
@@ -40,7 +40,7 @@ public class Event {
      */
     void execute() {
         // exec handlers
-        for (Process h: handlers)
+        for (Handler h: handlers)
             h.start(this);
 
         handlers.clear();
@@ -51,12 +51,12 @@ public class Event {
         sim.fireEvent(this);
     }
 
-    public Event addHandler(Process handler) {
+    public Event addHandler(Handler handler) {
         handlers.add(handler);
         return this;
     }
 
-    public void removeHandler(Process handler) {
+    public void removeHandler(Handler handler) {
         handlers.remove(handler);
     }
 

@@ -1,7 +1,7 @@
 package modelling.queueing;
 
 import core.Event;
-import core.Process;
+import core.Handler;
 import core.Simulation;
 import org.uncommons.maths.random.PoissonGenerator;
 
@@ -18,7 +18,7 @@ public class Source extends QObject {
 
         gen = new PoissonGenerator(1.0d / lambda, random);
 
-        Process process = new Process() {
+        Handler handler = new Handler() {
             @Override
             public void start(Event startEvent) {
                 use(); // for statistics
@@ -31,6 +31,6 @@ public class Source extends QObject {
             }
         };
 
-        sim.addProcess(process);
+        sim.runHandler(handler);
     }
 }

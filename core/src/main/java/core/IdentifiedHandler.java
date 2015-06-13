@@ -1,9 +1,9 @@
 package core;
 
-public abstract class IdentifiedProcess implements Process {
+public abstract class IdentifiedHandler implements Handler {
     private int id = -1;
 
-    public IdentifiedProcess(int id) {
+    public IdentifiedHandler(int id) {
         this.id = id;
     }
 

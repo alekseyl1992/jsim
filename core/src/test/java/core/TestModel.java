@@ -4,7 +4,7 @@ public class TestModel {
     public static void main(String[] args) {
         Simulation sim = new Simulation();
 
-        Process p = new Process() {
+        Handler handler = new Handler() {
             @Override
             public void start(Event e) {
                 System.out.println(sim.getSimTime());
@@ -12,7 +12,7 @@ public class TestModel {
             }
         };
 
-        sim.addProcess(p);
+        sim.runHandler(handler);
 
         sim.start(1000);
     }

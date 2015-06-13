@@ -1,7 +1,7 @@
 package core.resources;
 
 import core.Event;
-import core.Process;
+import core.Handler;
 import core.Simulation;
 
 public class StorageModel {
@@ -11,7 +11,7 @@ public class StorageModel {
 
         Storage<Point> storage = new Storage<>(sim, 10);
 
-        Process producer = new Process() {
+        Handler producer = new Handler() {
             private int x = 0;
             private int y = 0;
 
@@ -27,7 +27,7 @@ public class StorageModel {
             }
         };
 
-        Process consumer = new Process() {
+        Handler consumer = new Handler() {
             @Override
             public void start(Event startEvent) {
                 storage.get()
@@ -40,8 +40,8 @@ public class StorageModel {
             }
         };
 
-        sim.addProcess(producer);
-        sim.addProcess(consumer);
+        sim.runHandler(producer);
+        sim.runHandler(consumer);
 
         sim.start(200);
     }

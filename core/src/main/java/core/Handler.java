@@ -1,7 +1,7 @@
 package core;
 
 @FunctionalInterface
-public interface Process {
+public interface Handler {
     public void start(Event startEvent);
 }
 

@@ -1,7 +1,7 @@
 package core.resources;
 
 import core.Event;
-import core.Process;
+import core.Handler;
 import core.Simulation;
 
 public class ResourceModel {
@@ -12,7 +12,7 @@ public class ResourceModel {
 
         Resource f = new Resource(sim, 1);
 
-        Process client = new Process() {
+        Handler client = new Handler() {
             @Override
             public void start(Event e) {
                 int duration = 4;
@@ -32,7 +32,7 @@ public class ResourceModel {
                 sim.delay(nextClientTime, this);
             }
         };
-        sim.addProcess(client);
+        sim.runHandler(client);
 
         sim.start(100);
 

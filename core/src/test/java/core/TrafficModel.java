@@ -13,7 +13,7 @@ public class TrafficModel {
         Event carsEvent = new Event(sim, "Cars can cross");
 
         // create direction process
-        Process directionProcess = new Process() {
+        Handler directionHandler = new Handler() {
             @Override
             public void start(Event startEvent) {
                 direction = !direction;
@@ -30,13 +30,13 @@ public class TrafficModel {
                 sim.delay(30, this);
             }
         };
-        sim.addProcess(directionProcess);
+        sim.runHandler(directionHandler);
 
         // people generator
-        Process peopleGenerator = new Process() {
+        Handler peopleGenerator = new Handler() {
             @Override
             public void start(Event startEvent) {
-                Process man = new IdentifiedProcess(manId++) {
+                Handler man = new IdentifiedHandler(manId++) {
                     @Override
                     public void start(Event e) {
                         if (direction)
@@ -50,20 +50,20 @@ public class TrafficModel {
                     }
                 };
 
-                sim.addProcess(man);
+                sim.runHandler(man);
 
                 // generate new man each 60 seconds
                 sim.delay(60, this);
             }
         };
 
-        sim.addProcess(peopleGenerator);
+        sim.runHandler(peopleGenerator);
 
         // cars generator
-        Process carsGenerator = new Process() {
+        Handler carsGenerator = new Handler() {
             @Override
             public void start(Event startEvent) {
-                Process car = new IdentifiedProcess(carId++) {
+                Handler car = new IdentifiedHandler(carId++) {
                     @Override
                     public void start(Event startEvent) {
                         if (!direction)
@@ -77,13 +77,13 @@ public class TrafficModel {
                     }
                 };
 
-                sim.addProcess(car);
+                sim.runHandler(car);
 
                 // generate new car each 20 seconds
                 sim.delay(20, this);
             }
         };
-        sim.addProcess(carsGenerator);
+        sim.runHandler(carsGenerator);
 
         long startTime = System.currentTimeMillis();
         // start simulation

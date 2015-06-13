@@ -52,11 +52,11 @@ public class Simulation {
         }
     }
 
-    public void addProcess(Process process) {
+    public void runHandler(Handler handler) {
         if (state == State.ACTIVE)
-            process.start(null);
+            handler.start(null);
         else
-            eventQueue.peek().addHandler(process);
+            eventQueue.peek().addHandler(handler);
     }
 
     public int getSimTime() {
@@ -67,15 +67,15 @@ public class Simulation {
         return state;
     }
 
-    public void delay(int timeout, Process process) {
+    public void delay(int timeout, Handler handler) {
         Event e = new Event(this, this.simTime + timeout);
-        e.addHandler(process);
+        e.addHandler(handler);
 
         eventQueue.add(e);
     }
 
-    public void waitEvent(Event e, Process process) {
-        e.addHandler(process);
+    public void waitEvent(Event e, Handler handler) {
+        e.addHandler(handler);
     }
 
     public void fireEvent(Event e) {
